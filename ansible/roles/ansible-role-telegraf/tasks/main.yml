@@ -1,13 +1,82 @@
 ---
 - import_tasks: set_vars.yaml
-- name: install packages
+
+- name: check version
+  shell: /usr/bin/telegraf  version |grep -i telegraf |grep {{ telegraf_rpm_version }}
+  register: telegraf
+  ignore_errors: yes
+
+- debug: var=telegraf.stdout_lines
+
+- name: install depenency packages
   package:
     name: "{{ item}}"
     state: installed
   with_items:
-    - "{{ telegraf_rpm_url }}"
     - ipmitool
     - lm_sensors
+  when: ansible_os_family == "RedHat"  
+
+- name: install depenency packages
+  package:
+    name: "{{ item}}"
+    state: installed
+  with_items:
+    - ipmitool
+    - sensors
+  when: ansible_os_family == "Suse"  
+  
+
+- name: install  telegraf packages
+  package:
+    name: "{{ item}}"
+    state: latest
+  with_items:
+    - "{{ telegraf_rpm_url }}"
+  when: ansible_os_family == "RedHat"  and telegraf.rc != 0
+
+- name: download telegraf binary 
+  get_url:
+    url: "{{ telegraf_bin_url}}"
+    dest: "/tmp/telegraf-{{ telegraf_rpm_version }}_linux_amd64.tar.gz"
+  when: ansible_os_family == "Suse" and telegraf.rc  != 0
+
+  
+- name: Unarchive  telegraf binary 
+  unarchive:
+    src: "/tmp/telegraf-{{ telegraf_rpm_version }}_linux_amd64.tar.gz"
+    dest: /tmp
+    remote_src: yes
+  when: ansible_os_family == "Suse" and telegraf.rc  != 0
+
+
+- name: ensure telegraf group exist 
+  group:
+    name: telegraf
+    state: present
+  when: ansible_os_family == "Suse" 
+
+- name: ensure telegraf user exist 
+  user:
+    name: telegraf
+    shell: /bin/false
+    createhome: no
+    home: /etc/telegraf
+    group: telegraf
+    system: yes
+  when: ansible_os_family == "Suse" 
+
+- name: copy binary files
+  shell: cp -r  "{{item.src}}" "{{item.dest}}"
+  with_items:
+  - {src: '/tmp/telegraf/etc/telegraf', dest: '/etc',owner: 'telegraf',group: 'telegraf'}
+  - {src: '/tmp/telegraf/usr/bin/telegraf', dest: '/usr/bin'}
+  - {src: '/tmp/telegraf/var/log/telegraf',dest: '/var/log/',owner: 'telegraf',group: 'telegraf'}
+  when: ansible_os_family == "Suse" 
+  ignore_errors: yes
+
+
+  
 
 - name: configure ipmi permission 
   copy: 
@@ -29,6 +98,11 @@
     owner: root 
     group: root 
     mode: 0644
+
+- name: install telegraf.service
+  copy: 
+    src: telegraf.service
+    dest: /usr/lib/systemd/system/telegraf.service
 
 - name: restart_telegraf
   systemd: 

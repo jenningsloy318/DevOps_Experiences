@@ -1,0 +1,16 @@
+
+{% if snmpd_authorized_networks is defined  }
+{%   for item in snmpd_authorized_networks %}
+com2sec monitorUser   {{ item.network }}  {{ item.community }}    
+{%   endfor %}
+{% endif %}
+group   monitorGroup v1           monitorUser
+group   monitorGroup v2c           monitorUser
+view    AllView    included   .1
+access  monitorGroup ""      any       noauth    exact  AllView none none
+{% if snmpd_sysLocation is defined %}
+sysLocation    {{ snmpd_sysLocation }}
+{% endif %}
+{% if snmpd_sysContact is defined %}
+sysContact    {{ snmpd_sysContact }}
+{% endif %}

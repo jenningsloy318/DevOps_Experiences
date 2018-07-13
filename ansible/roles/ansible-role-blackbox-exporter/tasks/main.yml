@@ -1,0 +1,65 @@
+- name: check if black_exporter is installed and its version 
+  shell: blackbox_exporter  --version|grep blackbox_exporter | grep "{{blackbox_exporter_version}}"
+  register: blackbox_exporter
+  ignore_errors: yes
+
+  
+- name: download blackbox_exporter binary 
+  get_url:
+    url: "{{ blackbox_exporter_binary_url}}"
+    dest: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64.tar.gz"
+  when:  blackbox_exporter.rc  != 0
+
+- name: Unarchive  telegraf binary 
+  unarchive:
+    src: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64.tar.gz"
+    dest: /tmp
+    remote_src: yes
+  when:  blackbox_exporter.rc  != 0
+  
+- name: create blackbox_exporter conf dir
+  file:
+    path: /etc/blackbox_exporter/
+    state: directory
+    mode: 0755
+
+
+- name: copy blackbox_exporter binary
+  copy:
+    src: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64/blackbox_exporter"
+    dest: /usr/bin
+    remote_src: yes
+    mode: 0755
+  when:  blackbox_exporter.rc  != 0
+
+- name: create blackbox_exporter service file
+  copy:
+    src: blackbox_exporter.service
+    dest: /lib/systemd/system/blackbox_exporter.service
+
+
+- name: create blackbox_exporter conf file 
+  template:
+    src: blackbox_exporter.yml.j2
+    dest: /etc/blackbox_exporter/blackbox_exporter.yml
+    
+- name: create examp-ca   file 
+  copy:
+    src: examp-ca.pem
+    dest: "{{blackbox_exporter_examp_ca_path}}"
+
+- name: start blackbox_exporter 
+  systemd: 
+    name: blackbox_exporter 
+    state: restarted 
+    enabled: yes
+    daemon_reload: yes
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 9115/tcp
+    permanent: true
+    state: enabled
+- name: reload firewalld
+  shell: firewall-cmd --reload    
+    

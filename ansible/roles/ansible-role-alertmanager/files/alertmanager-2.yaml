@@ -2,14 +2,14 @@ receivers:
 - name: 'email-receiver'
   email_configs:
   - send_resolved: true
-    to:  'DL_57BA68805F99B710F600001A@exchange.sap.corp'
+    to:  'DL_5B0E5FD7ECB211EEB0000016@exchange.sap.corp'
     headers:
       From: noreply+suning-sportsone-cae@sap.com
       Subject: 'Alert: {{ template "email.default.subject" . }}'
 - name: 'default-reciever'
   email_configs:
   - send_resolved: true
-    to:  'DL_57BA68805F99B710F600001A@exchange.sap.corp'
+    to:  'DL_5B0E5FD7ECB211EEB0000016@exchange.sap.corp'
     headers:
       From: noreply+suning-sportsone-cae@sap.com
       Subject: 'Suning Alert: {{ template "email.default.subject" . }}'
@@ -24,5 +24,5 @@ receivers:
   slack_configs:
   - send_resolved: true
     channel: '#suning-alerts'
-    title: 'Suning Alert: {{ .Status | toUpper }}  {{ .CommonAnnotations.summary }}\n'
-    text: '{{range .Alerts }}\nDescription: {{ .Annotations.description }}\n{{ range .Labels.SortedPairs }} {{ .Name }}: {{ .Value }}\n{{end}}Metrics: <{{ .GeneratorURL}}| Click here>\n{{ end }}'
+    title: "Suning Alert: {{ .Status | toUpper }}  {{ .CommonAnnotations.summary }}\n"
+    text: "{{range .Alerts }}\nDescription: {{ .Annotations.description }}\n{{ range .Labels.SortedPairs }} {{ .Name }}: {{ .Value }}\n{{end}}Metrics: <{{ .GeneratorURL}}| Click here>\n{{ end }}"

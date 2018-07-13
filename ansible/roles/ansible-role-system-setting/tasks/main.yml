@@ -1,12 +1,67 @@
+- name: install security updates on CentOS/RHEL
+  yum:
+      name: '*'
+      security: yes
+      state: latest
+      update_cache: yes
+  when: ansible_os_family == "RedHat"     
 
-- name: install new dns conf
-  copy:
-    src: resolv.conf
-    dest: /etc/resolv.conf
+  ## for suse security patches, refer to https://forums.opensuse.org/showthread.php/495293-Install-only-the-security-updates
+- name: list all security patch  on SLES
+  shell: zypper list-patches --category security 2>/dev/null | awk '{ print $1 }'|grep SLES
+  register: suse_security_patches
+  when: ansible_os_family == "Suse"   
 
-- import_tasks: limits.yml
+- debug: var=suse_security_patches.stdout_lines
+  when: ansible_os_family == "Suse"   
+
+- name: install security patch on SLES
+  zypper:
+    name: "{{item}}"
+    state: present
+    type: patch
+  with_items:
+    - suse_security_patches.stdout_lines
+  when: ansible_os_family == "Suse"   
+
+
+- name: install open-vm-tools on VMs     
+  package:
+     name: open-vm-tools
+     state: present
+     update_cache: yes
+  when: ansible_virtualization_role == 'guest'
+- name: restart open-vm-tools on VMs     
+  systemd:
+     name: "{{item}}"
+     state: restarted
+     daemon_reload: yes
+     enabled: yes
+  with_items:
+   - vgauthd.service
+   - vmtoolsd.service
+  when: ansible_virtualization_role == 'guest'
+
+- name: enable firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
   when: ansible_os_family == "RedHat" 
-- import_tasks: sec-update.yml
-- import_tasks: services.yml
-- import_tasks: sysctl.yml
+
+- name: ensure cups is not installed
+  package:
+      name:  cups
+      state: absent
+
+- name: ensure auditd is installed
+  package:
+      name: audit
+      state: present
+- name: install additional packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - yum-utils
   when: ansible_os_family == "RedHat" 

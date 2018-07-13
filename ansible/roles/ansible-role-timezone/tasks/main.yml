@@ -1,0 +1,4 @@
+- name: update timezone info
+  timezone:
+    name: Asia/Shanghai
+  when: ansible_os_family == "RedHat"     

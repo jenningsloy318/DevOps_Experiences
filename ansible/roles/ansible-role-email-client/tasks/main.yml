@@ -1,0 +1,31 @@
+- name: copy email rpm package 
+  copy: 
+    src: email-3.2.3-1.el7.centos.x86_64.rpm
+    dest: /tmp/email-3.2.3-1.el7.centos.x86_64.rpm
+  when: ansible_os_family == 'RedHat'
+
+- name: copy email rpm package 
+  copy: 
+    src: email-3.2.3-1.sle12.x86_64.rpm
+    dest: /tmp/email-3.2.3-1.sle12.x86_64.rpm
+  when: ansible_os_family == 'Suse'  
+
+
+- name: install email rpm package
+  yum:
+    name: /tmp/email-3.2.3-1.el7.centos.x86_64.rpm
+    state: installed
+  when: ansible_os_family == 'RedHat'
+
+
+- name: install email rpm package
+  zypper:
+    name: /tmp/email-3.2.3-1.sle12.x86_64.rpm
+    state: installed
+  when: ansible_os_family == 'Suse'
+
+
+- name: install email conf
+  template:
+    src:  email.conf.j2
+    dest: /etc/email/email.conf

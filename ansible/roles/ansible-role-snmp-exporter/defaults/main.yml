@@ -1,0 +1,2 @@
+snmp_exporter_version: 0.10.0
+snmp_binary_url: https://github.com/prometheus/snmp_exporter/releases/download/v{{snmp_exporter_version}}/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz

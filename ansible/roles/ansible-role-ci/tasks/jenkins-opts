@@ -1,0 +1,1 @@
+--httpPort=-1 --httpsPort=6443 --httpsCertificate=path/to/cert --httpsPrivateKey=path/to/privatekey --prefix=/jeninkins

@@ -1,1 +1,1 @@
-curl -d '{ "request": {"hosts":["grafana.snfc.org"],"key": {"algo": "rsa","size": 4096}, "names":[{"C":"CN", "ST":"Jiangsu", "L":"Nanjing", "O":"Suning"}], "CN": "grafana.snfc.org"} }'  https://getcerts.snfc.org/api/v1/cfssl/newcert| jq -r '.result| .certificate, .private_key'
+curl -d '{ "request": {"hosts":["grafana.examp.org"],"key": {"algo": "rsa","size": 4096}, "names":[{"C":"CN", "ST":"Jiangsu", "L":"Nanjing", "O":"Suning"}], "CN": "grafana.examp.org"} }'  https://getcerts.examp.org/api/v1/cfssl/newcert| jq -r '.result| .certificate, .private_key'

@@ -2,8 +2,8 @@
 Description=alertmanager  service
 
 [Service]
-Slice=container.slice
-ExecStart=/usr/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml  --storage.path=/data/monitoring/alertmanager --web.external-url=http://{{ alertmanager_ext_addr }}:9093  --cluster.listen-address=0.0.0.0:9094   {% for alertmanger_cluster_peer in alertmanger_cluster_peers %}  --cluster.peer={{ alertmanger_cluster_peer }}:9094  {%endfor%}
+User=alertmanager
+ExecStart=/usr/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml  --storage.path={{alertmanager_storage_path }}  --web.external-url={{ alertmanager_ext_url }}  --cluster.listen-address=0.0.0.0:9094   {% for alertmanager_cluster_peers in alertmanager_cluster_peers %}  --cluster.peer={{ alertmanager_cluster_peers }}:9094  {%endfor%}
 
 Restart=always
 RestartSec=2s

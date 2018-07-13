@@ -2,8 +2,8 @@
 Description=prometheus service
 
 [Service]
-Slice=container.slice
-ExecStart=/usr/bin/prometheus  --web.console.libraries=/etc/prometheus/console_libraries   --web.console.templates=/etc/prometheus/consoles --config.file=/etc/prometheus/prometheus.yml  --storage.tsdb.path=/data/monitoring/prometheus/data --web.enable-lifecycle --web.enable-admin-api --web.external-url=http://{{ prometheus_ext_addr }}:9090
+User=prometheus
+ExecStart=/usr/bin/prometheus  --web.console.libraries=/etc/prometheus/console_libraries   --web.console.templates=/etc/prometheus/consoles --config.file=/etc/prometheus/prometheus.yml  --storage.tsdb.path={{prometheus_storage_path}} --web.enable-lifecycle --web.enable-admin-api --web.external-url={{ prometheus_ext_url }}
 Restart=always
 RestartSec=2s
 StartLimitInterval=0

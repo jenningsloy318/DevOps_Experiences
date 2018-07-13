@@ -1,0 +1,22 @@
+--- 
+- name: ensure snmpd is installed
+  pkg:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - net-snmp
+    - net-snmp-utils
+- name: config  snmpd  
+  template:
+    src: "snmpd.conf.j2"
+    dest: "/etc/snmp/snmpd.conf"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  notify: "restart snmpd"
+- name: starting and enabling snmpd service
+  systemd:
+    name: "snmpd"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes

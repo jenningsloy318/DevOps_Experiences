@@ -1,11 +1,9 @@
 
-alertmanager_version: 0.15.0-rc.1
-alertmanager_bin_url: https://github.com/prometheus/alertmanager/releases/download/v{{ alertmanager_version }}/alertmanager-{{ alertmanager_version }}.linux-amd64.tar.gz
-alertmanager_ext_addr: "{{ ansible_host }}"
-alertmanger_cluster_peers:
-  - 10.36.52.181
-  - 10.36.52.182
-  - 10.36.52.183
+alertmanager_version: 
+alertmanager_bin_url: 
+alertmanager_ext_url: 
+alertmanager_cluster_peers:
+alertmanager_storage_path: 
 
 alertmanager_smtp_smarthost:
 alertmanager_smtp_from: 

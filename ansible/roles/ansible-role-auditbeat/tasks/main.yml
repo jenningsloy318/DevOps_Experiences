@@ -1,17 +1,26 @@
 ---
-
+- name: check if auditbeat if installed 
+  shell: auditbeat version |grep auditbeat|grep {{auditbeat_version}}
+  register: auditbeat
+  ignore_errors: yes
 
 - name: install auditbeat
   package:
     name: "{{ auditbeat_rpm_url }}"
     state: present
-    allow_downgrade: yes  
+    disable_gpg_check: yes
+  when: auditbeat.rc != 0
 
+- name: install auditbeat.service
+  copy: 
+    src: auditbeat.service
+    dest: /lib/systemd/system/auditbeat.service
 
 - name: ensure auditd is installed 
   package:
     name: audit
     state: present
+    disable_gpg_check: yes
 
     
 - name: create conf for auditbeat 
@@ -24,7 +33,7 @@
   notify:
     restart_auditbeat  
 
-- name: start auditbeat
+- name: restart auditbeat
   systemd: 
     name: auditbeat 
     state: restarted 

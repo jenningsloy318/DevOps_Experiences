@@ -1,0 +1,7 @@
+# Define read-only snmpd settings
+snmpd_authorized_networks: []
+#  - network: 10.0.101.0/24
+#    community: example
+
+snmpd_sysLocation: " "
+snmpd_sysContact: " "

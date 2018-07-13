@@ -17,7 +17,8 @@ filebeat.prospectors:
 # Each - is a prospector. Most options can be set at the prospector level, so
 # you can use different prospectors for various configurations.
 # Below are the prospector specific configurations.
-filebeat.prospectors:
+{% if filebeat_hana_instance_sid %}
+
 - type: log
   enabled: true
   paths:
@@ -41,6 +42,8 @@ filebeat.prospectors:
     - /usr/sap/{{ filebeat_hana_instance_sid }}/HDB{{ filebeat_hana_instance_number }}/{{ filebeat_hana_hostname }}/trace/webdispatcher*.trc
   tags: ["hana-webdispatcher","hana-srv"]
   exclude_files: ['\.dev']
+{%endif%}
+
   ### Multiline options
 
   # Mutiline can be used for log messages spanning multiple lines. This is common

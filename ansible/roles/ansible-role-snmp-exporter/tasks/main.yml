@@ -1,0 +1,52 @@
+- name: check snmp_export
+  shell: /usr/bin/snmp_export  --version |grep -i snmp_exporter |grep {{ snmp_exporter_version }}
+  register: snmp_export
+  ignore_errors: yes
+
+- name: download snmp_exporter
+
+- name: download telegraf binary 
+  get_url:
+    url: "{{ snmp_binary_url}}"
+    dest: "/tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz"
+  when:  snmp_export.rc  != 0
+  
+- name: Unarchive  snmp_exporter binary 
+  unarchive:
+    src: "/tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz"
+    dest: /tmp
+    remote_src: yes
+  when: snmp_export.rc  != 0
+
+- name: copy snmp_exporter binary
+  copy:
+    src: /tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64/snmp_exporter"
+    dest: /usr/bin
+    remote_src: yes
+    mode: 0755
+    
+- name: create snmp_exporter conf dir
+  file:
+    path: /etc/snmp_exporter/
+    state: directory
+    mode: 0755 
+
+- name: copy snmp_exporter conf
+  copy:
+    src: /tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64/snmp.yml"
+    dest: /etc/snmp_exporter/
+    remote_src: yes
+    mode: 0644
+
+- name: create snmp_exporter service file
+  template:
+    src: snmp_exporter.service
+    dest: /lib/systemd/system/snmp_exporter.service
+    
+- name: start snmp_exporter 
+  systemd: 
+    name: snmp_exporter 
+    state: restarted 
+    enabled: yes
+    daemon_reload: yes
+    

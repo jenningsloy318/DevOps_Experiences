@@ -1,10 +1,4 @@
 ---
-- name: restart_alertmanager
-  systemd: 
-    name:  alertmanager 
-    state:  restarted 
-    enabled:  yes
-    daemon_reload:  yes
-
-
+- name: reload_alertmanager_conf
+  shell: curl -X POST http://localhost:9093/-/reload 
 

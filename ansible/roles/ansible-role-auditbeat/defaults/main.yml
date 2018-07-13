@@ -1,7 +1,5 @@
 auditbeat_kibana_host:  
-auditbeat_out_logstash: true
 auditbeat_logstash_hosts:
-auditbeat_out_elasticsearch: true
 auditbeat_elasticsearch_hosts:
 
 

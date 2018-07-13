@@ -1,14 +1,39 @@
-- stat:
-    path: /usr/bin/prometheus
+
+- name: check version
+  shell: /usr/bin/prometheus  --version >/dev/stdout 2>&1 |grep prometheus|awk '{print $3}'|grep {{ prometheus_version }}
+  ignore_errors: yes
   register: prometheus
+
 - debug:
     var=prometheus
-- name: Unarchive a file that needs to be downloaded (added in 2.0)
+- name: Fetch and Unarchive prometheus
   unarchive:
     src: "{{ prometheus_bin_url }}"
     dest: /tmp
     remote_src: yes
-  when: prometheus.stat.exists == false
+  when: prometheus.rc  !=0
+
+- name: ensure prometheus group exist 
+  group:
+    name: prometheus
+    state: present
+
+- name: ensure prometheus user exist 
+  user:
+    name: prometheus
+    shell: /bin/false
+    createhome: no
+    home: /etc/prometheus
+    group: prometheus
+    system: yes
+- name: stop prometheus service if possible
+  systemd: 
+    name: prometheus
+    state: stopped
+    enabled: yes
+    daemon_reload: yes
+  when: prometheus.rc  !=0
+  ignore_errors: yes
 
 - name: copy prometheus binary
   copy:
@@ -16,7 +41,7 @@
     dest: /usr/bin
     remote_src: yes
     mode: 0755
-  when: prometheus.stat.exists == false
+  when: prometheus.rc  !=0
 
 - name: copy prometheus  promtool binary
   copy:
@@ -24,7 +49,7 @@
     dest: /usr/bin
     remote_src: yes
     mode: 0755
-  when: prometheus.stat.exists == false
+  when: prometheus.rc  !=0
 - name: create prometheus service file
   template:
     src: prometheus.service
@@ -35,33 +60,56 @@
     path: /etc/prometheus/
     state: directory
     mode: 0755
+    owner: prometheus
+    group: prometheus
+
 - name: create prometheus file sd dir
   file:
     path: /etc/prometheus/tgroups/
     state: directory
     mode: 0755
+    owner: prometheus
+    group: prometheus
 
 - name: copy prometheus  console_libraries  console_libraries files
   shell: cp -rf "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/console_libraries" "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/consoles"  /etc/prometheus/
+  when: prometheus.rc  !=0
 
 - name: create prometheus conf file
   template:
     src: prometheus.yml.j2
     dest: /etc/prometheus/prometheus.yml
+    mode: 0755
+    owner: prometheus
+    group: prometheus
   notify:
-    restart_prometheus  
+    reload_prometheus_conf
+
+
 - name: create alert.rules.yml conf file
   copy:
     src: alert.rules.yml
     dest: /etc/prometheus/alert.rules.yml
-  notify:
-    restart_prometheus  
-- name: start prometheus service
+
+- name: start prometheus service if not running
   systemd: 
     name: prometheus
-    state: restarted
+    state: started
     enabled: yes
     daemon_reload: yes
+
+- file:
+    path: "{{item}}"
+    owner: prometheus
+    group: prometheus
+    recurse: yes
+  with_items:
+  - "{{prometheus_storage_path}}"
+  - /etc/prometheus
+  notify:
+    reload_prometheus_conf  
+
+
 - name: add firewalld rules
   firewalld:
     zone: public

@@ -5,8 +5,8 @@ data_directory = /var/lib/postfix
 mail_owner = postfix
 inet_interfaces = all
 inet_protocols = all
-myhostname = yh-vm-smtp-prod01.snfc.org
-mydomain = snfc.org
+myhostname = yh-vm-smtp-prod01
+mydomain = examp.org
 myorigin = $mydomain
 inet_interfaces = all
 mynetworks = 10.36.50.0/24 10.36.51.0/24 10.36.52.0/24
@@ -33,3 +33,6 @@ smtp_use_tls = yes
 smtp_cname_overrides_servername = no
 smtp_sasl_mechanism_filter = plain, login
 smtp_generic_maps = hash:/etc/postfix/generic
+
+
+smtpd_relay_restrictions = permit_mynetworks,  permit_sasl_authenticated, reject_unauth_destination

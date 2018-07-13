@@ -10,6 +10,29 @@
     name: /tmp/jdk-linux-x64.rpm
     state: present
   when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
+  
+- name: Download jenkins repo
+  get_url:
+    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo 
+
+- name: import jenkins repo key
+  rpm_key:
+    state: present
+    key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+  when: ansible_os_family == "RedHat"
+
+
+- name: install additional package
+  package: 
+    name: "{{ item}}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - libaio
+    - git
+    - jenkins
+    - rsync
 
 - name: add JAVA_HOME 
   lineinfile: 
@@ -96,27 +119,7 @@
    regexp: '^export.*HDBCLIENT_HOME=.*'
    line:  "export export HDBCLIENT_HOME=/usr/sap/hdbclient"    
 
-  
-- name: Download jenkins repo
-  get_url:
-    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
-    dest: /etc/yum.repos.d/jenkins.repo 
 
-- name: import jenkins repo key
-  rpm_key:
-    state: present
-    key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-  when: ansible_os_family == "RedHat"
-
-- name: install additional package
-  package: 
-    name: "{{ item}}"
-    state: latest
-    update_cache: yes
-  with_items:
-    - libaio
-    - git
-    - jenkins
 
 - name: download nexus
   get_url:
@@ -206,19 +209,22 @@
     state: restarted
     daemon_reload: yes
     enabled: yes
-- name: show jenkins initial admin password 
-  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
-  register: jenkinsadminpass
+#- name: show jenkins initial admin password 
+#  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+#  register: jenkinsadminpass
 
-- debug: var=jenkinsadminpass.stdout_lines
+#- debug: var=jenkinsadminpass.stdout_lines
 
+- name: install docker engine repo 
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
 - name: ensure docker engine is installed
   package:
     name: "{{item}}"
     state: installed
   with_items:
-  - https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch.rpm
-  - https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-17.03.2.ce-1.el7.centos.x86_64.rpm
+  - docker-ce
   when: ansible_os_family == "RedHat" or    ansible_os_family == "Suse"
 
 

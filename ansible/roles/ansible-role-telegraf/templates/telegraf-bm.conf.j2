@@ -148,7 +148,16 @@
 {% if telegraf_mon_process %}
 {% for process in telegraf_mon_processes %}
 [[inputs.procstat]]
-exe = "{{process}}"
+pattern = "{{process}}"
 {%endfor%}
 {%endif%}
 
+{% if telegraf_mon_ports %}
+{% for port in telegraf_mon_ports %}
+[[inputs.net_response]]
+protocol = "tcp"
+address = "localhost:{{port}}"
+timeout = "1s"
+read_timeout = "1s"
+{%endfor%}
+{%endif%}

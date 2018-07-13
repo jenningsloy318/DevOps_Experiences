@@ -1,9 +1,0 @@
-
-[Unit]
-Description=cfssl api server
-
-[Service]
-ExecStart=/usr/bin/cfssl serve -ca-key /etc/cfssl/ca-key.pem  -ca /etc/cfssl/ca.pem  -config /etc/cfssl/config_ca.json  -db-config /etc/cfssl/db-config.json -address  0.0.0.0 -port 443 -tls-key /etc/cfssl/cfssl-key.pem -tls-cert /etc/cfssl/cfssl.pem 
-
-[Install]
-WantedBy=multi-user.target

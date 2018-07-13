@@ -1,7 +1,7 @@
 global:
   # The smarthost and SMTP sender used for mail notifications.
   smtp_smarthost: 'mail.lmy.com:25'
-  smtp_from: 'admin@snfc.com'
+  smtp_from: 'admin@examp.com'
   smtp_require_tls: false
   # the slack Incoming WebHooks url
   slack_api_url: 'https://hooks.slack.com/services/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'  
