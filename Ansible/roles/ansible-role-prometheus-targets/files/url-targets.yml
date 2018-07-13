@@ -1,0 +1,12 @@
+
+- targets: 
+  - http://10.36.50.141:8000
+  - https://sportsone-staging.snfc.com
+  - http://10.36.50.13:8000
+  - https://sportsone.snfc.com 
+  - http://10.36.52.178:3000
+  - https://sportsone-grafana.snfc.com 
+  - http://10.36.50.412:8000
+  - https://sportsone-qa.snfc.com 
+  labels:
+    type: URL

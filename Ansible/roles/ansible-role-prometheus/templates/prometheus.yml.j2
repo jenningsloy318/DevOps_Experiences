@@ -22,13 +22,8 @@ scrape_configs:
   metrics_path: /probe
   params:
     module: [http_2xx]
-  static_configs:
-    - targets:
-      {% for blackbox_target in prometheus_blackbox_targets %} 
-      - {{ blackbox_target }}
-      {%endfor%}      
-      labels:
-        type: URL
+  file_sd_configs:
+    - files: ['tgroups/url-targets.yml']  
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target

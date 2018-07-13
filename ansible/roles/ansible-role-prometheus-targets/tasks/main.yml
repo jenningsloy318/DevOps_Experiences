@@ -8,3 +8,4 @@
   with_items:
   - service-targets.yml
   - telegraf-targets.yml
+  - url-targets.yml
