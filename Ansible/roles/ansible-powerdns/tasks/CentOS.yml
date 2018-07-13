@@ -1,0 +1,60 @@
+---
+# tasks file for powerdns (CentOS specific)
+
+
+- name: Add PowerDNS Recursor repo
+  yum_repository:
+    name: Pdns-Recursor
+    description: PowerDNS repository for PowerDNS Recursor - version 4.1.X
+    baseurl: http://repo.powerdns.com/centos/$basearch/$releasever/rec-41
+    gpgkey: https://repo.powerdns.com/FD380FBB-pub.asc
+    gpgcheck: yes
+    file: centos-rec-41
+    enabled: yes
+    priority: 90
+- name: Add PowerDNS Authoritative repo
+  yum_repository:
+    name: Pdns-Authoritative
+    description: PowerDNS repository for PowerDNS Authoritative Server - version 4.1.X
+    baseurl: http://repo.powerdns.com/centos/$basearch/$releasever/auth-41
+    gpgkey: https://repo.powerdns.com/FD380FBB-pub.asc
+    gpgcheck: yes
+    file: centos-auth-41
+    enabled: yes
+    priority: 90
+
+
+- name: Install PowerDNS authoritative
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - "{{ powerdns_authoritative_packages }}"
+  when: powerdns_authoritative
+  tags:
+    - powerdns
+    - authoritative
+
+- name: Install PowerDNS recursor
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - "{{ powerdns_recursor_packages }}"
+  when: powerdns_recursor
+  tags:
+    - powerdns
+    - recursor
+
+- name: create schema for pdns 
+  command: psql -f /usr/share/doc/pdns-backend-postgresql-$PDNS_VERSION/schema.pgsql.sql
+  environment:
+    - PGHOSTADDR: "{{ powerdns_backend_generic_postgresql_host }}"
+    - PGDATABASE: "{{ powerdns_backend_generic_postgresql_dbname }}"
+    - PGUSER: "{{ powerdns_backend_generic_postgresql_user }}"
+    - PGPASSWORD: "{{ powerdns_backend_generic_postgresql_password }}"
+    - PDNS_VERSION: "{{ powerdns_authoritative_version }}"

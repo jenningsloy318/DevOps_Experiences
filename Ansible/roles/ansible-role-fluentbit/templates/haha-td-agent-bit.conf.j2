@@ -1,0 +1,84 @@
+[SERVICE]
+    Flush        1
+    Daemon       Off
+    Log_Level    debug
+    Parsers_File parsers.conf
+[INPUT]
+    Name        tail
+    Path       /usr/sap/{{td_agent_bit_hana_instance_sid}}/HDB{{td_agent_bit_hana_instance_number}}/{{td_agent_bit_hana_hostname}}/trace/available.log
+    Tag         hana-available
+
+[INPUT]
+    Name        tail
+    Path       /usr/sap/{{td_agent_bit_hana_instance_sid}}/HDB{{td_agent_bit_hana_instance_number}}/{{td_agent_bit_hana_hostname}}/trace/indexserver*.trc
+    Exclude_Path *.executed_statements.*.trc,*.loads*.trc,*.unloads.*.trc
+    Tag        hana-indexserver
+[INPUT]
+    Name        tail
+    Path       /usr/sap/{{td_agent_bit_hana_instance_sid}}/HDB{{td_agent_bit_hana_instance_number}}/{{td_agent_bit_hana_hostname}}/trace/xsengine*.trc
+    Exclude_Path *.executed_statements.*.trc
+    Tag        hana-xsengine
+[INPUT]
+    Name        tail
+    Path       /usr/sap/{{td_agent_bit_hana_instance_sid}}/HDB{{td_agent_bit_hana_instance_number}}/{{td_agent_bit_hana_hostname}}/trace/webdispatcher*.trc
+    Exclude_Path *.dev.*.trc
+    Tag        hana-webdispatcher
+
+[FILTER]
+    Name record_modifier
+    Match *
+    Record host ${HOSTNAME}
+[FILTER]
+    Name parser
+    Key_Name log
+    Match hana-available
+    Parser hana-available
+[FILTER]
+    Name parser
+    Key_Name log
+    Match hana-indexserver
+    Parser hana-srv    
+[FILTER]
+    Name parser
+    Key_Name log
+    Match hana-xsengine
+    Parser hana-srv   
+[FILTER]
+    Name parser
+    Key_Name log
+    Match hana-webdispatcher
+    Parser hana-srv   
+
+
+[OUTPUT]
+    Name  es
+    Match hana-available
+    Host  10.180.1.71
+    Port  9200
+    Logstash_Format on
+    Logstash_Prefix hana-available
+    Type  log
+[OUTPUT]
+    Name  es
+    Match hana-indexserver
+    Host  10.180.1.71
+    Port  9200
+    Logstash_Format on
+    Logstash_Prefix hana-indexserver
+    Type  log    
+[OUTPUT]
+    Name  es
+    Match hana-xsengine
+    Host  10.180.1.71
+    Port  9200
+    Logstash_Format on
+    Logstash_Prefix hana-indexserver
+    Type  log    
+[OUTPUT]
+    Name  es
+    Match hana-webdispatcher
+    Host  10.180.1.71
+    Port  9200
+    Logstash_Format on
+    Logstash_Prefix hana-indexserver
+    Type  log        

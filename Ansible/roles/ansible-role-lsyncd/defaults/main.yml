@@ -1,0 +1,41 @@
+---
+lsyncd_startup_enabled: True
+lsyncd_logging_dir: /var/log/lsyncd
+lsyncd_logging_file: /var/log/lsyncd/lsyncd.log
+lsyncd_status_file: /var/log/lsyncd/lsyncd.stat
+lsyncd_statusInterval: 20
+lsyncd_pid_file: /var/run/lsyncd.pid
+lsyncd_maxProcesses: 3
+lsyncd_excludes_file: /etc/lsyncd_excludes.txt
+lsyncd_insist: true
+lsyncd_exclude_file: /etc/lsyncd_excludes.txt
+lsyncd_exclude_file_lines:
+ - logs/
+ - '*.tmp'
+lsyncd_passwd_file: /etc/lsyncd.pass
+lsyncd_passwd: pass
+lsyncd_sync_configure:
+  - lsyncd_sync_source_dir: /data
+    lsyncd_sync_remote_host: 192.168.59.130 
+    # used when method is rsyncssh
+    lsyncd_sync_target_dir: /data 
+    # used when method is rsyncssh
+    lsyncd_sync_target:  "192.168.59.130:/data"
+    # this one is used when method is rsync/direct . value also can be 192.168.59.130::data when  rsyncd is running on remote host, or 192.168.59.130:/data
+    lsyncd_sync_method: rsync
+    lsyncd_sync_excludeFrom: "{{ lsyncd_exclude_file }}"
+    lsyncd_sync_delete: false
+    lsyncd_sync_delay: 5
+    lsyncd_sync_rsync_options:
+      - archive: true
+        compress: true
+        links: true
+        perms: true
+        owner: true
+        verbose: true
+        password_file: "{{lsyncd_passwd_file}}"
+        extra: '{"--bwlimit=2048"}'
+    # ssh options is used only when method is rsyncssh
+    lsyncd_sync_ssh_options:
+      - port: 22
+

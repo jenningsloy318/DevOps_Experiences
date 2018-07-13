@@ -1,0 +1,7 @@
+pgsql_db_name: pdns
+pgsql_db_owner: pdns
+pgsql_user_name: pdns
+pgsql_user_password: pdns
+pgsql_postgres_password: jennings
+
+

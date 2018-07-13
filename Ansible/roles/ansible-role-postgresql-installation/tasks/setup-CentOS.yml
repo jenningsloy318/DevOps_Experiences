@@ -1,0 +1,32 @@
+---
+- name: install pgsql repo
+  package: 
+     name: "{{ item }}"
+     state: installed
+     update_cache: yes   
+  with_items: "{{ pgsql_repo_package }}"
+
+- name: Ensure PostgreSQL packages are installed.
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ postgresql_packages }}"
+
+
+- name: Ensure PostgreSQL Python libraries are installed.
+  package:
+    name: "{{ postgresql_python_library }}"
+    state: installed
+
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 5432/tcp
+    permanent: true
+    state: enabled
+  when: ansible_os_family == 'RedHat'
+
+
+- name: reload firewalld
+  shell: firewall-cmd --reload
+  when: ansible_os_family == 'RedHat'

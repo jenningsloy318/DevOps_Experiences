@@ -1,0 +1,277 @@
+# {{ ansible_managed }}
+
+allow-axfr-ips={{ powerdns_authoritative_allow_axfr_ips | join(", ") }}
+{% if powerdns_authoritative_allow_dns_update_from %}
+allow-dns-update-from={{ powerdns_authoritative_allow_dns_update_from | join(", ") }}
+{% endif %}
+allow-notify-from={{ powerdns_authoritative_allow_notify_from | join(", ") }}
+{% if powerdns_authoritative_allow_unsigned_notify %}
+allow-unsigned-notify=yes
+{% else %}
+allow-unsigned-notify=no
+{% endif %}
+{% if powerdns_authoritative_allow_unsigned_supermaster %}
+allow-unsigned-supermaster=yes
+{% else %}
+allow-unsigned-supermaster=no
+{% endif %}
+{% if powerdns_authoritative_also_notify %}
+also-notify={{ powerdns_authoritative_also_notify | join(", ") }}
+{% endif %}
+{% if powerdns_authoritative_any_to_tcp %}
+any-to-tcp=yes
+{% else %}
+any-to-tcp=no
+{% endif %}
+{% if powerdns_authoritative_api %}
+api=yes
+{% else %}
+api=no
+{% endif %}
+{% if powerdns_authoritative_api_key %}
+api-key={{ powerdns_authoritative_api_key }}
+{% endif %}
+{% if powerdns_authoritative_api_readonly  %}
+api-readonly=yes
+{% else %}
+api-readonly=no
+{% endif%}
+cache-ttl={{ powerdns_authoritative_cache_ttl }}
+{% if powerdns_authoritative_carbon_ourname %}
+carbon-ourname={{ powerdns_authoritative_carbon_ourname }}
+{% endif %}
+{% if powerdns_authoritative_carbon_server %}
+carbon-server={{ powerdns_authoritative_carbon_server }}
+{% endif %}
+carbon-interval={{ powerdns_authoritative_carbon_interval }}
+{% if powerdns_authoritative_chroot %}
+chroot={{ powerdns_authoritative_chroot }}
+{% endif %}
+config-dir={{ powerdns_authoritative_config_dir }}
+{% if powerdns_authoritative_config_name %}
+config-name={{ powerdns_authoritative_config_name }}
+{% endif %}
+{% if powerdns_authoritative_daemon %}
+daemon=yes
+{% else %}
+daemon=no
+{% endif %}
+default-soa-name={{ powerdns_authoritative_default_soa_name }}
+{% if powerdns_authoritative_default_soa_edit %}
+default-soa-edit={{ powerdns_authoritative_default_soa_edit }}
+{% endif %}
+{% if powerdns_authoritative_default_soa_edit_signed %}
+default-soa-edit-signed={{ powerdns_authoritative_default_soa_edit_signed }}
+{% endif %}
+{% if powerdns_authoritative_default_soa_mail %}
+default-soa-mail={{ powerdns_authoritative_default_soa_mail }}
+{% endif %}
+default-ttl={{ powerdns_authoritative_default_ttl }}
+{% if powerdns_authoritative_direct_dnskey %}
+direct-dnskey=yes
+{% else %}
+direct-dnskey=no
+{% endif %}
+{% if powerdns_authoritative_disable_axfr %}
+disable-axfr=yes
+{% else %}
+disable-axfr=no
+{% endif %}
+{% if powerdns_authoritative_disable_axfr_rectify %}
+disable-axfr-rectify=yes
+{% else %}
+disable-axfr-rectify=no
+{% endif %}
+{% if powerdns_authoritative_disable_tcp %}
+disable-tcp=yes
+{% else %}
+disable-tcp=no
+{% endif %}
+distributor-threads={{ powerdns_authoritative_distributor_threads }}
+{% if powerdns_authoritative_dname_processing %}
+dname-processing=yes
+{% else %}
+dname-processing=no
+{% endif %}
+{% if powerdns_authoritative_dnsupdate %}
+dnsupdate=yes
+{% else %}
+dnsupdate=no
+{% endif %}
+{% if powerdns_authoritative_do_ipv6_additional_processing %}
+do-ipv6-additional-processing=yes
+{% else %}
+do-ipv6-additional-processing=no
+{% endif %}
+{% if powerdns_authoritative_edns_subnet_processing %}
+edns-subnet-processing=yes
+{% else %}
+edns-subnet-processing=no
+{% endif %}
+entropy-source={{ powerdns_authoritative_entropy_source }}
+{% if powerdns_authoritative_guardian %}
+guardian=yes
+{% else %}
+guardian=no
+{% endif %}
+include-dir={{ powerdns_authoritative_include_dir }}
+
+{% if powerdns_authoritative_load_modules %}
+load-modules={{ powerdns_authoritative_load_modules | join(", ") }}
+{% endif %}
+local-address={{ powerdns_authoritative_local_address | join(", ") }}
+{% if powerdns_authoritative_non_local_bind %}
+non-local-bind=yes
+{% else %}
+non-local-bind=no
+{% endif %}
+{% if powerdns_authoritative_local_address_nonexist_fail %}
+local-address-nonexist-fail=yes
+{% else %}
+local-address-nonexist-fail=no
+{% endif %}
+local-ipv6={{ powerdns_authoritative_local_ipv6 | join(", ") }}
+{% if powerdns_authoritative_local_ipv6_nonexist_fail %}
+local-ipv6-nonexist-fail=yes
+{% else %}
+local-ipv6-nonexist-fail=no
+{% endif %}
+local-port={{ powerdns_authoritative_local_port }}
+{% if powerdns_authoritative_log_dns_details %}
+log-dns-details=yes
+{% else %}
+log-dns-details=no
+{% endif %}
+logging-facility={{ powerdns_authoritative_logging_facility }}
+loglevel={{ powerdns_authoritative_loglevel }}
+{% if powerdns_authoritative_log_dns_queries %}
+log-dns-queries=yes
+{% else %}
+log-dns-queries=no
+{% endif %}
+{% if powerdns_authoritative_lua_prequery_script %}
+lua-prequery-script={{ powerdns_authoritative_lua_prequery_script }}
+{% endif %}
+{% if powerdns_authoritative_master %}
+master=yes
+{% else %}
+master=no
+{% endif %}
+max-cache-entries={{ powerdns_authoritative_max_cache_entries }}
+max-ent-entries={{ powerdns_authoritative_max_ent_entries }}
+max-nsec3-iterations={{ powerdns_authoritative_max_nsec3_iterations }}
+max-queue-length={{ powerdns_authoritative_max_queue_length }}
+max-tcp-connections={{ powerdns_authoritative_max_tcp_connections }}
+negquery-cache-ttl={{ powerdns_authoritative_negquery_cache_ttl }}
+{% if powerdns_authoritative_no_config %}
+no-config=yes
+{% else %}
+no-config=no
+{% endif %}
+{% if powerdns_authoritative_no_shuffle %}
+no-shuffle=yes
+{% else %}
+no-shuffle=no
+{% endif %}
+overload-queue-length={{ powerdns_authoritative_overload_queue_length }}
+{% if powerdns_authoritative_reuseport %}
+reuseport=yes
+{% else %}
+reuseport=no
+{% endif %}
+security-poll-suffix={{ powerdns_authoritative_security_poll_suffix }}
+{% if powerdns_authoritative_server_id %}
+server-id={{ powerdns_authoritative_server_id }}
+{% endif %}
+only-notify={{ powerdns_authoritative_only_notify | join(", ") }}
+{% if powerdns_authoritative_out_of_zone_additional_processing %}
+out-of-zone-additional-processing=yes
+{% else %}
+out-of-zone-additional-processing=no
+{% endif %}
+{% if powerdns_authoritative_prevent_self_notification %}
+prevent-self-notification=yes
+{% else %}
+prevent-self-notification=no
+{% endif %}
+query-cache-ttl={{ powerdns_authoritative_query_cache_ttl }}
+query-local-address={{ powerdns_authoritative_query_local_address }}
+query-local-address6={{ powerdns_authoritative_query_local_address6 }}
+{% if powerdns_authoritative_query_logging %}
+query-logging=yes
+{% else %}
+query-logging=no
+{% endif %}
+queue-limit={{ powerdns_authoritative_queue_limit }}
+receiver-threads={{ powerdns_authoritative_receiver_threads }}
+{% if powerdns_authoritative_recursor %}
+recursor={{ powerdns_authoritative_recursor }}
+{% endif %}
+retrieval-threads={{ powerdns_authoritative_retrieval_threads }}
+{% if powerdns_authoritative_slave %}
+slave=yes
+{% else %}
+slave=no
+{% endif %}
+slave-cycle-interval={{ powerdns_authoritative_slave_cycle_interval }}
+signing-threads={{ powerdns_authoritative_signing_threads }}
+soa-expire-default={{ powerdns_authoritative_soa_expire_default }}
+soa-minimum-ttl={{ powerdns_authoritative_soa_minimum_ttl }}
+soa-refresh-default={{ powerdns_authoritative_soa_refresh_default }}
+soa-retry-default={{ powerdns_authoritative_soa_retry_default }}
+{% if powerdns_authoritative_tcp_control_address %}
+tcp-control-address={{ powerdns_authoritative_tcp_control_address }}
+{% endif %}
+tcp-control-port={{ powerdns_authoritative_tcp_control_port }}
+{% if powerdns_authoritative_tcp_control_range %}
+tcp-control-range={{ powerdns_authoritative_tcp_control_range | join(", ") }}
+{% endif %}
+{% if powerdns_authoritative_tcp_control_secret %}
+tcp-control-secret={{ powerdns_authoritative_tcp_control_secret }}
+{% endif %}
+{% if powerdns_authoritative_traceback_handler %}
+traceback-handler=yes
+{% else %}
+traceback-handler=no
+{% endif %}
+{% if powerdns_authoritative_trusted_notification_proxy %}
+trusted-notification-proxy={{ powerdns_authoritative_trusted_notification_proxy }}
+{% endif %}
+udp-truncation-threshold={{ powerdns_authoritative_udp_truncation_threshold }}
+version-string={{ powerdns_authoritative_version_string }}
+{% if powerdns_authoritative_webserver %}
+webserver=yes
+{% else %}
+webserver=no
+{% endif %}
+webserver-address={{ powerdns_authoritative_webserver_address }}
+{% if powerdns_authoritative_webserver_allow_from %}
+webserver-allow-from={{ powerdns_authoritative_webserver_allow_from | join(", ") }}
+{% endif %}
+{% if powerdns_authoritative_webserver_password %}
+webserver-password={{ powerdns_authoritative_webserver_password }}
+{% endif %}
+webserver-port={{ powerdns_authoritative_webserver_port }}
+{% if powerdns_authoritative_webserver_print_arguments %}
+webserver-print-arguments=yes
+{% else %}
+webserver-print-arguments=no
+{% endif %}
+{% if powerdns_authoritative_write_pid %}
+write-pid=yes
+{% else %}
+write-pid=no
+{% endif %}
+{% if powerdns_authoritative_launch %}
+launch={{ powerdns_authoritative_launch }}
+{% endif %}
+gpgsql-host={{ powerdns_backend_generic_postgresql_host }}
+gpgsql-port={{ powerdns_backend_generic_postgresql_port }}
+gpgsql-dbname={{ powerdns_backend_generic_postgresql_dbname }}
+gpgsql-user={{ powerdns_backend_generic_postgresql_user }}
+gpgsql-password={{ powerdns_backend_generic_postgresql_password }}
+{% if powerdns_backend_generic_postgresql_dnssec %}
+gpgsql-dnssec=yes
+{% else %}
+gpgsql-dnssec=no
+{% endif %}

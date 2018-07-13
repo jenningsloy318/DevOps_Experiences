@@ -1,0 +1,87 @@
+settings {
+        logfile = "{{lsyncd_logging_file}}",
+        statusFile = "{{lsyncd_status_file}}",
+        pidfile= "{{ lsyncd_pid_file }}",
+        statusInterval = {{ lsyncd_statusInterval }},
+        maxProcesses = {{ lsyncd_maxProcesses }},
+        insist = {{ lsyncd_insist }}
+}
+
+{% for item in lsyncd_sync_configure %}
+
+{% if item.lsyncd_sync_method == "rsync" %}
+
+sync {
+        default.{{ item.lsyncd_sync_method}},
+        source = "{{ item.lsyncd_sync_source_dir }}",
+        target = "{{ item.lsyncd_sync_target }}",
+        delete = {{ item.lsyncd_sync_delete|lower }},
+        excludeFrom = "{{ item.lsyncd_sync_excludeFrom }}",
+        delay = {{ item.lsyncd_sync_delay }},
+
+        {% for option  in item.lsyncd_sync_rsync_options %}
+
+        rsync = {
+          archive = {{ option.archive|lower }}, 
+          perms = {{ option.perms|lower  }},
+          owner = {{ option.owner|lower  }}, 
+          links = {{ option.links|lower  }}, 
+          compress = {{ option.compress|lower  }}, 
+          verbose = {{ option.verbose|lower  }}, 
+          _extra = {{ option.extra  }}
+        }
+        {% endfor %}
+}
+{%elif item.lsyncd_sync_method == "rsyncssh"  %}
+
+sync {
+        default.{{ item.lsyncd_sync_method}},
+        source = "{{ item.lsyncd_sync_source_dir }}",
+        host = "{{ item.lsyncd_sync_remote_host }}",
+        targetdir= "{{ item.lsyncd_sync_targetdir }}",
+        delete = {{ item.lsyncd_sync_delete|lower }},
+        excludeFrom = "{{ item.lsyncd_sync_excludeFrom }}",
+        delay = {{ item.lsyncd_sync_delay }},
+
+        {% for option  in item.lsyncd_sync_rsync_options %}
+
+        rsync = {
+          archive = {{ option.archive|lower }}, 
+          perms = {{ option.perms|lower  }},
+          owner = {{ option.owner|lower  }}, 
+          links = {{ option.links|lower  }}, 
+          compress = {{ option.compress|lower  }}, 
+          verbose = {{ option.verbose|lower  }}, 
+          _extra = {{ option.extra  }}
+        },
+        {% endfor %}
+        {% for ssh_op in  item.lsyncd_sync_ssh_options %}
+        ssh = {
+          port = {{ssh_op.port }} 
+        }
+        {% endfor %}
+}
+{% else %}
+
+sync {
+        default.{{ item.lsyncd_sync_method}},
+        source = "{{ item.lsyncd_sync_source_dir }}",
+        target= "{{ item.lsyncd_sync_target }}",
+        delete = {{ item.lsyncd_sync_delete|lower }},
+        excludeFrom = "{{ item.lsyncd_sync_excludeFrom }}",
+        delay = {{ item.lsyncd_sync_delay }},
+
+        {% for option  in item.lsyncd_sync_rsync_options %}
+
+        rsync = {
+          archive = {{ option.archive|lower }}, 
+          perms = {{ option.perms|lower  }},
+          owner = {{ option.owner|lower  }}, 
+          links = {{ option.links|lower  }}, 
+          compress = {{ option.compress|lower  }}, 
+          verbose = {{ option.verbose|lower  }}, 
+        }
+        {%endfor%}
+}
+{% endif %}
+{% endfor %}

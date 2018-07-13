@@ -1,0 +1,18 @@
+---
+- name: remove ntp package
+  yum: name=ntp state=absent
+  when: ansible_system == 'Linux'
+- name: disable old ntp synchcronization cron on linux if present
+  shell:  if crontab -u root -l 2>/dev/null |grep -v "^#" | grep  ntpdate >/dev/null 2&>1; then ( crontab -u root -l 2>/dev/null |grep -v ntpdate) | crontab -u root - ; fi
+  ignore_errors: yes
+  when: ansible_system == 'Linux'
+- name: disable old ntp synchcronization cron on solaris if present
+  shell:  if crontab -l root  2>/dev/null |grep -v "^#" | grep  ntpdate >/dev/null 2&>1; then ( crontab -l  root 2>/dev/null |grep -v ntpdate) | crontab  ; fi
+  ignore_errors: yes
+  when: ansible_system == 'SunOS'
+- name: add ntp time synchcronization cron on linux
+  cron: name="ntp cron job" user=root minute="*/5" job="/usr/sbin/ntpdate timeserver2.synnex.org >/dev/null 2>&1" 
+  when: ansible_system == 'Linux'
+- name: add ntp time synchcronization cron on solaris
+  cron: name="ntp cron job" user=root minute="0,5,10,15,20,25,30,35,40,45,50,55" job="/usr/sbin/ntpdate timeserver2.synnex.org >/dev/null 2>&1"
+  when: ansible_system == 'SunOS'

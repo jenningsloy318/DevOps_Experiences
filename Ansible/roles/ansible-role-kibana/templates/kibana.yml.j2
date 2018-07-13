@@ -1,0 +1,19 @@
+server.port: 443
+server.host: 0.0.0.0
+server.ssl.enabled: true
+server.ssl.certificate:  {{kibana_cert_path}}/kb-cert.pem
+server.ssl.key: {{kibana_cert_path}}/kb-key.pem
+server.ssl.certificateAuthorities: {{kibana_cert_path}}/root-ca.pem
+server.name: {{ ansible_hostname }}
+elasticsearch.url: {{kibana_es_api_url}}
+kibana.defaultAppId: {{kibana_app_id}}
+elasticsearch.username: {{kibana_es_username}}
+elasticsearch.password: {{kibana_es_password}}
+xpack.security.enabled: true
+server.ssl.enabled: true
+server.ssl.certificate: {{kibana_cert_path}}/es_http.pem
+server.ssl.key: {{kibana_cert_path}}/es_http.key
+elasticsearch.ssl.certificate: {{kibana_cert_path}}/es_http.pem
+elasticsearch.ssl.key: {{kibana_cert_path}}/es_http.key
+elasticsearch.ssl.certificateAuthorities: [ "{{kibana_cert_path}}/root-ca.pem" ]
+elasticsearch.ssl.verificationMode: none

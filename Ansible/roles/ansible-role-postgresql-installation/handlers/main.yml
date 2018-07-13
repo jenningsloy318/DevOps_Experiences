@@ -1,0 +1,10 @@
+---
+- name: daemon-reload postgresql
+  systemd: daemon_reload=yes  name={{ postgresql_daemon }}  enabled=yes 
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= "7"
+  listen: "restart postgresql"
+
+- name: restart postgresql
+  systemd:  name={{ postgresql_daemon }}  enabled=yes  state=restarted
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= "7"
+  listen: "restart postgresql"

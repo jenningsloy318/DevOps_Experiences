@@ -1,0 +1,25 @@
+- name: uninstall ntpd if installed
+  package:
+    name: ntp
+    state: absent
+  when: ansible_os_family == "RedHat"     
+
+- name: install chrony
+  package:
+    name: chrony
+    state: present
+  when: ansible_os_family == "RedHat"     
+
+- name: install chrony conf
+  copy:
+    src: chrony.conf
+    dest: /etc/chrony.conf
+  when: ansible_os_family == "RedHat"     
+
+- name: start chrony
+  systemd:
+    name: chronyd
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: ansible_os_family == "RedHat"     

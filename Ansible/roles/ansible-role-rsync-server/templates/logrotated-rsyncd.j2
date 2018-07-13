@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+/var/log/rsyncd/*.log {
+    {{ rsync_server_logrotate_interval }}
+    missingok
+    rotate {{ rsync_server_logrotate_backlog_size }}
+    compress
+    #delaycompress
+    notifempty
+    nocreate
+}

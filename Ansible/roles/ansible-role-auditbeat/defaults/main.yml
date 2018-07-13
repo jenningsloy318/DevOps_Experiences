@@ -1,0 +1,7 @@
+auditbeat_kibana_host:  
+auditbeat_logstash_hosts:
+auditbeat_elasticsearch_hosts:
+
+
+auditbeat_version: 6.2.4
+auditbeat_rpm_url: https://artifacts.elastic.co/downloads/beats/auditbeat/auditbeat-{{ auditbeat_version }}-x86_64.rpm

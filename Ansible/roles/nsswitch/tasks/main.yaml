@@ -1,0 +1,5 @@
+---
+- name: backup nsswitch.conf
+  raw: cp /etc/nsswitch.conf  /etc/nsswitch.conf.`date +%Y%m%d`
+- name: set nsswotch
+  raw: cp /etc/nsswitch.dns /etc/nsswitch.conf ; perl -pi -e  'if (($. =/^passwd/) && ($. !=/ldap/)) {s/$/\ ldap/}' -e 'if (($. =/^group/) && ($. != /ldap/)) {s/$/\ ldap/}' /etc/nsswitch.conf

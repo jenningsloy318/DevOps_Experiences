@@ -1,0 +1,17 @@
+---
+- name: configure ldap authentication on solaris
+  shell: ldapclient -v  manual -a domainName=synnex.org -a credentialLevel=proxy  -a authenticationMethod=simple -a defaultSearchBase={{ ldap_base }} -a proxyDN=cn=root,dc=synnex,dc=org -a proxyPassword=Ldxi\$\$3par  -a defaultServerList={{ ldap_server_list }}
+  async: 300
+
+- name: create home directories for all users  on solaris
+  file: path=/export/home/{{ item.dir }} state=directory owner={{ item.user }}
+  with_items:
+   - { dir: 'arisy',user: 'arisy' }
+   - { dir: 'duffl',user: 'duffl' }
+   - { dir: 'ianx',user: 'ianx' }
+   - { dir: 'ivang',user: 'ivang' }
+   - { dir: 'jasons',user: 'jasons' }
+   - { dir: 'jenningsl',user: 'jenningsl' }
+   - { dir: 'kirks',user: 'kirks' }
+   - { dir: 'shellyl',user: 'shellyl' }
+   - { dir: 'timb',user: 'timb' }

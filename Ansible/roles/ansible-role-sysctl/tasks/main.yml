@@ -1,0 +1,131 @@
+- sysctl:
+    name: net.ipv4.tcp_syncookies
+    value: 1
+    state: present
+    sysctl_set: yes
+- sysctl:
+    name: net.ipv4.ip_local_port_range
+    value: 1024 65536
+    state: present
+    sysctl_set: yes
+- sysctl:
+    name: net.core.rmem_max
+    value: 16777216
+    state: present
+    sysctl_set: yes
+- sysctl:
+    name: net.core.wmem_max
+    value: 16777216
+    state: present
+    sysctl_set: yes    
+- sysctl:
+    name: net.ipv4.tcp_rmem
+    value: 4096 87380 16777216
+    state: present
+    sysctl_set: yes    
+- sysctl:
+    name: net.ipv4.tcp_wmem
+    value: 4096 65536 16777216
+    state: present
+    sysctl_set: yes    
+- sysctl:
+    name: net.ipv4.tcp_fin_timeout
+    value: 30
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.core.netdev_max_backlog
+    value: 30000
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv4.tcp_no_metrics_save
+    value: 1
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.core.somaxconn
+    value: 262144
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv4.tcp_syncookies
+    value: 1
+    state: present
+    sysctl_set: yes          
+- sysctl:
+    name: net.ipv4.tcp_max_orphans
+    value: 262144
+    state: present
+    sysctl_set: yes  
+
+- sysctl:
+    name: net.ipv4.tcp_max_syn_backlog
+    value: 262144
+    state: present
+    sysctl_set: yes  
+
+- sysctl:
+    name: net.ipv4.tcp_synack_retries
+    value: 1
+    state: present
+    sysctl_set: yes     
+
+- sysctl:
+    name: net.ipv4.tcp_syn_retries
+    value: 1
+    state: present
+    sysctl_set: yes         
+- sysctl:
+    name: fs.file-max
+    value: 200000
+    state: present
+    sysctl_set: yes  
+
+
+- sysctl:
+    name: net.ipv4.conf.all.accept_source_route
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv4.conf.all.forwarding
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv4.conf.all.mc_forwarding
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv6.conf.all.mc_forwarding
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv4.conf.all.accept_redirects
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv6.conf.all.accept_redirects
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv4.conf.all.secure_redirects
+    value: 0
+    state: present
+    sysctl_set: yes  
+- sysctl:
+    name: net.ipv4.conf.all.send_redirects
+    value: 0
+    state: present
+    sysctl_set: yes  
+

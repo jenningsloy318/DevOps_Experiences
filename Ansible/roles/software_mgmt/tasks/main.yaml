@@ -1,0 +1,17 @@
+---
+- name: update OS to latest version
+  yum: name=* state=latest
+- name: install essential packages
+  yum: name={{ item }} state=latest 
+  with_items:
+      - ftp
+      - lftp
+      - ksh
+      - libselinux-python  
+      - foomatic
+      - hplip
+      - hpijs
+- name: remove useless packages
+  yum: name={{ item }} state=absent
+  with_items:
+      - ntp

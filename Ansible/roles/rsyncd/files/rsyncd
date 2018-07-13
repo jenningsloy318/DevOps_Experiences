@@ -1,0 +1,48 @@
+#!/bin/bash
+# startup file for rsync daemon
+
+
+. /etc/rc.d/init.d/functions
+
+[ -f /usr/bin/rsync ] || exit 0
+
+case "$1" in
+  start)
+	if status rsync >/dev/null;then
+		echo -e  "\033[0;32mrsyncd is already running !\033[m"
+		exit 0
+
+	else
+		action "starting rsyncd: " /usr/bin/rsync --daemon
+	fi
+        ;;
+	
+  stop)
+	if status rsync >/dev/null;then
+        	action "Stopping rsyncd: " killproc rsync
+        	rm -f /var/run/rsyncd.pid
+	else
+		echo -e "\033[0;31mrsyncd is not running ! \033[m "
+		exit 1
+	fi
+        ;;
+
+  restart)
+
+        $0 stop
+
+        $0 start
+
+        ;;
+
+  status)
+
+         status rsync
+
+        ;;
+*)
+ 
+echo "Usage: rsyncd {start|stop|restart|status}"
+exit 1
+esac
+exit 0

@@ -1,0 +1,15 @@
+---
+- name: create directory /etc/profile.d/
+  file: path=/etc/profile.d/ state=directory mode=0755
+- name: copy security.profile
+  copy: src=security.profile dest=/etc/profile.d/security.profile 
+- name: create log file to record the command history
+  file: path=/var/adm/login.log state=touch
+- name: modify /etc/profile to source /etc/profile.d/security.profile
+  lineinfile: dest=/etc/profile line="source /etc/profile.d/*.profile"
+- name: change /etc/ssh/sshd_config loglevel to info
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^LogLevel" line="LogLevel info" state=present
+  notify: restart ssh
+- name: configure syslog.conf to add commands history and ssh log
+  copy: src=syslog.conf dest=/etc/syslog.conf
+  notify: restart system-log

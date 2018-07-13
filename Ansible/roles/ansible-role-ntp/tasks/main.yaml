@@ -1,0 +1,35 @@
+- name: ensure ntp is installed 
+  package:
+    name: ntp
+    state: installed
+
+- name: install /etc/ntp.conf
+  template:
+    src: ntp.conf
+    dest: /etc/ntp.conf
+
+- name: install /etc/ntp/step-tickers 
+  template:
+    src: step-tickers
+    dest: /etc/ntp/step-tickers 
+- name: install  /etc/ntp/ntpservers
+  template:
+    src: ntpservers
+    dest: /etc/ntp/ntpservers
+- name: stop ntpd if it is running
+  systemd:
+    name: ntpd
+    state: stopped
+- name: manually update once
+  shell:  /usr/sbin/ntpdate  "{{local_ntp_upstream_server}}"
+
+- name: start ntpdate service
+  systemd: 
+    name: ntpdate
+    state: restarted
+    enabled: yes
+- name:  start ntpd service
+  systemd:
+    name: ntpd
+    state: restarted
+    enabled: yes

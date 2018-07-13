@@ -1,0 +1,3 @@
+---
+- name: reload_prometheus_conf
+  shell: curl -X POST http://localhost:9090/-/reload 

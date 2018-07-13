@@ -1,0 +1,14 @@
+
+- targets: ['10.36.52.178:3000']
+  labels:
+    job: 'grafana-service'   
+    type: 'service'
+- targets: ['10.36.52.181:9093','10.36.52.182:9093','10.36.52.183:9093']
+  labels:
+    job: 'alertmanager-service'
+    type: 'service'
+
+- targets: ['10.36.52.180:9090','10.36.52.179:9090']
+  labels:
+    job: 'prometheus-service'
+    type: 'service'

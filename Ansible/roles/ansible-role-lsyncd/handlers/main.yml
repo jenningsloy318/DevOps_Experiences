@@ -1,0 +1,13 @@
+---
+- name: daemon-reload
+  systemd: 
+    name: lsyncd 
+    state: restarted  
+    daemon-reload: yes
+  listen: restart_lsyncd
+
+- name: restart lsyncd
+  systemd: 
+    name: lsyncd 
+    state: restarted
+  listen: restart_lsyncd 

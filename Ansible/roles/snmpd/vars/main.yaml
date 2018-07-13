@@ -1,0 +1,4 @@
+---
+snmpd_conf_src: "{%  if '10.84' in inventory_hostname or '192.168.18' in inventory_hostname %}gsc_snmpd.conf{% elif '10.88' in inventory_hostname  %}frm_snmpd.conf{% elif '10.93' in inventory_hostname  %}gon_snmpd.conf{% endif %}"
+snmpd_conf_dest: "{%  if ansible_system == 'Linux'  %}/etc/snmp/snmpd.conf{% elif ansible_system == 'SunOS' %}/etc/sma/snmp/snmpd.conf{% endif %}"
+snmpd_srvname: "{%  if ansible_system == 'Linux'  %}snmpd{% elif ansible_system == 'SunOS' %}sma{% endif %}"

@@ -1,0 +1,2 @@
+---
+dns_resolv_src: "{%  if '10.84.126' in inventory_hostname and  '10.84.135' in inventory_hostname %}gsc_us_resolv.conf{% elif '10.88' in inventory_hostname  %}frm_us_resolv.conf{% elif '192.168.18' in inventory_hostname  and  '10.84.129' in inventory_hostname %}gsc_ca_resolv.conf{% else  %}gon_ca_resolv.conf{% endif %}"

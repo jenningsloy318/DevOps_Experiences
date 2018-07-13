@@ -1,0 +1,5 @@
+---
+- name: ensure nss-pam-ldapd installed
+  yum: name=nss-pam-ldapd state=present
+- name: configure ldap authentication
+  shell: authconfig  --enableforcelegacy --enablemkhomedir  --disableldaptls  --enableldap     --enableldapauth --ldapserver={{ ldap_servers }} --ldapbasedn="ou=Common Linux servers,dc=synnex,dc=org"  --update

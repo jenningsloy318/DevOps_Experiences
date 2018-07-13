@@ -1,0 +1,47 @@
+- name: delete useless users
+  user:
+    name: "{{item}}"
+    state: absent
+    remove: yes
+  with_items:
+  - "{{os_del_users}}"
+
+
+- name: Add the user new users
+  user:
+    name: "{{item.username}}"
+    shell: /bin/bash
+    home: "/home/{{item.username}}"
+    state: present
+    password: "{{item.password}}"
+  with_items:
+  - "{{os_add_users}}"
+  ignore_errors: yes
+
+- name: ensure sudo is installed
+  package:
+    name: sudo
+    state: installed
+
+
+
+- name: configure sudo users for new created users
+  shell: echo "{{item}}    ALL=(ALL)       ALL > /etc/sudoers.d/{{item}}"
+  with_items:
+  - "{{os_sudo_add_users}}"
+
+
+- name: remove users from sudo 
+  file:
+    path: "/etc/sudoers.d/{{item}}"
+    state: absent
+  with_items:
+  - "{{os_del_users}}"
+
+- name: Set authorized key  
+  authorized_key:
+    user: "{{item.username}}"
+    state: present
+    key: "{{item.public_key}}"
+  with_items:
+  - "{{os_add_users}}"

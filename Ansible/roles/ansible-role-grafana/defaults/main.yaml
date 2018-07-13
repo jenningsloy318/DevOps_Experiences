@@ -1,0 +1,23 @@
+grafana_version: 5.0.4-1
+grafana_rpm_url: https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-{{grafana_version}}.x86_64.rpm 
+grafana_data_path: 
+grafana_log_path:
+grafana_plugins_path:
+grafana_dashpoard_path:
+grafana_protocol: 
+grafana_http_port: 
+
+grafana_pgsql_host:
+grafana_pgsql_dbname:
+grafana_pgsql_dbuser:
+grafana_pgsql_dbpass: 
+
+grafana_admin_user:
+grafana_admin_password:
+
+grafana_smtp_enabled: true
+grafana_smtp_host:
+grafana_smtp_auth_enabled:
+grafana_smtp_auth_user:
+grafana_smtp_auth_password:
+grafana_smtp_from_address:

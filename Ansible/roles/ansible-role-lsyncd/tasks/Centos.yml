@@ -1,0 +1,22 @@
+---
+- name: Install lsyncd
+  yum: name=lsyncd state=present
+
+- name: Create logging directories
+  file: dest={{lsyncd_logging_dir}} state=directory
+
+- name: Create neccery files "{{item}}"
+  file:
+    dest: "{{ item }}"
+    state: touch
+  with_items:
+    - "{{lsyncd_logging_file}}"
+    - "{{lsyncd_status_file}}"
+  
+- name: restart lsyncd 
+  service: 
+    name: lsyncd 
+    enabled: yes 
+    daemon_reload: yes
+    state: restarted
+  when: lsyncd_startup_enabled == True

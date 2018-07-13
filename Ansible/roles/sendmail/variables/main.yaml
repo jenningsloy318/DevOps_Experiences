@@ -1,0 +1,2 @@
+---
+sendmail_conf_src: "{%  if '10.84' in inventory_hostname or '192.168.18' in inventory_hostname %}gsc_sendmail.cf{% elif '10.88' in inventory_hostname  %}frm_sendmail.cf {% else %}gon_sendmail.cf{% endif %}"

@@ -1,0 +1,9 @@
+- name: Define telegraf conf source.
+  set_fact:
+    telegraf_conf_src: telegraf-vm.conf.j2
+  when:  ansible_virtualization_role == 'guest'
+
+- name: Define telegraf conf source.
+  set_fact:
+    telegraf_conf_src: telegraf-bm.conf.j2
+  when: ansible_virtualization_role == 'host'

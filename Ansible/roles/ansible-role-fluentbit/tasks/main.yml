@@ -1,0 +1,30 @@
+---
+- name: install td-agent-bit repo
+  copy: src=td-agent-bit.repo dest=/etc/yum.repos.d/td-agent-bit.repo owner=root group=root mode=0755
+  when: ansible_os_family == "RedHat"
+- import_tasks: set_vars.yaml
+- name: check td-agent-bit  
+  stat:
+    path: /usr/local/bin/td-agent-bit
+  register: td-agent-bit
+
+
+- name: install td-agent-bit
+  package:
+    name:  td-agent-bit
+    state: present
+    allow_downgrade: yes  
+  when: td-agent-bit.results|length == 0
+
+- name: create parser.conf for td-agent-bit 
+  template: src="{{td_agent_bit_parser_src}}" dest=/etc/td-agent-bit/parsers.conf owner=root group=root mode=0755
+  when: td-agent-bit_on_hana
+
+  
+- name: create conf for td-agent-bit 
+  template: src="{{td_agent_bit_conf_src}}" dest=/etc/td-agent-bit/td-agent-bit.conf owner=root group=root mode=0755
+  when: td-agent-bit_on_hana
+  notify:
+    restart_td-agent-bit 
+
+

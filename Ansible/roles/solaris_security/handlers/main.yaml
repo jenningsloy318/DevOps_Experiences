@@ -1,0 +1,5 @@
+---
+- name: restart ssh
+  service: name=ssh state=restarted enabled=yes
+- name: restart system-log
+  service: name=system-log state=restarted enabled=yes
