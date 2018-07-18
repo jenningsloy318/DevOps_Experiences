@@ -1,7 +1,0 @@
----
-- name: install net-snmp on linux
-  yum: name=net-snmp state=present
-  when: ansible_system == 'Linux'
-- name: copy configuration destination
-  copy: src={{ snmpd_conf_src }}  dest={{ snmpd_conf_dest }}  owner=root group=root mode=0644
-  notify: restart snmpd

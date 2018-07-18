@@ -1,7 +1,0 @@
----
-- name: restart_td-agent-bit 
-  systemd: 
-    name:  td-agent-bit 
-    state:  restarted 
-    enabled:  yes 
-    daemon_reload:  yes

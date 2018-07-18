@@ -1,5 +1,0 @@
-
-- name: install new dns conf
-  copy:
-    src: resolv.conf
-    dest: /etc/resolv.conf

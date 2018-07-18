@@ -1,7 +1,0 @@
----
-- name: install sendmail package
-  yum: name=sendmail state=latest
-  when: ansible_system == 'Linux'
-- name: copy configuration destination
-  copy: src={{ sendmail_conf_src }}  dest=/etc/mail/sendmail.cf  owner=root group=root mode=0644
-  notify: restart sendmail  

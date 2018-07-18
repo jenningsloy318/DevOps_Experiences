@@ -1,8 +1,0 @@
----
-- name: install rsync package
-  yum: name=rsync state=present
-- name: install rsyncd init service  file on rhel6
-  copy:  src=rsyncd dest=/etc/init.d/rsyncd
-  when: ansible_distribution_major_version == '6'
-- name: install conf file for rsync
-  copy: src=rsyncd.conf dest=/etc/rsyncd.conf owner=root mode=755

@@ -1,8 +1,0 @@
-
-filebeat_version: 6.1.1
-filebeat_rpm_url: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{filebeat_version}}-x86_64.rpm
-filebeat_hana_system_id: 
-filebeat_hana_instance_number: 
-filebeat_hana_hostname: "{{ ansible_hostname }}"
-filebeat_output_logstash: true
-filebeat_output_logstash_hosts: 

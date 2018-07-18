@@ -1,3 +1,0 @@
----
-- name: set ssh key authentication
-  authorized_key: user=root key="{{ lookup('file', '/root/.ssh/id_rsa.pub') }}" path=/.ssh/authorized_keys manage_dir=yes

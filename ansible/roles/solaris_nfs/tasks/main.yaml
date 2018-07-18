@@ -1,7 +1,0 @@
----
-- name: configure NFS client max version
-  lineinfile: dest=/etc/profile regrex="^#NFS_CLIENT_VERSMAX" line="NFS_CLIENT_VERSMAX=3"
-- name: configure NFS server max version
-  lineinfile: dest=/etc/profile regrex="^#NFS_SERVER_VERSMAX" line="NFS_SERVER_VERSMAX=3"
-- name: restart  autofs 
-  service: name=autofs state=restarted enabled=yes

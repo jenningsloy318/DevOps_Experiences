@@ -1,3 +1,0 @@
----
-ldap_servers: "{% if '10.88.126' in inventory_hostname %}ldap://10.88.126.150,ldap://10.88.135.150,ldap://10.84.126.150,ldap://10.84.135.150{% elif '10.88.135' in inventory_hostname %}ldap://10.88.135.150,ldap://10.88.126.150,ldap://10.84.135.150,ldap://10.84.126.150{% elif '10.84.126' in inventory_hostname %}ldap://10.84.126.150,ldap://10.84.135.150,ldap://10.88.126.150,ldap://10.88.135.150{% elif '10.84.135' in inventory_hostname %}ldap://10.84.135.150,ldap://10.84.126.150,ldap://10.88.135.150,ldap://10.88.126.150{% endif %}"
-ldap_basedn: "{% if %}\"ou=Common Linux servers,dc=synnex,dc=org\"{% endif %}"

@@ -1,3 +1,0 @@
----
-- name: daemon-reload
-  shell: systemctl daemon-reload

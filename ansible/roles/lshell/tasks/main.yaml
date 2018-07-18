@@ -1,7 +1,0 @@
----
-- name: install lshell package
-  yum: name=lshell state=latest
-- name: install lshell configure
-  copy: src=lshell.conf dest=/etc/lshell.conf owner=root group=root mode=0644
-- name: configure applog
-  user: name=applog shell=/usr/bin/lshell uid=251 state=present

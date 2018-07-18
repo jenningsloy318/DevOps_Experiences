@@ -1,4 +1,0 @@
-td_agent_bit_on_hana: 
-td_agent_bit_hana_instance_sid: 
-td_agent_bit_hana_instance_number: 
-td_agent_bit_hana_hostname: "{{ ansible_hostname }}"

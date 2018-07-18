@@ -1,8 +1,0 @@
-kibana_version: 6.2.3
-kibana_rpm_url: https://artifacts.elastic.co/downloads/kibana/kibana-{{kibana_version}}-x86_64.rpm
-kibana_cert_path:
-kibana_es_api_url:
-kibana_app_id:
-kibana_es_username:
-kibana_es_password:
-
