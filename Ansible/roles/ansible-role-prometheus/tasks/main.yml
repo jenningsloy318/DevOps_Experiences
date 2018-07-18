@@ -77,13 +77,17 @@
 
 - name: create prometheus conf file
   template:
-    src: prometheus.yml.j2
-    dest: /etc/prometheus/prometheus.yml
+    src: "{{item.src}}"
+    dest: "{{item.target}}"
     mode: 0755
     owner: prometheus
     group: prometheus
   notify:
     reload_prometheus_conf
+  with_items:
+  - {src: "alertmanagers.yml.j2",target: "/etc/prometheus/alertmanagers.yml"}
+  - {src: "prometheus.yml.j2",target: "/etc/prometheus/prometheus.yml"}
+
 
 
 - name: create alert.rules.yml conf file

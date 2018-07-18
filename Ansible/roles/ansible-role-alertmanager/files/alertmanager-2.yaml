@@ -15,6 +15,7 @@ receivers:
       Subject: 'Suning Alert: {{ template "email.default.subject" . }}'
   wechat_configs:
   - send_resolved: true
+    message: 'Suning Alert: {{ template "wechat.default.message" . }}'
     to_user: ""
     to_party: "6"
     to_tag: ""

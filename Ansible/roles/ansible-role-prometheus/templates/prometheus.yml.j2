@@ -33,12 +33,7 @@ scrape_configs:
       replacement: {{blackbox_exporter_host}}:9115  # The blackbox exporter's real hostname:port.
 {%endif%}      
 
-    
 alerting:
   alertmanagers:
-  - scheme: http
-    static_configs:
-    - targets:
-    {% for alertmanager_addr in alertmanager_addrs %} 
-      - {{ alertmanager_addr }}:9093
-    {%endfor%}
+  - file_sd_configs:
+    - files: ['/etc/prometheus/alertmanagers.yml']

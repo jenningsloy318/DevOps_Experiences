@@ -84,6 +84,8 @@
     group: prometheus
 - name: create alertmanager conf file
   shell: cat /etc/alertmanager/alertmanager-1.yml /etc/alertmanager/alertmanager-2.yml  >/etc/alertmanager/alertmanager.yml
+  notify:
+    reload_alertmanager_conf
 
 - name: start alertmanager if not running
   systemd: 

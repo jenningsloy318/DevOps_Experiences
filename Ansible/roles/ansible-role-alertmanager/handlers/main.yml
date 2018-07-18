@@ -1,4 +1,5 @@
 ---
 - name: reload_alertmanager_conf
-  shell: curl -X POST http://localhost:9093/-/reload 
-
+  uri:
+    url: http://localhost:9093/-/reload
+    method: POST

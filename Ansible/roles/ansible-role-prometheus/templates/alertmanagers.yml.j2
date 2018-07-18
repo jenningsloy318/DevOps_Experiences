@@ -1,0 +1,4 @@
+- targets:
+{% for alertmanager_addr in alertmanager_addrs %} 
+  - {{ alertmanager_addr }}:9093
+{%endfor%}
