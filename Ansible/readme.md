@@ -1,8 +1,10 @@
 1. some usefull variables
 
     - `ansible_virtualization_role`: value can be guest or host, to determine if it is a vm
+    - `ansible_os_family`: value can be RedHat,Suse, Debian,
+    - `ansible_distribution`: value can be Ubuntu,CentOS,Debian,Suse
+    - `ansible_distribution_major_version`,`ansible_distribution_version`: 
 
-    -  `ansible_os_family`: value can be RedHat,Suse, Debian,
 2. 
 for a better management, we can use following structure 
 
