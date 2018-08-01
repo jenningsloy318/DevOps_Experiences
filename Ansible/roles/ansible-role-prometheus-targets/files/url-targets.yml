@@ -6,7 +6,7 @@
   - https://sportsone.snfc.com 
   - http://10.36.52.178:3000
   - https://sportsone-grafana.snfc.com 
-  - http://10.36.50.412:8000
+  - http://10.36.50.142:8000
   - https://sportsone-qa.snfc.com 
   labels:
     type: URL
