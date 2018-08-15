@@ -1,0 +1,32 @@
+#cloud-config
+write_files:
+- content: |
+    #!/bin/bash 
+    ls /root
+  path: /root/test2.sh
+  owner: root:root
+  permissions: '0755'
+
+
+yum_repos:
+    # The name of the repository
+    chef-stable:
+        # Any repository configuration options
+        # See: man yum.conf
+        #
+        # This one is required!
+        baseurl: https://packages.chef.io/repos/yum/stable/el/7/$basearch/
+        gpgcheck: true
+        enabled: true
+        gpgkey: https://packages.chef.io/chef.asc
+
+packages:
+  - git
+  - chef
+  - vim
+
+runcmd:  
+  - git clone  git@github.com:terraform-providers/terraform-provider-openstack.git
+  - /root/test2.sh
+
+
