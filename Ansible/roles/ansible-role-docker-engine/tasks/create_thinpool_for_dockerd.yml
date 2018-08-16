@@ -1,0 +1,49 @@
+- name: "Check datavolume exists"
+  stat:
+    path: /dev/mapper/docker-thinpool
+  ignore_errors: true
+  register: thinpool
+
+
+- name: Create a volume group for dockerd daemon
+  lvg:
+    vg: docker
+    pvs: "{{dockerd_thin_pool_lvm_pv}}"
+    state: present
+  when: not thinpool.stat.exists
+
+- name: create thinpool lv for dockerd daemon
+  lvol:
+    vg: docker
+    lv: thinpool 
+    size: 95%VG
+    opts: --wipesignatures y
+  register: thinpool_created
+  when: not thinpool.stat.exists
+
+- name: create thinpoolmeta lv for dockerd daemon
+  lvol:
+    vg: docker
+    lv: thinpoolmeta  
+    size: 1%VG
+  when: thinpool_created is changed
+
+- name: "Convert data volume to thin pool one"
+  shell: /usr/sbin/lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
+  when: thinpool_created is changed
+
+- name: ensure directory /etc/lvm/profile/ exists
+  file:
+    path: /etc/lvm/profile/
+    state: directory
+    recurse: yes
+
+- name: create lvm profile for  autoextension of thin pools 
+  template:
+    src: docker-thinpool.profile.j2
+    dest: /etc/lvm/profile/docker-thinpool.profile
+  when: thinpool_created is changed
+
+- name: apply lvm profile for thinpool
+  shell: /usr/sbin/lvchange --metadataprofile docker-thinpool docker/thinpool
+  when: thinpool_created is changed

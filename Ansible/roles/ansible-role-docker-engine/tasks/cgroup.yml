@@ -1,0 +1,8 @@
+- name: create container.slice
+  template:  
+    src: container.slice.j2
+    dest: /lib/systemd/system/container.slice
+    owner: root
+    group: root
+  notify:
+    restart_container_slice

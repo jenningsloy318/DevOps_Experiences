@@ -1,0 +1,14 @@
+[Unit]
+Description=Limited resources Slice
+DefaultDependencies=no
+Before=slices.target
+Requires=-.slice
+After=-.slice
+[Slice]
+{% if docker_engine_slice_memory_limit %}
+MemoryLimit={{docker_engine_slice_memory_limit}}
+{%endif%}
+{% if docker_engine_slice_cpu_shares %}
+CPUShares={{docker_engine_slice_cpu_shares}}
+{%endif%}
+

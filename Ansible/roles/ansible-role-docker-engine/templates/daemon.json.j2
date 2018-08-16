@@ -1,0 +1,30 @@
+{
+  "debug": true,
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "hosts": ["unix:///var/run/docker.sock"],
+  "cgroup-parent": "{{docker_engine_cgroup_parente_slice}}",
+  "data-root": "{{docker_engine_data_root}}",
+  "storage-driver": "devicemapper",
+  "storage-opts": [
+    "dm.basesize={{docker_engine_dm_basesize}}",
+    "dm.thinpooldev=/dev/mapper/docker-thinpool",
+    "dm.use_deferred_removal=true",
+    "dm.use_deferred_deletion=true"
+     ],
+  "default-ulimits": {
+    "nofile": {
+      "Name": "nofile",
+      "Hard": 65536,
+      "Soft": 65536
+      }
+    },
+  "live-restore": true,
+  "ip": "0.0.0.0",
+  "log-driver": "json-file",
+  "log-opts":  {"max-size": "100m"},
+  "log-level": "info",
+  "icc": true,
+  "insecure-registries": [ {% for registry in dockerd_insecure_registries %}"{{ registry }}"{% if not loop.last %},{% endif %}{% endfor %} ],
+  "userland-proxy": false,
+  "experimental": false
+}

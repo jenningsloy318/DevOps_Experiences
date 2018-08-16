@@ -1,0 +1,21 @@
+docker_engine_slice_memory_limit: 
+docker_engine_slice_cpu_shares:
+
+dockerd_env_http_proxy: http://proxy:8080
+dockerd_env_https_proxy: http://proxy:8080
+dockerd_env_no_proxy: 
+  - 127.0.0.1
+
+dockerd_insecure_registries:
+- gcr.io
+
+
+docker_engine_cgroup_parente_slice:
+docker_engine_slice_memory_limit: 
+docker_engine_slice_cpu_shares:
+docker_engine_dm_basesize:
+docker_engine_data_root:
+dockerd_thin_pool_lvm_pv:
+dockerd_thinpool_autoextend_threshold:
+dockerd_thin_pool_autoextend_percent:
+docker_engine_service_slice:

@@ -1,0 +1,11 @@
+- name: create cgroup for docker engine and containers
+  import_tasks: cgroup.yml
+
+- name: Container  configuration
+  import_tasks: docker_engine_configuration.yml
+
+- name: create user-defined docker network 
+  docker_network:
+    name: custom_network
+    driver_options:
+      com.docker.network.bridge.name: custom_network

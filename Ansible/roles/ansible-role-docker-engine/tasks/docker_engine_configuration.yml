@@ -1,0 +1,115 @@
+- name: check if dock engine installed
+  shell: dockerd -v
+  register: docker_version
+  ignore_errors: yes
+
+
+- name: install prequsites packages
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+  - apt-transport-https 
+  - ca-certificates 
+  - curl 
+  - software-properties-common
+  - thin-provisioning-tools
+  - lvm2
+  - python-docker
+  - python3-docker
+  when: ansible_os_family == "Debian"  
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
+- name: install prequsites packages
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+  - yum-utils 
+  - device-mapper-persistent-data 
+  - lvm2 
+  - python-docker-py
+  when: ansible_os_family == "RedHat"
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
+
+- name: import pgp key 
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  when: ansible_distribution == "Ubuntu" and  docker_version.rc  != 0
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
+- name: install docker repo
+  shell: add-apt-repository   "deb [arch=amd64] https://download.docker.com/linux/ubuntu   $(lsb_release -cs)   stable"
+  when: ansible_distribution == "Ubuntu" and  docker_version.rc  != 0
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
+
+- name: import pgp key 
+  shell: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+  when: ansible_distribution == "Debian" and  docker_version.rc  != 0
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
+- name: install docker repo
+  shell: sudo add-apt-repository  "deb [arch=amd64] https://download.docker.com/linux/debian    $(lsb_release -cs)    stable"
+  when: ansible_distribution == "Debian" and  docker_version.rc  != 0
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
+
+- name: install docker repo 
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
+  when: ansible_os_family == "RedHat" and  docker_version.rc  != 0
+
+- name: install docker engine if not installed
+  package:
+    name: docker-ce
+    state: present
+    update_cache: yes
+  environment:
+      https_proxy: http://proxy.wdf.sap.corp:8080
+      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080    
+  when:  docker_version.rc  != 0
+
+- import_tasks: create_thinpool_for_dockerd.yml
+
+- name: ensure /etc/docker/ exist
+  file:
+    path: /etc/docker/
+    state: directory
+
+- name: configure dockerd with predefined conf
+  copy:
+    content: "{{ item | to_nice_json }}"
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0600
+  with_template: daemon.json.j2
+  register: docker_conf
+
+- name: configure docker.service
+  template:  
+    src: docker.service.j2
+    dest: /lib/systemd/system/docker.service
+    owner: root
+    group: root
+    mode: 600
+  register: docker_service    
+
+- name: restart_docker_engine
+  systemd: 
+    name: docker.service
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+  when: docker_service  is changed or docker_conf is changed
