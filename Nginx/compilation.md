@@ -38,6 +38,6 @@ modify `setup`
 download vts and openssl to `SOURCES` directory
 
 ```
- curl -SLO https://www.openssl.org/source/openssl-1.1.0i.tar.gz
- curl -SL https://github.com/vozlt/nginx-module-vts/archive/v0.1.18.tar.gz -o  ../SOURCES/nginx-module-vts.tar.gz
+ curl -SL https://www.openssl.org/source/openssl-1.1.0i.tar.gz -o openssl-1.1.0i.tar.gz
+ curl -SL https://github.com/vozlt/nginx-module-vts/archive/v0.1.18.tar.gz -o  nginx-module-vts.tar.gz
 ```
