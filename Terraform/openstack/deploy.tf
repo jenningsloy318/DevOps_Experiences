@@ -23,6 +23,12 @@ resource "openstack_networking_floatingip_v2" "floatip_1" {
   pool = "${var.openstack_flp_network_name}"
 }
 
+resource "openstack_blockstorage_volume_v2" "volume_1" {
+  name        = "${var.openstack_instance_name}_volume_1"
+  description = "volume for instance ${var.openstack_instance_name}"
+  size        = 3
+  availability_zone= "${var.openstack_availability_zone_name}"
+}
 
 data "template_file" "userdata" {
   template = "${file("user-data")}"
@@ -45,6 +51,7 @@ data "template_cloudinit_config" "userdata" {
   }  
 }
 
+
 resource "openstack_compute_instance_v2" "instance_1" {
   name = "${var.openstack_instance_name}"
   image_name = "${var.openstack_image_name}"
@@ -64,19 +71,11 @@ resource "openstack_compute_floatingip_associate_v2" "fip_1" {
   instance_id = "${openstack_compute_instance_v2.instance_1.id}"
 }
 
-#resource "openstack_blockstorage_volume_v2" "volume_1" {
-#  name        = "${var.openstack_instance_name}_volume_1"
-#  description = "volume for instance ${var.openstack_instance_name}"
-#  size        = 3
-#  availability_zone= "${var.openstack_availability_zone_name}"
-#}
-#
-#resource "openstack_blockstorage_volume_attach_v2" "attach_volume_1" {
-#  volume_id = "${openstack_blockstorage_volume_v2.volume_1.id}"
-#  device = "auto"
-#  host_name = "${var.openstack_instance_name}"
-#  ip_address = "${openstack_compute_instance_v2.instance_1.network.0.fixed_ip_v4}"
-#}
+
+resource "openstack_compute_volume_attach_v2" "volume_attach" {
+  instance_id = "${openstack_compute_instance_v2.instance_1.id}"
+  volume_id   = "${openstack_blockstorage_volume_v2.volume_1.id}"
+}
 
 
 output "Float IP address" {
