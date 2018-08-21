@@ -1,0 +1,181 @@
+Content-Type: multipart/mixed; boundary="===============7118706574824818543=="
+MIME-Version: 1.0
+
+--===============7118706574824818543==
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="userdata"
+
+#cloud-config
+yum_repos:
+    # The name of the repository
+    chef-stable:
+        name: chef-stable
+        baseurl: https://packages.chef.io/repos/yum/stable/el/7/$basearch/
+        gpgcheck: true
+        enabled: true
+        gpgkey: https://packages.chef.io/chef.asc
+    docker-ce-stable:
+        name: docker-ce-stable
+        baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+        enabled: 1
+        gpgcheck: 1
+        gpgkey: https://download.docker.com/linux/centos/gpg
+
+packages:
+  - git
+  - chef
+  - vim
+  - docker-ce
+  - yum-utils 
+  - device-mapper-persistent-data 
+  - lvm2 
+write_files:
+- content: |
+    {
+      "debug": true,
+      "exec-opts": ["native.cgroupdriver=systemd"],
+      "hosts": ["unix:///var/run/docker.sock"],
+      "cgroup-parent": "container.slice",
+      "data-root": "/data/",
+      "storage-driver": "devicemapper",
+      "storage-opts": [
+        "dm.basesize=30G",
+        "dm.thinpooldev=/dev/mapper/docker-thinpool",
+        "dm.use_deferred_removal=true",
+        "dm.use_deferred_deletion=true"
+        ],
+      "default-ulimits": {
+        "nofile": {
+          "Name": "nofile",
+          "Hard": 65536,
+          "Soft": 65536
+          }
+        },
+      "live-restore": true,
+      "ip": "0.0.0.0",
+      "log-driver": "json-file",
+      "log-opts":  {"max-size": "100m"},
+      "log-level": "info",
+      "icc": true,
+      "userland-proxy": false,
+      "experimental": false
+    }
+  path: /etc/docker/daemon.json
+
+- content: |
+    [Unit]
+    Description=Limited resources Slice
+    DefaultDependencies=no
+    Before=slices.target
+    Requires=-.slice
+    After=-.slice
+    [Slice]
+    MemoryLimit={{docker_container_slice_mem_limit}}
+  path: /usr/lib/systemd/system/container.slice
+
+- content: | 
+      activation {
+      thin_pool_autoextend_threshold=80
+      thin_pool_autoextend_percent=20
+      }
+  path:  /etc/lvm/profile/docker-thinpool.profile
+
+
+
+mounts:
+  - [ /dev/mapper/docker-data, /data, "xfs", "defaults", "0", "0" ]
+
+  
+--===============7118706574824818543==
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="os-hardening.sh"
+
+#!/bin/bash
+export PATH=/opt/chef/embedded/bin/:$PATH
+echo "install gem install berkshelf"
+gem install berkshelf
+
+
+echo "create directory if neccessary"
+if [ ! -d  /tmp/chef/cookbooks/ ] ; 
+  then 
+
+  mkdir  -p /tmp/chef/cookbooks/
+fi
+
+
+echo "create conf file for chef-solo"
+
+cat > /tmp/chef/solo.rb <<-EOF
+    file_cache_path "/tmp/chef/cache"
+    cookbook_path "/tmp/chef/cookbooks"
+EOF
+
+cat > /tmp/chef/os-hardening.json <<-EOF
+
+
+    {
+      "run_list": [
+        "recipe[litc-base-line-hardening]"
+      ]
+    }
+EOF
+
+echo "clone the cookbooks to /tmp/chef/cookbooks/" 
+rm -rf /tmp/chef/cookbooks/*
+
+git clone https://github.wdf.sap.corp/LIT-DEVOPS/litc-base-line-hardening.git  /tmp/chef/cookbooks/litc-base-line-hardening
+sed -i '/windows/d' /tmp/chef/cookbooks/litc-base-line-hardening/metadata.rb 
+sed  "/litc-ucp-hostfileconfig/s/$/, git: 'https:\/\/github.wdf.sap.corp\/LIT-DEVOPS\/litc-ucp-hostfileconfig.git'/" /tmp/chef/cookbooks/litc-base-line-hardening/Berksfile
+
+cd /tmp/chef/cookbooks/litc-base-line-hardening/ && berks vendor ..
+
+
+
+/usr/bin/chef-solo -c /tmp/chef/solo.rb -j /tmp/chef/os-hardening.json
+
+--===============7118706574824818543==
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="configure-docker.sh"
+
+#!/bin/bash
+export PATH=/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+
+/sbin/pvcreate /dev/sdb
+
+
+/sbin/vgcreate docker /dev/sdb 
+/sbin/lvcreate -l 50%VG -n thinpool docker
+/sbin/lvcreate -l 1%VG  -n thinpoolmeta docker 
+
+lvconvert -y --zero n -c 512K --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
+
+
+/sbin/lvchange --metadataprofile docker-thinpool docker/thinpool
+
+
+
+
+sed -i  '/\[Service\]/aSlice=container.slice'  /lib/systemd/system/docker.service
+
+/sbin/lvcreate  -l 40%VG -n data docker
+
+mkfs -t xfs /dev/mapper/docker-data 
+
+[ -d /data ] || mkdir /data 
+
+mount /dev/mapper/docker-data  /data 
+
+#echo "/dev/mappler/docker-data        /data   xfs     defaults 0 0" >> /etc/fstab
+
+
+systemctl daemon-reload
+
+systemctl restart docker
+--===============7118706574824818543==--

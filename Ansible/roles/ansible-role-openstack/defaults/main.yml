@@ -1,0 +1,18 @@
+os_auth_url:
+os_auth_username:
+os_auth_password:
+os_project_name:
+os_project_domain_name:
+os_user_domain_name:
+
+os_availability_zone:
+os_region_name:
+os_instance_name: 
+os_instance_flavor:
+os_instance_image_name:
+os_volume_name: volume_for_{{os_instance_name}}
+os_volume_size:
+os_private_network_name:
+os_fip_network_name:
+os_secgroup_name:
+

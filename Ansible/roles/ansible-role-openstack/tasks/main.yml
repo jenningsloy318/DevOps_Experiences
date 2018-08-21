@@ -1,0 +1,78 @@
+- name: set fact of userdata
+  set_fact:
+    userdata: "{{ lookup('template', 'userdata.j2') }}"
+
+- name: ensure private network exist
+  os_network:
+    cloud: "{{ os_cloud }}"
+    state: present
+    name: "{{os_private_network_name}}"
+    external: no
+
+- name: ensure private subnet exist
+  os_subnet:
+    state: present
+    name: "{{os_private_subnet_name}}"
+    network_name: "{{os_private_network_name}}"
+    use_default_subnetpool: yes
+- name: ensure external network exist
+  os_network:
+    cloud: "{{ os_cloud }}"
+    state: present
+    name: "{{os_fip_network_name}}"
+    external: yes
+  
+- name: ensure security group exist
+  os_security_group:
+    cloud: "{{ os_cloud }}"
+    state: present
+    name: "{{os_secgroup_name}}"
+
+- name: ensure security group rule exist
+  os_security_group_rule:
+    cloud: "{{ os_cloud }}"
+    security_group: "{{os_secgroup_name}}"
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    remote_ip_prefix: 0.0.0.0/0
+
+- name: ensure volume  exist
+  os_volume :
+    cloud: "{{ os_cloud }}"
+    display_name: "{{os_volume_name}}"
+    availability_zone: "{{os_availability_zone}}"
+    size: "{{os_volume_size}}"
+    state: present
+
+- name: ensure  compute instance exist
+  os_server:
+    cloud: "{{ os_cloud }}"
+    name: "{{os_instance_name}}"
+    region_name: "{{os_region_name}}"
+    availability_zone: "{{os_availability_zone}}"
+    image: "{{os_instance_image_name}}"
+    key_name: "{{os_keypair}}"
+    timeout: 200
+    flavor: "{{os_instance_flavor}}"
+    security_groups: "default,{{os_secgroup_name}}"
+    nics:
+     - net-name: "{{os_private_network_name}}"
+    volumes:
+    - "{{os_volume_name}}"
+    userdata: "{{userdata}}"
+
+
+
+- name: assign floating IP to instance
+  os_floating_ip:
+    cloud: "{{ os_cloud }}"
+    state: present
+    reuse: yes
+    server: "{{os_instance_name}}"
+    network: "{{os_fip_network_name}}"
+    wait: true
+    timeout: 180
+  register: fip
+
+- debug: msg="Floating IP address is {{fip.floating_ip.floating_ip_address}}"

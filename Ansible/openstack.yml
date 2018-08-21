@@ -1,0 +1,19 @@
+- hosts: localhost
+  gather_facts: no
+  roles:
+  - ansible-role-openstack
+  vars:
+    os_availability_zone:  
+    os_region_name: 
+    os_instance_name:  
+    os_instance_flavor: 
+    os_instance_image_name:  
+    os_volume_name:  
+    os_volume_size: 
+    os_private_network_name:  
+    os_private_subnet_name:  
+    os_fip_network_name:  
+    os_secgroup_name:  
+    os_cloud:  
+    os_keypair:  
+    docker_container_slice_mem_limit:  
