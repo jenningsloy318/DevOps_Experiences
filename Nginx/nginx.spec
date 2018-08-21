@@ -1,10 +1,13 @@
-#
+# enable download source
+%undefine _disable_source_fetch
+
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user nginx
 %define nginx_group nginx
 %define nginx_loggroup adm
 %define ngx_module_vts_version 0.1.18
 %define ngx_openssl_version 1.1.0i
+
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7) || (0%{?suse_version} == 1315)
 
@@ -56,14 +59,7 @@ BuildRequires: systemd
 %define WITH_CC_OPT $(echo %{optflags} $(pcre-config --cflags)) -fPIC
 %define WITH_LD_OPT -Wl,-z,relro -Wl,-z,now -pie
 
-%define BASE_CONFIGURE_ARGS $(echo "--prefix=%{_sysconfdir}/nginx --sbin-path=%{_sbindir}/nginx --modules-path=%{_libdir}/nginx/modules --conf-path=%{_sysconfdir}/nginx/nginx.conf --error-l
-og-path=%{_localstatedir}/log/nginx/error.log --http-log-path=%{_localstatedir}/log/nginx/access.log --pid-path=%{_localstatedir}/run/nginx.pid --lock-path=%{_localstatedir}/run/nginx.lock
---http-client-body-temp-path=%{_localstatedir}/cache/nginx/client_temp --http-proxy-temp-path=%{_localstatedir}/cache/nginx/proxy_temp --http-fastcgi-temp-path=%{_localstatedir}/cache/nginx
-/fastcgi_temp --http-uwsgi-temp-path=%{_localstatedir}/cache/nginx/uwsgi_temp --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp --user=%{nginx_user} --group=%{nginx_group} --wit
-h-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_
-static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stu
-b_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_
-module --add-module=./nginx-module-vts-%{ngx_module_vts_version} --with-openssl=./openssl-%{ngx_openssl_version}")
+%define BASE_CONFIGURE_ARGS $(echo "--prefix=%{_sysconfdir}/nginx --sbin-path=%{_sbindir}/nginx --modules-path=%{_libdir}/nginx/modules --conf-path=%{_sysconfdir}/nginx/nginx.conf --error-log-path=%{_localstatedir}/log/nginx/error.log --http-log-path=%{_localstatedir}/log/nginx/access.log --pid-path=%{_localstatedir}/run/nginx.pid --lock-path=%{_localstatedir}/run/nginx.lock --http-client-body-temp-path=%{_localstatedir}/cache/nginx/client_temp --http-proxy-temp-path=%{_localstatedir}/cache/nginx/proxy_temp --http-fastcgi-temp-path=%{_localstatedir}/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=%{_localstatedir}/cache/nginx/uwsgi_temp --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp --user=%{nginx_user} --group=%{nginx_group} --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-openssl=./openssl-%{ngx_openssl_version} --add-module=./nginx-module-vts-%{ngx_module_vts_version}  --add-module=./nginx_upstream_check_module-master")
 
 Summary: High performance web server
 Name: nginx
@@ -86,9 +82,11 @@ Source10: nginx.suse.logrotate
 Source11: nginx-debug.service
 Source12: COPYRIGHT
 Source13: nginx.check-reload.sh
-Source14: https://github.com/vozlt/nginx-module-vts/archive/v%{ngx_module_vts_version}.tar.gz#/nginx-module-vts.tar.gz
-Source15: https://openssl.org/source/openssl-%{ngx_openssl_version}.tar.gz
+Source14: https://github.com/vozlt/nginx-module-vts/archive/v%{ngx_module_vts_version}.tar.gz#/nginx-module-vts-%{ngx_module_vts_version}.tar.gz
+Source15: https://openssl.org/source/openssl-%{ngx_openssl_version}.tar.gz#/openssl-%{ngx_openssl_version}.tar.gz
+Source16: https://github.com/yaoweibin/nginx_upstream_check_module/archive/master.zip#/nginx_upstream_check_module-master.zip
 
+ 
 
 License: 2-clause BSD-like license
 
@@ -107,7 +105,8 @@ a mail proxy server.
 %endif
 
 %prep
-%setup -q -a 14 -a 15
+%setup -q -a 14 -a 15  -a 16
+patch  -p1 < nginx_upstream_check_module-master/check_%{main_version}+.patch
 cp %{SOURCE2} .
 sed -e 's|%%DEFAULTSTART%%|2 3 4 5|g' -e 's|%%DEFAULTSTOP%%|0 1 6|g' \
     -e 's|%%PROVIDES%%|nginx|g' < %{SOURCE2} > nginx.init
