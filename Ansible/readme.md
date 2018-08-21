@@ -94,7 +94,7 @@ and also install ansible 2.6+
 
 ### Customization
 
-if you need to add more commands excuted after instance started, you can modify template file `userdata.j2`.
+if you need to add more commands excuted after instance started, you can modify template file `userdata.j2`. and it is generated via command `write-mime-multipart` to combine multiple parts into one cloud-init config
 
 This file contains three sections, 
 
