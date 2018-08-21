@@ -30,3 +30,6 @@ runcmd:
   - /root/test2.sh
 
 
+
+mounts:
+  - [ /dev/mapper/docker-data, /data, "xfs", "defaults", "0", "0" ]
