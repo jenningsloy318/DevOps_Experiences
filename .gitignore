@@ -3,3 +3,4 @@ ansible/roles/ansible-role-ci/files/SAP_HANA_CLIENT100_122_10_Linux_on_x86_64.SA
 ansible/roles/ansible-role-ci/files/com.sap.prd.commonrepo.artifactdeployer.dist.cli-0.19.2.tar.gz
 ansible/roles/ansible-role-ci/files/com.sap.prd.commonrepo.artifactimporter.dist.cli-0.11.5.tar.gz
 ansible/roles/ansible-role-ci/files/nexus-3.7.0-04-unix.tar.gz
+*.retry
