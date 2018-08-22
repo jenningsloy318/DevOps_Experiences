@@ -1,45 +1,12 @@
-data "vsphere_datacenter" "dc" {
-  name = "${var.vsphere_datacenter}"
-}
-
-data "vsphere_datastore" "datastore_os" {
-  name          = "${var.vsphere_datastore_os}"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
 
 
-data "vsphere_datastore" "datastore_data" {
-  name          = "${var.vsphere_datastore_data}"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
-
-data "vsphere_resource_pool" "pool" {
-  name          = "${var.vsphere_resource_pool}"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
-
-data "vsphere_network" "network" {
-  name          = "${var.vsphere_network}"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
-
-
-
-
-data "vsphere_virtual_machine" "template" {
-  name          = "${var.vsphere_vm_template}"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
-
-
-
-resource "vsphere_virtual_machine" "vm" {
-  name             = "${var.vm}"
+resource "vsphere_virtual_machine" "instance" {
+  name             = "${var.vsphere_instance}"
   resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
   datastore_id     = "${data.vsphere_datastore.datastore_os.id}"
 
-  num_cpus = 2
-  memory   = 1024
+  num_cpus = "${var.vsphere_instance_cpu_count}"
+  memory   = "${var.vsphere_instance_memory_count}"
   guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
 
   scsi_type = "${data.vsphere_virtual_machine.template.scsi_type}"
@@ -67,7 +34,7 @@ resource "vsphere_virtual_machine" "vm" {
 
     customize {
       linux_options {
-        host_name = "${var.vm}"
+        host_name = "${var.vsphere_instance}"
         domain = "snfc.com"
       }
 
@@ -85,6 +52,3 @@ resource "vsphere_virtual_machine" "vm" {
 
 
 
-output "VM IP address" {
-value = "${vsphere_virtual_machine.vm.clone.0.customize.0.network_interface.0.ipv4_address}"
-}

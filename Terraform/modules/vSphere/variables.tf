@@ -30,7 +30,7 @@ variable "vsphere_network"  {
 }
 
 
-variable "vsphere_datastore_os"{
+variable "vsphere_datastore_os" {
     description = "The datastore  used for vm os disk."
     default  = " "
 }
@@ -41,17 +41,24 @@ variable "vsphere_datastore_data" {
     default  = " "
 }
 
-variable "vsphere_folder" {
-    description = "The folder vm reside in."
+
+variable "vsphere_instance" {
+    description = "the instance name"
     default  = " "
 }
 
 
-variable "vm" {
-    default  = " "
-}
-
-
-variable "vsphere_vm_template"{
+variable "vsphere_vm_template" {
   default          = " "
 }
+
+ variable "vsphere_instance_cpu_count" {
+         description = "the instance cpu number"
+        default = ""
+
+ }
+ variable "vsphere_instance_memory_count" {
+        description = "the instance memory number"
+        default = ""
+
+ }

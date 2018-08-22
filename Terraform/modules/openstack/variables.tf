@@ -47,11 +47,6 @@ variable "openstack_flavor" {
     default = " "
 }
 
-variable "openstack_ssh_pub_key_file" {
-    description = "then public key file."
-    default = "~/.ssh/id_rsa.pub"
-}
-
 
 variable "openstack_keypair" {
     description = "The keypair name."
@@ -74,7 +69,7 @@ variable "openstack_flp_network_name" {
     description = "The  Floating network name."
     default = " "
 }
-variable "openstack_flp_subnetwork_id" {
+variable "openstack_flp_subnetwork_name" {
     description = "The  Floating subnetwork name."
     default = " "
 }
@@ -82,9 +77,13 @@ variable "openstack_flp_subnetwork_id" {
 
 variable "openstack_instance_name" {
     description = "The instance name."
-    default = "test_instance_01"
+    default = ""
 }
 
+variable "openstack_volume_name" {
+    description = "the volume name attached to instance"
+    default = ""
+}
 
 
 

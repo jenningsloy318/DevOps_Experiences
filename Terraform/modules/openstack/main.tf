@@ -1,7 +1,4 @@
-#resource "openstack_compute_keypair_v2" "keypair_1" {
-#name = "my_test_keypair"
-#public_key = "${file("${var.openstack_ssh_pub_key_file}")}"
-#}
+
 
 resource "openstack_networking_secgroup_v2" "secgroup_1" {
   name        = "${var.openstack_secgroup_name}"
@@ -24,31 +21,10 @@ resource "openstack_networking_floatingip_v2" "floatip_1" {
 }
 
 resource "openstack_blockstorage_volume_v2" "volume_1" {
-  name        = "${var.openstack_instance_name}_volume_1"
+  name        = "${var.openstack_volume_name}"
   description = "volume for instance ${var.openstack_instance_name}"
   size        = 3
   availability_zone= "${var.openstack_availability_zone_name}"
-}
-
-data "template_file" "userdata" {
-  template = "${file("user-data")}"
-
-}
-data "template_file" "script" {
-  template = "${file("test.sh")}"
-}
-
-data "template_cloudinit_config" "userdata" {
- 
-   part {
-    content_type = "text/cloud-config"
-    content      = "${data.template_file.userdata.rendered}"
-  }
- 
-   part {
-    content_type = "text/x-shellscript"
-    content      = "${data.template_file.script.rendered}"
-  }  
 }
 
 
@@ -78,6 +54,3 @@ resource "openstack_compute_volume_attach_v2" "volume_attach" {
 }
 
 
-output "Float IP address" {
-value = "${openstack_networking_floatingip_v2.floatip_1.address}"
-}
