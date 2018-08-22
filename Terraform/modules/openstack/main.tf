@@ -16,7 +16,7 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
 }
 
 resource "openstack_networking_floatingip_v2" "floatip_1" {
-  subnet_id = "${var.openstack_flp_subnetwork_id}"
+  subnet_id = "${data.openstack_networking_subnet_v2.fip_subnet_1.id}"
   pool = "${var.openstack_flp_network_name}"
 }
 

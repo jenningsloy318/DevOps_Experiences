@@ -1,3 +1,3 @@
-output "Float IP address" {
+output "floating_ip_addres" {
 value = "${openstack_networking_floatingip_v2.floatip_1.address}"
 }

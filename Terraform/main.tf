@@ -20,7 +20,9 @@ module "openstack1" {
   
 }
 
-
+output "openstack1 Floating IP Address" {
+value = "${module.openstack1.floating_ip_addres}"
+}
 module "openstack2" {
   source = "./modules/openstack"
   openstack_user_name = name
@@ -42,6 +44,12 @@ module "openstack2" {
   openstack_volume_name = instance2_volume
   
 }
+
+output "openstack2 Floating IP Address" {
+value = "${module.openstack2.floating_ip_addres}"
+
+
+}
 module "vSphere" {
   source = "./modules/vSphere"
 
@@ -57,4 +65,7 @@ module "vSphere" {
   vsphere_vm_template = 
   vsphere_instance_cpu_count = 
   vsphere_instance_memory_count = 
+}
+output "vSphere VM IP Address" {
+value = "${module.vSphere.vm_ip_address}"
 }

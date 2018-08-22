@@ -19,3 +19,7 @@ data "template_cloudinit_config" "userdata" {
     content      = "${data.template_file.script.rendered}"
   }  
 }
+
+data "openstack_networking_subnet_v2" "fip_subnet_1" {
+  name = "${var.openstack_flp_subnetwork_name}"
+}
