@@ -1,44 +1,36 @@
 
-
-resource "openstack_networking_secgroup_v2" "secgroup_1" {
-  name        = "${var.openstack_secgroup_name}"
-  description = "My first test neutron security group"
+data "openstack_networking_subnet_v2" "fip_subnet_1" {
+  name = "${var.openstack_flp_subnetwork_name}"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 22
-  port_range_max    = 22
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = "${openstack_networking_secgroup_v2.secgroup_1.id}"
-}
 
 resource "openstack_networking_floatingip_v2" "floatip_1" {
   subnet_id = "${data.openstack_networking_subnet_v2.fip_subnet_1.id}"
   pool = "${var.openstack_flp_network_name}"
 }
 
-resource "openstack_blockstorage_volume_v2" "volume_1" {
-  name        = "${var.openstack_volume_name}"
-  description = "volume for instance ${var.openstack_instance_name}"
-  size        = 3
-  availability_zone= "${var.openstack_availability_zone_name}"
-}
-
-
 resource "openstack_compute_instance_v2" "instance_1" {
   name = "${var.openstack_instance_name}"
   image_name = "${var.openstack_image_name}"
   flavor_name = "${var.openstack_flavor}"
   key_pair = "${var.openstack_keypair}"
-  availability_zone= "${var.openstack_availability_zone_name}"
-  security_groups = ["${var.openstack_secgroup_name}"]
+  security_groups = ["${var.openstack_secgroup_name}","default"]
   network {
     name = "${var.openstack_tenant_network_name}"
   }
-  user_data       = "${data.template_cloudinit_config.userdata.rendered}"
+  user_data       = "${var.userdata}"
+  
+}
+resource "openstack_blockstorage_volume_v2" "volume_1" {
+  name        = "${var.openstack_instance_name}_volume"
+  description = "volume for instance ${var.openstack_instance_name}"
+  size        = "${var.openstack_volume_size}"
+  availability_zone= "${openstack_compute_instance_v2.instance_1.availability_zone}"
+}
+
+resource "openstack_compute_volume_attach_v2" "volume_attach" {
+  instance_id = "${openstack_compute_instance_v2.instance_1.id}"
+  volume_id   = "${openstack_blockstorage_volume_v2.volume_1.id}"
 }
 
 
@@ -48,9 +40,6 @@ resource "openstack_compute_floatingip_associate_v2" "fip_1" {
 }
 
 
-resource "openstack_compute_volume_attach_v2" "volume_attach" {
-  instance_id = "${openstack_compute_instance_v2.instance_1.id}"
-  volume_id   = "${openstack_blockstorage_volume_v2.volume_1.id}"
-}
+
 
 

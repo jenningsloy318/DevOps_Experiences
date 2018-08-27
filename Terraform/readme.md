@@ -6,11 +6,10 @@ we can use modules to resue terraform configuration to deploy muliple instance i
 
 here two example modules in directory `modules`, openstack and vsphere. 
 
-then in the top module `main.tf` to use them to launch difference instance with diffferent variable value
-
+ 
 - Refer to [How to create reusable infrastructure with Terraform modules](https://blog.gruntwork.io/how-to-create-reusable-infrastructure-with-terraform-modules-25526d65f73d)
 
-
+to reuse this module, for example, to create a monitor instance, just create a dirctory name "monitor-instance", under this folder, we can customize this instance.
 ### Terraform Supported built-in functions
 
   * `abs(float)` - Returns the absolute value of a given float.
