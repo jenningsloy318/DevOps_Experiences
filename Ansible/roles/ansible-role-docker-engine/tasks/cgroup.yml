@@ -4,5 +4,3 @@
     dest: /lib/systemd/system/container.slice
     owner: root
     group: root
-  notify:
-    restart_container_slice

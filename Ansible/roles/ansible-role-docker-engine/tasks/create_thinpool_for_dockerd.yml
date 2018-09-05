@@ -10,7 +10,8 @@
     vg: docker
     pvs: "{{dockerd_thin_pool_lvm_pv}}"
     state: present
-  when: not thinpool.stat.exists
+  when: not thinpool.stat.exists 
+  register: dockervg
 
 - name: create thinpool lv for dockerd daemon
   lvol:
@@ -19,7 +20,7 @@
     size: 95%VG
     opts: --wipesignatures y
   register: thinpool_created
-  when: not thinpool.stat.exists
+  when: not thinpool.stat.exists and dockervg is changed
 
 - name: create thinpoolmeta lv for dockerd daemon
   lvol:

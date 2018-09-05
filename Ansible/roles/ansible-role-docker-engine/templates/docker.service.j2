@@ -6,9 +6,6 @@ Wants=network-online.target
 [Service]
 Slice={{docker_engine_service_slice}}
 Type=notify
-Environment="HTTP_PROXY={{dockerd_env_http_proxy}}"
-Environment="HTTPS_PROXY={{dockerd_env_https_proxy}}"
-Environment="NO_PROXY={% for host  in dockerd_env_no_proxy %}{{ host }}{% if not loop.last %},{%endif%}{%endfor%}"
 # the default is not to use systemd for cgroups because the delegate issues still
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker

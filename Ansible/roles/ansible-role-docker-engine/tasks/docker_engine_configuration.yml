@@ -18,9 +18,6 @@
   - python-docker
   - python3-docker
   when: ansible_os_family == "Debian"  
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
 - name: install prequsites packages
   yum:
     name: "{{item}}"
@@ -31,43 +28,25 @@
   - lvm2 
   - python-docker-py
   when: ansible_os_family == "RedHat"
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
 
 - name: import pgp key 
   shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   when: ansible_distribution == "Ubuntu" and  docker_version.rc  != 0
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
 - name: install docker repo
   shell: add-apt-repository   "deb [arch=amd64] https://download.docker.com/linux/ubuntu   $(lsb_release -cs)   stable"
   when: ansible_distribution == "Ubuntu" and  docker_version.rc  != 0
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
 
 - name: import pgp key 
   shell: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
   when: ansible_distribution == "Debian" and  docker_version.rc  != 0
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
 - name: install docker repo
   shell: sudo add-apt-repository  "deb [arch=amd64] https://download.docker.com/linux/debian    $(lsb_release -cs)    stable"
   when: ansible_distribution == "Debian" and  docker_version.rc  != 0
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
 
 - name: install docker repo 
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
     dest: /etc/yum.repos.d/docker-ce.repo
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080
   when: ansible_os_family == "RedHat" and  docker_version.rc  != 0
 
 - name: install docker engine if not installed
@@ -75,11 +54,13 @@
     name: docker-ce
     state: present
     update_cache: yes
-  environment:
-      https_proxy: http://proxy.wdf.sap.corp:8080
-      HTTPS_PROXY: http://proxy.wdf.sap.corp:8080    
   when:  docker_version.rc  != 0
 
+- name: stop docker engine if it is running 
+  systemd:
+    name: docker
+    state: stopped
+  
 - import_tasks: create_thinpool_for_dockerd.yml
 
 - name: ensure /etc/docker/ exist
