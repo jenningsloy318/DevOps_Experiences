@@ -113,6 +113,13 @@
   notify:
     reload_prometheus_conf  
 
+- name: and more targets
+  copy:
+    src: "{{item}}"
+    dest: /etc/prometheus/tgroups/
+    mode: 0755
+  with_fileglob:
+   - "*targets.yml"
 
 - name: add firewalld rules
   firewalld:
@@ -122,3 +129,6 @@
     state: enabled
 - name: reload firewalld
   shell: firewall-cmd --reload
+
+
+
