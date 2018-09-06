@@ -1,0 +1,3 @@
+promxy_version: v0.0.22
+promxy_bin_url: https://github.com/jacksontj/promxy/releases/download/v{{promxy_version}}/promxy
+promxy_backend_prometheus_instances:

@@ -1,0 +1,84 @@
+
+- name: check if promxy is installed
+  stat: 
+    path: /usr/bin/promxy
+  register: promxy
+
+- debug:
+    var=promxy
+- name: Fetch  promxy binary
+  get_url:
+    url: "{{ promxy_bin_url }}"
+    dest: /usr/bin/promxy
+    mode: 755
+  when: not promxy.stat.exists  
+
+- name: ensure promxy group exist 
+  group:
+    name: promxy
+    state: present
+
+- name: ensure promxy user exist 
+  user:
+    name: promxy
+    shell: /bin/false
+    createhome: no
+    home: /etc/promxy
+    group: promxy
+    system: yes
+- name: stop promxy service if possible
+  systemd: 
+    name: promxy
+    state: stopped
+    enabled: yes
+    daemon_reload: yes
+  ignore_errors: yes
+
+
+
+- name: create promxy service file
+  template:
+    src: promxy.service
+    dest: /lib/systemd/system/promxy.service
+  notify:
+    restart_promxy
+  register: promxy_service
+
+- name: create promxy conf dir
+  file:
+    path: /etc/promxy/
+    state: directory
+    mode: 0755
+    owner: promxy
+    group: promxy
+
+
+- name: create promxy conf file
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.target}}"
+    mode: 0755
+    owner: promxy
+    group: promxy
+  notify:
+    reload_promxy_conf
+  with_items:
+  - {src: "promxy.yml.j2",target: "/etc/promxy/promxy.yml"}
+  register: promxy_conf
+
+- name: start promxy service if not running
+  systemd: 
+    name: promxy
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when: promxy_conf is changed and  promxy_service is changed
+
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 8082/tcp
+    permanent: true
+    state: enabled
+- name: reload firewalld
+  shell: firewall-cmd --reload

@@ -1,0 +1,13 @@
+global:
+  evaluation_interval: 5s
+  external_labels:
+    source: promxy
+
+promxy:
+  server_groups:
+    - static_configs:
+        - targets:
+{% for target in promxy_backend_prometheus_instances %}
+          - {{ target }}
+{% endfor %}
+      anti_affinity: 10s

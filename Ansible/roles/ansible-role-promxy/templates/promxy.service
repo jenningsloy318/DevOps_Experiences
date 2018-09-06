@@ -1,0 +1,12 @@
+[Unit]
+Description=promxy service
+
+[Service]
+User=promxy
+ExecStart=/usr/bin/promxy --config=/etc/promxy/promxy.yml 
+Restart=always
+RestartSec=2s
+StartLimitInterval=0
+KillMode=process
+[Install]
+WantedBy=multi-user.target
