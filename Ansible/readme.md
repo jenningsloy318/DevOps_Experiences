@@ -3,7 +3,7 @@
     - `ansible_virtualization_role`: value can be guest or host, to determine if it is a vm
     - `ansible_os_family`: AIX,Alpine,Altlinux,Archlinux,Darwin,Debian,FreeBSD,Gentoo,HP-UX,Mandrake,RedHat,SGML,Slackware,Solaris,Suse,
     
-    - `ansible_distribution`: Alpine,Altlinux,Amazon,Archlinux,ClearLinux,Coreos,Debian,Gentoo,Mandriva,NA,OpenWrt,OracleLinux,RedHat,Slackware,SMGL,SUSE,VMwareESX,Ubuntu
+    - `ansible_distribution`: Alpine,Altlinux,Amazon,Archlinux,CentOS,ClearLinux,Coreos,Debian,Gentoo,Mandriva,NA,OpenWrt,OracleLinux,RedHat,Slackware,SMGL,SUSE,SLES,VMwareESX,Ubuntu
     - `ansible_distribution_major_version`,`ansible_distribution_version`: 
     - https://docs.ansible.com/ansible/2.6/user_guide/playbooks_conditionals.html#ansible-distribution
 2. 
