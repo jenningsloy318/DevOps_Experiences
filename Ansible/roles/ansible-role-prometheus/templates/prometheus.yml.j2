@@ -4,8 +4,25 @@ rule_files:
 - '/etc/prometheus/alert.rules.yml'
 
 scrape_configs:
-- job_name: 'tegraf-nodes'
-  metrics_path: {{ prometheus_job_metrics_path }}
+{% for item in prometheus_job_list %}
+
+{% if itme.job_name == 'prometheus' %}
+- job_name: 'prometheus services'
+  metrics_path: {{ item.metrics_path }}
+  file_sd_configs:
+    - files: ['tgroups/prometheus-targets.yml']  
+{%endif%}
+
+{% if itme.job_name == 'alertmanager' %}
+- job_name: 'alertmanager services'
+  metrics_path: {{ item.metrics_path }}
+  file_sd_configs:
+    - files: ['tgroups/alertmanager-targets.yml']  
+{%endif%}
+
+{% if itme.job_name == 'telegraf' %}
+- job_name: 'tegraf nodes'
+  metrics_path: {{ item.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/telegraf-targets.yml']
   relabel_configs:
@@ -13,25 +30,50 @@ scrape_configs:
       regex: '(.*):.*'
       target_label: instance
       replacement: ${1}
-- job_name: 'services'
-  metrics_path: {{ prometheus_job_metrics_path }}
+{%endif%}
+
+{% if itme.job_name == 'mysql' %}
+- job_name: 'mysql exporter'
+  metrics_path: {{ item.metrics_path }}
   file_sd_configs:
-    - files: ['tgroups/service-targets.yml']  
-{% if prometheus_blackbox_targets %}
-- job_name: 'blackbox'
-  metrics_path: /probe
+  - files: ['tgroups/mysql-targets.yml']
+{%endif%}
+
+
+{% if itme.job_name == 'hana' %}
+
+- job_name: 'hana exporter'
+  metrics_path: {{ item.metrics_path }}
+  scrape_timeout: 30s
+  scrape_interval: 30s
+  file_sd_configs:
+    - files: ['tgroups/hana-targets.yml']  
+  relabel_configs:
+     - source_labels: [__address__]
+       target_label: __param_target
+     - source_labels: [__param_target]
+       target_label: instance
+     - target_label: __address__
+       replacement: {{item.hana_exporter_host}}:9460  ### the address of the hana-exporter address
+{%endif%}
+
+{% if itme.job_name == 'blackbox' %}
+- job_name: blackbox exporter
+  metrics_path: '{{ item.metrics_path }}'
   params:
     module: [http_2xx]
   file_sd_configs:
-    - files: ['tgroups/url-targets.yml']  
+    - files: ['tgroups/blackbox-targets.yml']  
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: {{blackbox_exporter_host}}:9115  # The blackbox exporter's real hostname:port.
-{%endif%}      
+      replacement: {{item.blackbox_exporter_host}}:9115  # The blackbox exporter's real hostname:port.
+
+{%endif%}
+{%endfor%}
 
 alerting:
   alertmanagers:

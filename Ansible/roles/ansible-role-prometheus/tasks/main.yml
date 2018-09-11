@@ -115,11 +115,11 @@
 
 - name: and more targets
   copy:
-    src: "{{item}}"
+    src: "{{item.job_name}}-targets.yml"
     dest: /etc/prometheus/tgroups/
     mode: 0755
-  with_fileglob:
-   - "*targets.yml"
+  with_items:
+   - prometheus_job_list
 
 - name: add firewalld rules
   firewalld:
