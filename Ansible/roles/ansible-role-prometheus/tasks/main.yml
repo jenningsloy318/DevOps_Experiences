@@ -1,67 +1,29 @@
 
-- name: check version
-  shell: /usr/bin/prometheus  --version >/dev/stdout 2>&1 |grep prometheus|awk '{print $3}'|grep {{ prometheus_version }}
-  ignore_errors: yes
-  register: prometheus
-
-- debug:
-    var=prometheus
-- name: Fetch and Unarchive prometheus
-  unarchive:
-    src: "{{ prometheus_bin_url }}"
-    dest: /tmp
-    remote_src: yes
-  when: prometheus.rc  !=0
-
-- name: ensure prometheus group exist 
-  group:
+- name: add prometheus repo
+  yum_repository:
     name: prometheus
-    state: present
+    description: prometheus repo
+    baseurl: https://packagecloud.io/prometheus-rpm/release/el/7/$basearch
+    repo_gpgcheck: 1
+    enabled: 1
+    gpgkey: https://packagecloud.io/prometheus-rpm/release/gpgkey
+            https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm
+    gpgcheck: 1
+    sslverify: 1
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+- name: install prometheus package
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+  - prometheus2
 
-- name: ensure prometheus user exist 
-  user:
-    name: prometheus
-    shell: /bin/false
-    createhome: no
-    home: /etc/prometheus
-    group: prometheus
-    system: yes
-- name: stop prometheus service if possible
-  systemd: 
-    name: prometheus
-    state: stopped
-    enabled: yes
-    daemon_reload: yes
-  when: prometheus.rc  !=0
-  ignore_errors: yes
-
-- name: copy prometheus binary
-  copy:
-    src: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/prometheus"
-    dest: /usr/bin
-    remote_src: yes
-    mode: 0755
-  when: prometheus.rc  !=0
-
-- name: copy prometheus  promtool binary
-  copy:
-    src: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/promtool"
-    dest: /usr/bin
-    remote_src: yes
-    mode: 0755
-  when: prometheus.rc  !=0
 - name: create prometheus service file
   template:
     src: prometheus.service
     dest: /lib/systemd/system/prometheus.service
 
-- name: create prometheus conf dir
-  file:
-    path: /etc/prometheus/
-    state: directory
-    mode: 0755
-    owner: prometheus
-    group: prometheus
 
 - name: create prometheus file sd dir
   file:
@@ -71,9 +33,6 @@
     owner: prometheus
     group: prometheus
 
-- name: copy prometheus  console_libraries  console_libraries files
-  shell: cp -rf "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/console_libraries" "/tmp/prometheus-{{ prometheus_version }}.linux-amd64/consoles"  /etc/prometheus/
-  when: prometheus.rc  !=0
 
 - name: create prometheus conf file
   template:
