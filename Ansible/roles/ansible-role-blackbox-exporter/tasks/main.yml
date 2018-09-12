@@ -43,10 +43,10 @@
     src: blackbox_exporter.yml.j2
     dest: /etc/blackbox_exporter/blackbox_exporter.yml
     
-- name: create examp-ca   file 
+- name: create ca  cert  file 
   copy:
-    src: examp-ca.pem
-    dest: "{{blackbox_exporter_examp_ca_path}}"
+    src: ca.pem
+    dest: "{{blackbox_exporter_ca_path}}"
 
 - name: start blackbox_exporter 
   systemd: 
