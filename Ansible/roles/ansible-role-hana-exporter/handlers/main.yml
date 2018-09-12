@@ -1,0 +1,10 @@
+---
+- name: restart_hana_exporter
+  systemd: 
+    name:  hana_exporter 
+    state:  restarted 
+    enabled:  yes
+    daemon_reload:  yes
+
+
+
