@@ -5,12 +5,26 @@ global:
   smtp_require_tls: {{alertmanager_smtp_require_tls}}
   smtp_auth_username: {{alertmanager_smtp_auth_username}}
   smtp_auth_password: {{alertmanager_smtp_auth_password}}
-  # the slack Incoming WebHooks url
   slack_api_url: {{alertmanager_slack_api_url}}
+  # the slack Incoming WebHooks url
 
-  wechat_api_url: {{alertmanager_wechat_api_url}}
-  wechat_api_secret: {{alertmanager_wechat_api_secret}}
-  wechat_api_corp_id: {{alertmanager_wechat_api_corp_id}}
+
+inhibit_rules:
+# if same instance with same alertname have both critical and warning alerts, this will inhibit warning alerts
+- source_match:
+    severity: 'critical'
+  target_match:
+    severity: 'warning'
+  equal: ['alertname', 'instance']
+
+
+# if same instance with same alertname have both critical and warning alerts, this will inhibit warning alerts
+- source_match:
+    alertname: 'Instance is Down'
+  target_match:
+    severity: 'critical'
+  equal: [ 'instance']
+
 
 # The root route on which each incoming alert enters.
 route:
@@ -45,3 +59,34 @@ route:
   - receiver: 'default-reciever'
     match:
        severity: critical
+{%raw%}
+receivers:
+- name: 'email-receiver'
+  email_configs:
+  - send_resolved: true
+    to:  'test@example.com'
+    headers:
+      From: root@example.com
+      Subject: 'Shell Hybris Alert: {{ template "email.default.subject" . }}'
+- name: 'default-reciever'
+  email_configs:
+  - send_resolved: true
+    to:  'test@example.com'
+    headers:
+      From: root@example.com
+      Subject: 'Example Alert: {{ template "email.default.subject" . }}'
+  wechat_configs:
+  - send_resolved: true
+    message: 'Example Alert: {{ template "wechat.default.message" . }}'
+    to_user: ""
+    to_party: "6"
+    to_tag: ""
+    agent_id: "1000002"
+    corp_id: "wxd6c3b48a11938c18"
+    api_secret: 'EpFy9VQfz_U0g59UyV_otP1Mgaypgjifpesh0AqdbQYsdf'
+  slack_configs:
+  - send_resolved: true
+    channel: '#Example-alerts'
+    title: "Example Alert: {{ .Status | toUpper }}  {{ .CommonAnnotations.summary }}\n"
+    text: "{{range .Alerts }}\nDescription: {{ .Annotations.description }}\n{{ range .Labels.SortedPairs }} {{ .Name }}: {{ .Value }}\n{{end}}Metrics: <{{ .GeneratorURL}}| Click here>\n{{ end }}"
+{%endraw%}

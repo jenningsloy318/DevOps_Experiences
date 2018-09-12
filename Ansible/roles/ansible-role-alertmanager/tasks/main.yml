@@ -1,91 +1,46 @@
-- name: check alertmanager existence and version
-  shell: /usr/bin/alertmanager  --version  >/dev/stdout 2>&1 |grep alert|awk '{print $3}'|grep {{ alertmanager_version }}
-  register: alertmanager
-  ignore_errors: yes
 
-- debug:
-    var=alertmanager.stdout_lines
-- name: Unarchive a file that needs to be downloaded
-  unarchive:
-    src: "{{ alertmanager_bin_url }}"
-    dest: /tmp
-    remote_src: yes
-  when:  alertmanager.rc  !=0
-
-- name: stop alertmanager 
-  systemd: 
-    name: alertmanager 
-    state: stopped 
-    enabled: yes
-    daemon_reload: yes
-  ignore_errors: yes
-  when:  alertmanager.rc  !=0
-
-- name: copy alertmanager binary
-  copy:
-    src: "/tmp/alertmanager-{{ alertmanager_version }}.linux-amd64/alertmanager"
-    dest: /usr/bin
-    remote_src: yes
-    mode: 0755
-  when:  alertmanager.rc  !=0
-- name: copy alertmanager  amtool binary
-  copy:
-    src: "/tmp/alertmanager-{{ alertmanager_version }}.linux-amd64/amtool"
-    dest: /usr/bin
-    remote_src: yes
-    mode: 0755
-  when:  alertmanager.rc  !=0
-
-
-- name: ensure prometheus group exist 
-  group:
+- name: add prometheus repo
+  yum_repository:
     name: prometheus
-    state: present
-
-- name: ensure alertmanager user exist 
-  user:
-    name: alertmanager
-    shell: /bin/false
-    createhome: no
-    home: /etc/alertmanager
-    group: prometheus
-    system: yes
-
-
+    description: prometheus repo
+    baseurl: https://packagecloud.io/prometheus-rpm/release/el/7/$basearch
+    repo_gpgcheck: 1
+    enabled: 1
+    gpgkey: https://packagecloud.io/prometheus-rpm/release/gpgkey
+            https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm
+    gpgcheck: 1
+    sslverify: 1
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+- name: install alertmanager package
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+  - alertmanager
 
 - name: create alertmanager service file
   template:
     src: alertmanager.service
-    dest: /lib/systemd/system/alertmanager.service
-    owner: alertmanager
-    group: prometheus
+    dest: /usr/lib/systemd/system/alertmanager.service
 
 - name: create alertmanager conf dir
   file:
-    path: /etc/alertmanager/
+    path: /etc/prometheus/
     state: directory
     mode: 0755
-    owner: alertmanager
+    owner: prometheus
     group: prometheus
 
 
-- name: create alertmanager conf file (part 1)
-  template:
-    src: alertmanager-1.yml.j2
-    dest: /etc/alertmanager/alertmanager-1.yml
-    owner: alertmanager
-    group: prometheus
-
-- name: create alertmanager conf file (part 2)
-  copy:
-    src: alertmanager-2.yaml
-    dest: /etc/alertmanager/alertmanager-2.yml
-    owner: alertmanager
-    group: prometheus
 - name: create alertmanager conf file
-  shell: cat /etc/alertmanager/alertmanager-1.yml /etc/alertmanager/alertmanager-2.yml  >/etc/alertmanager/alertmanager.yml
+  template:
+    src: alertmanager.yml.j2
+    dest: /etc/prometheus/alertmanager.yml
   notify:
     reload_alertmanager_conf
+
+
 
 - name: start alertmanager if not running
   systemd: 
@@ -98,7 +53,7 @@
 - name: change file owner
   file:
     path: "{{item}}"
-    owner: alertmanager
+    owner: prometheus
     group: prometheus
     recurse: yes
   with_items:
@@ -106,12 +61,3 @@
   - /etc/alertmanager
   notify:
     reload_alertmanager_conf
-
-- name: add firewalld rules
-  firewalld:
-    zone: public
-    port: 9093-9094/tcp
-    permanent: true
-    state: enabled
-- name: reload firewalld
-  shell: firewall-cmd --reload

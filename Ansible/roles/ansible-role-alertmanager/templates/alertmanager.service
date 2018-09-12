@@ -3,7 +3,7 @@ Description=alertmanager  service
 
 [Service]
 User=alertmanager
-ExecStart=/usr/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml  --storage.path={{alertmanager_storage_path }}  --web.external-url={{ alertmanager_ext_url }}  --cluster.listen-address=0.0.0.0:9094  {% if alertmanager_cluster_peers %} {% for alertmanager_cluster_peers in alertmanager_cluster_peers %}  --cluster.peer={{ alertmanager_cluster_peers }}:9094  {%endfor%} {%endif%}
+ExecStart=/usr/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml  --storage.path={{alertmanager_storage_path }}  --web.external-url={{ alertmanager_ext_url }}
 
 Restart=always
 RestartSec=2s
@@ -11,6 +11,7 @@ StartLimitInterval=0
 KillMode=process
 [Install]
 WantedBy=multi-user.target
+
 
 
 
