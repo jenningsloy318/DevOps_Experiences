@@ -6,7 +6,7 @@
 %define nginx_group nginx
 %define nginx_loggroup adm
 %define ngx_module_vts_version 0.1.18
-%define ngx_openssl_version 1.1.0i
+%define ngx_openssl_version 1.1.1
 
 # distribution specific definitions
 %define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7) || (0%{?suse_version} == 1315)
