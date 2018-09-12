@@ -3,3 +3,12 @@
   uri:
     url: http://localhost:9090/-/reload
     method: POST
+
+- name: restart_prometheus
+  systemd: 
+    name: prometheus
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+

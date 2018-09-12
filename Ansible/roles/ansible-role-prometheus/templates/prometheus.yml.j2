@@ -4,25 +4,32 @@ rule_files:
 - '/etc/prometheus/alert.rules.yml'
 
 scrape_configs:
-{% for item in prometheus_job_list %}
+{% for job in prometheus_job_list %}
 
-{% if itme.job_name == 'prometheus' %}
+{% if job.job_name == 'prometheus' %}
 - job_name: 'prometheus services'
-  metrics_path: {{ item.metrics_path }}
+  metrics_path: {{ job.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/prometheus-targets.yml']  
 {%endif%}
 
-{% if itme.job_name == 'alertmanager' %}
+{% if job.job_name == 'alertmanager' %}
 - job_name: 'alertmanager services'
-  metrics_path: {{ item.metrics_path }}
+  metrics_path: {{ job.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/alertmanager-targets.yml']  
 {%endif%}
 
-{% if itme.job_name == 'telegraf' %}
+{% if job.job_name == 'grafana' %}
+- job_name: 'grafana services'
+  metrics_path: {{ job.metrics_path }}
+  file_sd_configs:
+    - files: ['tgroups/grafana-targets.yml']  
+{%endif%}
+
+{% if job.job_name == 'telegraf' %}
 - job_name: 'tegraf nodes'
-  metrics_path: {{ item.metrics_path }}
+  metrics_path: {{ job.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/telegraf-targets.yml']
   relabel_configs:
@@ -32,18 +39,18 @@ scrape_configs:
       replacement: ${1}
 {%endif%}
 
-{% if itme.job_name == 'mysql' %}
+{% if job.job_name == 'mysql' %}
 - job_name: 'mysql exporter'
-  metrics_path: {{ item.metrics_path }}
+  metrics_path: {{ job.metrics_path }}
   file_sd_configs:
   - files: ['tgroups/mysql-targets.yml']
 {%endif%}
 
 
-{% if itme.job_name == 'hana' %}
+{% if job.job_name == 'hana' %}
 
 - job_name: 'hana exporter'
-  metrics_path: {{ item.metrics_path }}
+  metrics_path: {{ job.metrics_path }}
   scrape_timeout: 30s
   scrape_interval: 30s
   file_sd_configs:
@@ -54,12 +61,12 @@ scrape_configs:
      - source_labels: [__param_target]
        target_label: instance
      - target_label: __address__
-       replacement: {{item.hana_exporter_host}}:9460  ### the address of the hana-exporter address
+       replacement: {{job.hana_exporter_host}}:9460  ### the address of the hana-exporter address
 {%endif%}
 
-{% if itme.job_name == 'blackbox' %}
+{% if job.job_name == 'blackbox' %}
 - job_name: blackbox exporter
-  metrics_path: '{{ item.metrics_path }}'
+  metrics_path: '{{ job.metrics_path }}'
   params:
     module: [http_2xx]
   file_sd_configs:
@@ -70,8 +77,15 @@ scrape_configs:
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: {{item.blackbox_exporter_host}}:9115  # The blackbox exporter's real hostname:port.
+      replacement: {{job.blackbox_exporter_host}}:9115  # The blackbox exporter's real hostname:port.
 
+{%endif%}
+
+{% if job.job_name == 'nginx' %}
+- job_name: 'nginx exporter'
+  metrics_path: {{ job.metrics_path }}
+  file_sd_configs:
+  - files: ['tgroups/nginx-targets.yml']
 {%endif%}
 {%endfor%}
 

@@ -61,13 +61,14 @@
     enabled: yes
     daemon_reload: yes
 
-- file:
+- name: change file owner
+  file:
     path: "{{item}}"
     owner: prometheus
     group: prometheus
     recurse: yes
   with_items:
-  - "{{prometheus_storage_path}}"
+  - "{{ prometheus_storage_tsdb_path}}"
   - /etc/prometheus
   notify:
     reload_prometheus_conf  
@@ -78,16 +79,8 @@
     dest: /etc/prometheus/tgroups/
     mode: 0755
   with_items:
-   - prometheus_job_list
+  - "{{prometheus_job_list}}"
 
-- name: add firewalld rules
-  firewalld:
-    zone: public
-    port: 9090/tcp
-    permanent: true
-    state: enabled
-- name: reload firewalld
-  shell: firewall-cmd --reload
 
 
 

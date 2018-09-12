@@ -1,0 +1,6 @@
+- targets: 
+  - '10.180.177.95:3000'
+  labels:
+    type: 'service'
+    app: 'grafana'
+    env: 'prod'

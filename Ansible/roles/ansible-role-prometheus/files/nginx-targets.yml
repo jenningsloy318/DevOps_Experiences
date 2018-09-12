@@ -1,0 +1,6 @@
+- targets: 
+  - '10.180.177.101:80'
+  labels:
+    type: 'service'
+    app: 'nginx'
+    env: 'prod'

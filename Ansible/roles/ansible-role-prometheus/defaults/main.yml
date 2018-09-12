@@ -1,6 +1,4 @@
 
-prometheus_version: 
-prometheus_bin_url: 
 prometheus_ext_url: 
 alertmanager_addrs:
 prometheus_storage_tsdb_path: 
@@ -9,7 +7,9 @@ prometheus_storage_tsdb_retention:
 prometheus_job_list:
 - { 'job_name': 'prometheus', 'metrics_path': '/metrics'}
 - { 'job_name': 'alertmanager', 'metrics_path': '/metrics'}
+- { 'job_name': 'grafana', 'metrics_path': '/metrics'}
 - { 'job_name': 'telegraf', 'metrics_path': '/metrics'}
 - { 'job_name': 'mysql', 'metrics_path': '/metrics'}
 - { 'job_name': 'hana', 'metrics_path': '/hana','hana_exporter_host': '192.168.0.1'}
 - { 'job_name': 'blackbox', 'metrics_path': '/probe','blackbox_exporter_host':'192.168.0.1'}
+- { 'job_name': 'nginx', 'metrics_path': '/metrics'}
