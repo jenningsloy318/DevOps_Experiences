@@ -5,8 +5,12 @@ global:
   smtp_require_tls: {{alertmanager_smtp_require_tls}}
   smtp_auth_username: {{alertmanager_smtp_auth_username}}
   smtp_auth_password: {{alertmanager_smtp_auth_password}}
+  # slack api url
   slack_api_url: {{alertmanager_slack_api_url}}
-  # the slack Incoming WebHooks url
+  # wechat conf
+  wechat_api_url: {{alertmanager_wechat_api_url|default("https://qyapi.weixin.qq.com/cgi-bin/")}}
+  wechat_api_secret: {{alertmanager_wechat_api_secret}}
+  wechat_api_secret: {{alertmanager_wechat_api_corp_id}}
 
 
 inhibit_rules:
@@ -66,14 +70,12 @@ receivers:
   - send_resolved: true
     to:  'test@example.com'
     headers:
-      From: root@example.com
       Subject: 'Shell Hybris Alert: {{ template "email.default.subject" . }}'
 - name: 'default-reciever'
   email_configs:
   - send_resolved: true
     to:  'test@example.com'
     headers:
-      From: root@example.com
       Subject: 'Example Alert: {{ template "email.default.subject" . }}'
   wechat_configs:
   - send_resolved: true
