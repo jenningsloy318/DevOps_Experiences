@@ -1,5 +1,5 @@
 - name: check if black_exporter is installed and its version 
-  shell: blackbox_exporter  --version|grep blackbox_exporter | grep "{{blackbox_exporter_version}}"
+  shell: blackbox_exporter  --version 2>&1|grep blackbox_exporter | grep "{{blackbox_exporter_version}}"
   register: blackbox_exporter
   ignore_errors: yes
 
