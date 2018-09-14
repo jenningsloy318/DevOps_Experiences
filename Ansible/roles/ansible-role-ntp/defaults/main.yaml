@@ -1,1 +1,1 @@
-local_ntp_upstream_server:
+ntp_upstream_servers:
