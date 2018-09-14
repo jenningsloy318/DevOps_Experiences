@@ -10,8 +10,16 @@ alertmanager_smtp_from:
 alertmanager_smtp_require_tls: 
 alertmanager_smtp_auth_username: 
 alertmanager_smtp_auth_password: 
+alertmanager_smtp_recipients:
+alertmanager_alert_subject_head:
 
 alertmanager_slack_api_url: 
+alertmanager_slack_channel:
+
 alertmanager_wechat_api_url:  
 alertmanager_wechat_api_secret:  
 alertmanager_wechat_api_corp_id:  
+alertmanager_wechat_user_id:
+alertmanager_wechat_party_id:
+alertmanager_wechat_tag:
+alertmanager_wechat_agent_id:    

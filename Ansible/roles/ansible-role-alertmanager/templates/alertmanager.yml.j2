@@ -6,11 +6,19 @@ global:
   smtp_auth_username: {{alertmanager_smtp_auth_username}}
   smtp_auth_password: {{alertmanager_smtp_auth_password}}
   # slack api url
+{%if alertmanager_slack_api_url %}
   slack_api_url: {{alertmanager_slack_api_url}}
+{%endif%}
+
   # wechat conf
   wechat_api_url: {{alertmanager_wechat_api_url|default("https://qyapi.weixin.qq.com/cgi-bin/")}}
+{% if alertmanager_wechat_api_secret %}
   wechat_api_secret: {{alertmanager_wechat_api_secret}}
+{%endif%}
+
+{%if alertmanager_wechat_api_corp_id%}
   wechat_api_secret: {{alertmanager_wechat_api_corp_id}}
+{%endif%}
 
 
 inhibit_rules:
@@ -22,7 +30,7 @@ inhibit_rules:
   equal: ['alertname', 'instance']
 
 
-# if same instance with same alertname have both critical and warning alerts, this will inhibit warning alerts
+# if instance is down, inhibit other critical alerts
 - source_match:
     alertname: 'Instance is Down'
   target_match:
@@ -54,41 +62,48 @@ route:
   repeat_interval: 3h
   # All the above attributes are inherited by all child routes and can
   # overwritten on each.
-  # All alerts with job=ems
-  # are dispatched to the ems-email-receiver pager.
   routes:
   - receiver: 'email-receiver'
     match:
        severity: warning
-  - receiver: 'default-reciever'
+  - receiver: 'email-reciever'
     match:
        severity: critical
-{%raw%}
+{%if alertmanager_wechat_api_secret and alertmanager_wechat_api_corp_id %}
+  - receiver: 'wechat-reciever'
+    match:
+       severity: critical
+{%endif%}
+
+{%if alertmanager_slack_api_url %}
+  - receiver: 'slack-reciever'
+    match:
+       severity: critical
+{%endif%}
 receivers:
 - name: 'email-receiver'
   email_configs:
   - send_resolved: true
-    to:  'test@example.com'
+    to:  '{% for recipient in alertmanager_smtp_recipients%}{{recipient}}{% if not loop.last %},{% endif %} {%endfor%}'
     headers:
-      Subject: 'Shell Hybris Alert: {{ template "email.default.subject" . }}'
-- name: 'default-reciever'
-  email_configs:
-  - send_resolved: true
-    to:  'test@example.com'
-    headers:
-      Subject: 'Example Alert: {{ template "email.default.subject" . }}'
+      Subject: '{{alertmanager_alert_subject_head}}:{%raw%} {{ template "email.default.subject" . }}'{%endraw%}
+
+{%if alertmanager_wechat_api_secret and alertmanager_wechat_api_corp_id %}
+- name: 'wechat-reciever'
   wechat_configs:
   - send_resolved: true
-    message: 'Example Alert: {{ template "wechat.default.message" . }}'
-    to_user: ""
-    to_party: "6"
-    to_tag: ""
-    agent_id: "1000002"
-    corp_id: "wxd6c3b48a11938c18"
-    api_secret: 'EpFy9VQfz_U0g59UyV_otP1Mgaypgjifpesh0AqdbQYsdf'
+    message: '{{alertmanager_alert_subject_head}}:{%raw%} {{ template "wechat.default.message" . }}'{%endraw%}
+    to_user: "{{alertmanager_wechat_user_id|default("")}}"
+    to_party: "{{alertmanager_wechat_party_id|default("")}}"
+    to_tag: "{{alertmanager_wechat_tag|default("")}}"
+    agent_id: "{{alertmanager_wechat_agent_id}}"
+{%endif%}
+
+{%if alertmanager_slack_api_url %}
+- name: 'slack-reciever'
   slack_configs:
   - send_resolved: true
-    channel: '#Example-alerts'
-    title: "Example Alert: {{ .Status | toUpper }}  {{ .CommonAnnotations.summary }}\n"
-    text: "{{range .Alerts }}\nDescription: {{ .Annotations.description }}\n{{ range .Labels.SortedPairs }} {{ .Name }}: {{ .Value }}\n{{end}}Metrics: <{{ .GeneratorURL}}| Click here>\n{{ end }}"
-{%endraw%}
+    channel: '#{{alertmanager_slack_channel}}'
+    title: "{{alertmanager_alert_subject_head}}:{%raw%} {{ .Status | toUpper }}  {{ .CommonAnnotations.summary }}\n"{%endraw%}
+    text: {%raw%}"{{range .Alerts }}\nDescription: {{ .Annotations.description }}\n{{ range .Labels.SortedPairs }} {{ .Name }}: {{ .Value }}\n{{end}}Metrics: <{{ .GeneratorURL}}| Click here>\n{{ end }}"{%endraw%}
+{%endif%}
