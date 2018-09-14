@@ -1,10 +1,9 @@
 # Use public servers from the pool.ntp.org project.
 # Please consider joining the pool (http://www.pool.ntp.org/join.html).
-server 10.36.51.1 iburst
-server ntp1.aliyun.com iburst
-server 210.72.145.44 iburst
-server 202.112.10.36 iburst
-server 59.124.196.83 iburst
+{%for ntpserver in chrony_upstream_ntpservers%}
+server {{ntpserver}} iburst
+{%endfor%}
+
 # Record the rate at which the system clock gains/losses time.
 driftfile /var/lib/chrony/drift
 
