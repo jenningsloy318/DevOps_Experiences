@@ -35,7 +35,7 @@
 - name: create blackbox_exporter conf file 
   template:
     src: blackbox_exporter.yml.j2
-    dest: /etc/blackbox_exporter/blackbox_exporter.yml
+    dest: /etc/prometheus/blackbox_exporter.yml
   register: blackbox_exporter_conf
 - name: create ca  cert  file 
   copy:

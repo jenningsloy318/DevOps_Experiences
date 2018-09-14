@@ -2,7 +2,7 @@
 Description=blackbox_exporter  service
 
 [Service]
-ExecStart=/usr/bin/blackbox_exporter --config.file=/etc/blackbox_exporter/blackbox_exporter.yml 
+ExecStart=/usr/bin/blackbox_exporter --config.file=/etc/prometheus/blackbox_exporter.yml 
 Restart=always
 RestartSec=2s
 StartLimitInterval=0
