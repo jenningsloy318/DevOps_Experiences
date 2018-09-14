@@ -1,6 +1,0 @@
----
-- name: configure selinux configure 
-  lineinfile: dest=/etc/sysconfig/selinux regexp="^SELINUX=" line="SELINUX=disabled"
-- name: disable selinux
-  shell: if  [ `getenforce` != 'Disabled'  ] ;then setenforce 0 ;fi
-# selinux: state=disabled

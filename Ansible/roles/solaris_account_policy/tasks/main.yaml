@@ -1,7 +1,0 @@
----
-- name: install security files
-  copy: src={{ item.src }} dest={{ item.dest }}  owner=root group=root mode=0644
-  with_items:
-  - {src: 'login',dest: '/etc/default/login'}
-  - {src: 'passwd',dest: '/etc/default/passwd'}
-  - {src: 'policy.conf',dest: '/etc/security/policy.conf'}

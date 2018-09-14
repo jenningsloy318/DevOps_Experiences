@@ -1,3 +1,0 @@
----
-ldap_base: "{%  if '10.84.135' in inventory_hostname or '10.88.135' in inventory_hostname %}'ou=SybaseDB,ou=DBA servers,ou=hyvesolutions.org,dc=synnex,dc=org'{% else %}'ou=SybaseDB,ou=DBA servers,dc=synnex,dc=org'{% endif %}"
-ldap_server_list: "{%  if '10.88' in inventory_hostname %}10.88.126.150,10.84.126.150,10.93.136.150{% elif '10.93' in inventory_hostname %}10.93.136.150,10.84.126.150,10.88.126.150{% elif '192.168' in inventory_hostname  %}192.168.18.150,10.93.136.150,10.88.126.150{% elif '10.84' in inventory_hostname  %}10.84.126.150,10.88.126.150,10.93.136.150{% endif %}"

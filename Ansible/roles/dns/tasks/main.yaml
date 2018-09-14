@@ -1,6 +1,0 @@
----
-- name: change permission
-  shell:  chattr -i /etc/resolv.conf
-  when: ansible_system == 'Linux'
-- name: copy configuration destination
-  copy: src={{ dns_resolv_src }}  dest=/etc/resolv.conf owner=root group=root mode=0644

@@ -1,6 +1,0 @@
----
-- name:  install fail2ban and psad packages
-  yum: name={{ item }}  state=present
-  with_items:
-  - psad
-  - fail2ban

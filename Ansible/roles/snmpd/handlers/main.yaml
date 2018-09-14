@@ -1,3 +1,0 @@
----
-- name: restart snmpd
-  service: name={{ snmpd_srvname }} state=restarted enabled=yes
