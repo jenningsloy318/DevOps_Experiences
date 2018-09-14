@@ -1,59 +1,55 @@
-- name: check if black_exporter is installed and its version 
-  shell: blackbox_exporter  --version 2>&1|grep blackbox_exporter | grep "{{blackbox_exporter_version}}"
-  register: blackbox_exporter
-  ignore_errors: yes
+- name: add prometheus repo
+  yum_repository:
+    name: prometheus
+    description: prometheus repo
+    baseurl: https://packagecloud.io/prometheus-rpm/release/el/7/$basearch
+    repo_gpgcheck: 1
+    enabled: 1
+    gpgkey: https://packagecloud.io/prometheus-rpm/release/gpgkey
+            https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm
+    gpgcheck: 1
+    sslverify: 1
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
 
-  
-- name: download blackbox_exporter binary 
-  get_url:
-    url: "{{ blackbox_exporter_binary_url}}"
-    dest: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64.tar.gz"
-  when:  blackbox_exporter.rc  != 0
+- name: install blackbox_exporter package
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+  - blackbox_exporter
 
-- name: Unarchive  telegraf binary 
-  unarchive:
-    src: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64.tar.gz"
-    dest: /tmp
-    remote_src: yes
-  when:  blackbox_exporter.rc  != 0
-  
 - name: create blackbox_exporter conf dir
   file:
-    path: /etc/blackbox_exporter/
+    path: /etc/prometheus/
     state: directory
     mode: 0755
 
-
-- name: copy blackbox_exporter binary
-  copy:
-    src: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64/blackbox_exporter"
-    dest: /usr/bin
-    remote_src: yes
-    mode: 0755
-  when:  blackbox_exporter.rc  != 0
 
 - name: create blackbox_exporter service file
   copy:
     src: blackbox_exporter.service
     dest: /lib/systemd/system/blackbox_exporter.service
-
+  register: blackbox_exporter_service
 
 - name: create blackbox_exporter conf file 
   template:
     src: blackbox_exporter.yml.j2
     dest: /etc/blackbox_exporter/blackbox_exporter.yml
-    
+  register: blackbox_exporter_conf
 - name: create ca  cert  file 
   copy:
     src: ca.pem
     dest: "{{blackbox_exporter_ca_path}}"
 
-- name: start blackbox_exporter 
+- name: restart blackbox_exporter 
   systemd: 
     name: blackbox_exporter 
     state: restarted 
     enabled: yes
     daemon_reload: yes
+  when: blackbox_exporter_conf is changed or blackbox_exporter_service is changed
+
 - name: add firewalld rules
   firewalld:
     zone: public
