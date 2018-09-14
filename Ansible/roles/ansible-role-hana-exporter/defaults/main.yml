@@ -1,5 +1,5 @@
 hana_exporter_version: 0.10.0
-hana_exporter_rpm_url: https://github.com/jenningsloy318/hana_exporter/releases/download/{{hana_exporter_version}}/hana_exporter-{{hana_exporter_version}}-0.x86_64.rpm
-hana_exporter_deb_url: https://github.com/jenningsloy318/hana_exporter/releases/download/{{hana_exporter_version}}/hana-exporter_{{hana_exporter_version}}-0_amd64.deb
+hana_exporter_rpm_url: https://github.com/jenningsloy318/hana_exporter/releases/download/{{hana_exporter_version}}/hana_exporter-{{hana_exporter_version}}-1.x86_64.rpm
+hana_exporter_deb_url: https://github.com/jenningsloy318/hana_exporter/releases/download/{{hana_exporter_version}}/hana-exporter_{{hana_exporter_version}}-1_amd64.deb
 hana_monitor_user:
 hana_monitor_password:

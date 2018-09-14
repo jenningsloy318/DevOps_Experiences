@@ -1,8 +1,4 @@
 ---
-- name: check hana_exporter existence and version
-  shell: /usr/bin/hana_exporter  --version >/dev/stdout 2>&1 |grep hana_exporter|awk '{print $3}'|grep {{ hana_exporter_version }}
-  register: hana_exporter
-  ignore_errors: yes
 
 - name: Define hana_exporter_package_url
   set_fact:
@@ -18,7 +14,6 @@
   package:
     name: "{{ hana_exporter_package_url }}"
     state: present
-  when: hana_exporter.rc  != 0 
 
 
 
@@ -29,8 +24,7 @@
     mode: 0755
     owner: hana_exporter
     group: prometheus
-  notify: 
-    restart_hana_exporter
+  register: hana_exporter_conf
   
 - name: restart hana_exporter service
   systemd: 
@@ -38,4 +32,5 @@
     state:  restarted 
     enabled:  yes
     daemon_reload:  yes
+  when: hana_exporter_conf is changed
 
