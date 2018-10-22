@@ -1,12 +1,15 @@
 ---
 - import_tasks: set_vars.yaml
 
-- name: check version
-  shell: /usr/bin/telegraf  version |grep -i telegraf |grep {{ telegraf_rpm_version }}
-  register: telegraf
-  ignore_errors: yes
-
-- debug: var=telegraf.stdout_lines
+- name: add repo on RHEL/CentOS
+  yum_repository:
+    name: InfluxDB Repository - RHEL \$releasever
+    description: InfluxDB Repository 
+    baseurl: https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://repos.influxdata.com/influxdb.key
+  when: ansible_os_family == "RedHat"  
 
 - name: install depenency packages
   package:
@@ -27,55 +30,19 @@
   when: ansible_os_family == "Suse"  
   
 
-- name: install  telegraf packages
+- name: install  telegraf packages on RHEL/CentOS
   package:
-    name: "{{ item}}"
+    name: telegraf
     state: latest
-  with_items:
-    - "{{ telegraf_rpm_url }}"
-  when: ansible_os_family == "RedHat"  and telegraf.rc != 0
-
-- name: download telegraf binary 
-  get_url:
-    url: "{{ telegraf_bin_url}}"
-    dest: "/tmp/telegraf-{{ telegraf_rpm_version }}_linux_amd64.tar.gz"
-  when: ansible_os_family == "Suse" and telegraf.rc  != 0
-
-  
-- name: Unarchive  telegraf binary 
-  unarchive:
-    src: "/tmp/telegraf-{{ telegraf_rpm_version }}_linux_amd64.tar.gz"
-    dest: /tmp
-    remote_src: yes
-  when: ansible_os_family == "Suse" and telegraf.rc  != 0
+  when: ansible_os_family == "RedHat" 
 
 
-- name: ensure telegraf group exist 
-  group:
+- name: install  telegraf packages on Suse
+  package:
     name: telegraf
-    state: present
-  when: ansible_os_family == "Suse" 
-
-- name: ensure telegraf user exist 
-  user:
-    name: telegraf
-    shell: /bin/false
-    createhome: no
-    home: /etc/telegraf
-    group: telegraf
-    system: yes
-  when: ansible_os_family == "Suse" 
-
-- name: copy binary files
-  shell: cp -r  "{{item.src}}" "{{item.dest}}"
-  with_items:
-  - {src: '/tmp/telegraf/etc/telegraf', dest: '/etc',owner: 'telegraf',group: 'telegraf'}
-  - {src: '/tmp/telegraf/usr/bin/telegraf', dest: '/usr/bin'}
-  - {src: '/tmp/telegraf/var/log/telegraf',dest: '/var/log/',owner: 'telegraf',group: 'telegraf'}
-  when: ansible_os_family == "Suse" 
-  ignore_errors: yes
-
-
+    state: latest
+    skip_broken: yes
+  when: ansible_os_family == "RedHat" 
   
 
 - name: configure ipmi permission 
@@ -88,8 +55,6 @@
 
 - name: apply ipmi conf
   shell: udevadm control --reload-rules && udevadm trigger
-
-
 
 - name: create telegraf conf  
   template: 

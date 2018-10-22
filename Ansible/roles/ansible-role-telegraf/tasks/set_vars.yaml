@@ -1,9 +1,15 @@
 - name: Define telegraf conf source.
   set_fact:
-    telegraf_conf_src: telegraf-vm.conf.j2
-  when:  ansible_virtualization_role == 'guest'
+    telegraf_conf_src: telegraf-vm-host.conf.j2
+  when:  ansible_virtualization_role == 'guest'  and telegraf_vc_url is not  defined and telegraf_vc_username is not defined and  telegraf_vc_password  is  not  defined
 
 - name: Define telegraf conf source.
   set_fact:
-    telegraf_conf_src: telegraf-bm.conf.j2
-  when: ansible_virtualization_role == 'host'
+    telegraf_conf_src: telegraf-bm-host.conf.j2
+  when: ansible_virtualization_role == 'host'  and telegraf_vc_url is not  defined and telegraf_vc_username is not defined and  telegraf_vc_password    is not defined
+
+- name: Define telegraf conf source.
+  set_fact:
+    telegraf_conf_src: telegraf-vcenter.conf.j2
+  when: telegraf_vc_url is defined and telegraf_vc_username is defined and  telegraf_vc_password is defined
+  
