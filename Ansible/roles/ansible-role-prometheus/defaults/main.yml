@@ -13,3 +13,4 @@ prometheus_job_list:
 - { 'job_name': 'hana', 'metrics_path': '/hana','hana_exporter_host': '192.168.0.1'}
 - { 'job_name': 'blackbox', 'metrics_path': '/probe','blackbox_exporter_host':'192.168.0.1'}
 - { 'job_name': 'nginx', 'metrics_path': '/metrics'}
+- { 'job_name': 'vcenter', 'metrics_path': '/metrics'}
