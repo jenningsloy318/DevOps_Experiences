@@ -28,7 +28,7 @@ scrape_configs:
 {%endif%}
 
 {% if job.job_name == 'telegraf' %}
-- job_name: 'tegraf nodes'
+- job_name: 'tegraf'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/telegraf-targets.yml']
@@ -87,6 +87,14 @@ scrape_configs:
   file_sd_configs:
   - files: ['tgroups/nginx-targets.yml']
 {%endif%}
+
+{% if job.job_name == 'netapp-harvest' %}
+- job_name: 'netapp-harvest'
+  metrics_path: {{ job.metrics_path }}
+  file_sd_configs:
+  - files: ['tgroups/netapp.yml']
+{%endif%}
+
 {%endfor%}
 
 alerting:
