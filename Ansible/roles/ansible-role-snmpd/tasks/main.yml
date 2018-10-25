@@ -1,11 +1,31 @@
---- 
+---
 - name: ensure snmpd is installed
-  pkg:
+  yum:
     name: "{{ item }}"
     state: "present"
   with_items:
     - net-snmp
     - net-snmp-utils
+  when: ansible_os_family == "RedHat"    
+- name: ensure snmpd is installed
+  zypper:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - net-snmp
+  when: ansible_os_family == "Suse"
+
+- name: ensure snmpd is installed
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - snmpd 
+    - snmp
+    - snmp-mibs-downloader
+  when: ansible_os_family == "Debian"    
+
+
 - name: config  snmpd  
   template:
     src: "snmpd.conf.j2"
@@ -13,10 +33,29 @@
     owner: "root"
     group: "root"
     mode: 0644
-  notify: "restart snmpd"
-- name: starting and enabling snmpd service
+
+- name: restart and enable snmpd service
   systemd:
     name: "snmpd"
-    state: "started"
+    state: "restarted"
     enabled: yes
     daemon_reload: yes
+
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 161/udp
+    permanent: true
+    state: enabled
+  when: ansible_os_family == "RedHat"
+
+- name: reload firewalld
+  shell: firewall-cmd --reload  
+  when: ansible_os_family == "RedHat"    
+
+- name: add ufw rules
+  ufw:
+    rule: allow
+    port: 161
+    proto: udp
+  when: ansible_distribution == "Ubuntu"
