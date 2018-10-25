@@ -1,0 +1,16 @@
+
+- name: run the playbook tasks on the localhost
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+  - ansible-role-netapp-harvest
+  vars: 
+  - netapp_ocum_and_cluster_mon_user: user
+  - netapp_ocum_and_cluster_mon_pass: pass
+  - graphite_exporter_address: host
+  - graphite_exporter_port: 8080
+  - netapp_cluster_hostname: host
+  - netapp_cluster_group: suning
+  - netapp_ocum_hostname: host
+  - netapp_ocum_group: suning
