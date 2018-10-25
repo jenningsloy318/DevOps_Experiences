@@ -1,0 +1,75 @@
+- name:  extract netapp-harvest
+  unarchive:
+    src: netapp-harvest_1.4.1.zip
+    dest: /tmp
+
+- name: install netapp harvest
+  apt:
+    deb: /tmp/netapp-harvest_1.4.1_all.deb
+    state: present
+  when: ansible_os_family == "Debian"    
+
+- name: install netapp harvest
+  yum:
+    name: /tmp/netapp-harvest-1.4.1-1.noarch.rpm
+    state: present
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Suse" 
+- name: copy netapp-manageability-sdk
+  copy: 
+    src: netapp-manageability-sdk-9.4.zip
+    dest: /tmp
+- name: extrat the netapp-manageability-sdk file to harvest installation 
+  shell: unzip -of -j /tmp/netapp-manageability-sdk-9.4.zip netapp-manageability-sdk-9.4/lib/perl/NetApp/* -d /opt/netapp-harvest/lib
+  args:
+    warn: false 
+
+- name: configure netapp-harvest
+  template:
+    src: netapp-harvest.conf.j2
+    dest: /opt/netapp-harvest/netapp-harvest.conf
+    owner: netapp-harvest
+    group: netapp-harvest
+
+- name: check if graphite_exporter is installed
+  shell: graphite_exporter   --version >/dev/stdout 2>&1|grep "graphite_exporter_version"
+  register: graphite_exporter_stat
+  ignore_errors: yes
+
+- name: download  graphite_exporter
+  get_url:
+    url: "{{graphite_exporter_bin_url}}"
+    dest: "/tmp/graphite_exporter-{{graphite_exporter_version}}.linux-amd64.tar.gz"
+    mode: 0440
+  when: graphite_exporter_stat.rc != 0
+- name: stop graphite_export if alredy running
+  systemd:
+    name: graphite_exporter
+    state: stopped
+  when: graphite_exporter_stat.rc != 0
+  ignore_errors: yes
+
+- name: extract graphite exporter
+  shell: tar  --strip-components=1 --exclude="NOTICE" --exclude="LICENSE" -xvf "/tmp/graphite_exporter-{{graphite_exporter_version}}.linux-amd64.tar.gz" -C /usr/bin/
+  args:
+    warn: false 
+  ignore_errors: yes
+  when: graphite_exporter_stat.rc != 0
+
+- name: install the service file for graphite_exporter 
+  copy:
+    src: graphite_exporter.service
+    dest: /lib/systemd/system/graphite_exporter.service
+
+- name: restart graphite_exporter
+  systemd:
+    name: graphite_exporter
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart netapp-harvest
+  systemd:
+    name: netapp-harvest
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

@@ -1,0 +1,10 @@
+netapp_ocum_and_cluster_mon_user:
+netapp_ocum_and_cluster_mon_pass:
+graphite_exporter_address:
+graphite_exporter_port:
+netapp_cluster_hostname:
+netapp_cluster_group:
+netapp_ocum_hostname:
+netapp_ocum_group:
+graphite_exporter_version: 0.3.0
+graphite_exporter_bin_url: https://github.com/prometheus/graphite_exporter/releases/download/v{{graphite_exporter_version}}/graphite_exporter-{{graphite_exporter_version}}.linux-amd64.tar.gz

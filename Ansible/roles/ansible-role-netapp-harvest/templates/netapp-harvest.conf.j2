@@ -1,0 +1,88 @@
+##
+## Configuration file for NetApp Harvest
+##
+## This file is organized into multiple sections, each with a [] header
+##
+## There are two reserved section names:
+##  [global]  - Global key/value pairs for installation
+##  [default] - Any key/value pairs specified here will be the default
+##              value for a poller should it not be listed in a poller section.
+##
+## Any other section names are for your own pollers:
+##  [cluster-name]     - cDOT cluster (match name from cluster CLI prompt)
+##  [7-mode-node-name] - 7-mode node name (match name from 7-mode CLI prompt)
+##  [OCUM-hostname]    - OCUM server hostname (match hostname set to system)
+
+## Quick Start Instructions:
+## 1. Edit the [global] and [default] sections and replace values in all
+##    capital letters to match your installation details
+## 2. For each system to monitor add a section header and  populate with
+##    key/value parameters for it.
+## 3. Start all pollers that are not running: /opt/netapp-harvest/netapp-manager start
+##
+## Note: Full instructions and list of all available key/value pairs is found in the
+##       NetApp Harvest Administration Guide
+
+##
+#### Global section for installation wide settings
+##
+[global]
+grafana_api_key   = INSERT_LONG_KEY_HERE
+grafana_url       = INSERT_URL_OF_GRAFANA_WEB_INTERFACE_HERE
+
+##
+#### Default section to set defaults for any user created poller section
+##
+[default]
+username          = {{netapp_ocum_and_cluster_mon_user}}
+password          = {{netapp_ocum_and_cluster_mon_pass}}
+
+## graphite exporter address and port info
+graphite_enabled  = 1
+graphite_server   = {{graphite_exporter_address}}
+graphite_port     = {{graphite_exporter_port}}
+graphite_proto    = tcp
+normalized_xfer   = mb_per_sec
+normalized_time   = millisec
+graphite_root     =  default
+graphite_meta_metrics_root  = default
+
+
+## If using ssl_cert (and not password auth)
+## uncomment and populate next three lines
+# auth_type         = ssl_cert
+# ssl_cert          = INSERT_PEM_FILE_NAME_HERE
+# ssl_key           = INSERT_KEY_FILE_NAME_HERE
+
+#====== NetApp OnCommand Insight output plugin setup defaults ==================
+# To manage (create or update) OCI agent tokens and generate
+# settings below, run script util/netapp-oci-setup
+# oci_enabled       = 1
+# oci_url           = https://INSERT_IP_OR_HOSTNAME_OF_OCI_SERVER_HERE
+# oci_agent_token   = INSERT_AGENT_TOKEN_FOR_OCI_SERVER_HERE
+# oci_namespaces    = volume:node,volume,system:node
+
+##
+#### Poller sections; Add one section for each cDOT cluster, 7-mode node, or OCUM server
+#### If any keys are different from those in default duplicate them in the poller section to override.
+##
+
+# [INSERT_CLUSTER_OR_CONTROLLER_NAME_HERE_EXACTLY_AS_SHOWN_FROM_CLI_PROMPT]
+# hostname       = INSERT_IP_ADDRESS_OR_HOSTNAME_OF_CONTROLLER_OR_CLUSTER_LIF_HERE
+# group          = INSERT_GROUP_IDENTIFIER_HERE
+[cluster]
+hostname = {{ netapp_cluster_hostname }} 
+group = {{netapp_cluster_group}}
+
+# [INSERT_OCUM_SERVER_NAME_HERE]
+# hostname          = INSERT_IP_ADDRESS_OR_HOSTNAME_OF_OCUM_SERVER
+# group             = INSERT_GROUP_IDENTIFIER_HERE
+# host_type         = OCUM
+# data_update_freq  = 900
+# normalized_xfer   = gb_per_sec
+[ocum]
+hostname = {{netapp_ocum_hostname}}
+group = {{netapp_ocum_group}}
+host_type = OCUM
+data_update_freq = 300
+normalized_xfer = gb_per_sec
