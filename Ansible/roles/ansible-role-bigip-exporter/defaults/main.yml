@@ -1,2 +1,4 @@
-blackbox_exporter_version: 1.0.0
-blackbox_exporter_binary_url: https://github.com/ExpressenAB/bigip_exporter/releases/download/{{blackbox_exporter_version}}/bigip_exporter-{{blackbox_exporter_version}}.linux-amd64.tar.gz
+bigip_exporter_version: 1.0.0
+bigip_exporter_binary_url: https://github.com/jenningsloy318/bigip_exporter/releases/download/{{bigip_exporter_version}}/bigip_exporter-{{bigip_exporter_version}}.linux-amd64.tar.gz
+bigip_targets:
+- {"host":"default", "user":"user","pass":"pass","basic_auth":"false"}

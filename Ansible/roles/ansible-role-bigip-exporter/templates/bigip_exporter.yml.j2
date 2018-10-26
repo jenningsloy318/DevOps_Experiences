@@ -1,0 +1,7 @@
+credentials:
+{% for conn in bigip_targets%}
+    {{conn.host}}:
+        user: {{conn.user}} 
+        pass: {{conn.pass}} 
+        basic_auth: {{conn.basic_auth}}
+{% endfor%}

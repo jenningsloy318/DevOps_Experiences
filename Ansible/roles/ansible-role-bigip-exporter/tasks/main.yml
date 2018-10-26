@@ -1,63 +1,62 @@
-- name: check if black_exporter is installed and its version 
-  shell: blackbox_exporter  --version|grep blackbox_exporter | grep "{{blackbox_exporter_version}}"
-  register: blackbox_exporter
+- name: check if bigip_exporter is installed and its version 
+  shell: bigip_exporter --version>/dev/stdout 2>&1|grep bigip_exporter | grep "{{bigip_exporter_version}}"
+  register: bigip_exporter
   ignore_errors: yes
 
   
-- name: download blackbox_exporter binary 
+- name: download bigip_exporter binary 
   get_url:
-    url: "{{ blackbox_exporter_binary_url}}"
-    dest: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64.tar.gz"
-  when:  blackbox_exporter.rc  != 0
+    url: "{{ bigip_exporter_binary_url}}"
+    dest: "/tmp/bigip_exporter-{{bigip_exporter_version}}.linux-amd64.tar.gz"
+  when:  bigip_exporter.rc  != 0
 
 - name: Unarchive  telegraf binary 
   unarchive:
-    src: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64.tar.gz"
+    src: "/tmp/bigip_exporter-{{bigip_exporter_version}}.linux-amd64.tar.gz"
     dest: /tmp
     remote_src: yes
-  when:  blackbox_exporter.rc  != 0
+  when:  bigip_exporter.rc  != 0
   
-- name: create blackbox_exporter conf dir
+- name: create bigip_exporter conf dir
   file:
-    path: /etc/blackbox_exporter/
+    path: /etc/prometheus/
     state: directory
     mode: 0755
 
-
-- name: copy blackbox_exporter binary
+- name: stop bigip_exporter if possible
+  systemd:
+    name: bigip_exporter
+    state: stopped
+  when: bigip_exporter.rc  != 0
+- name: copy bigip_exporter binary
   copy:
-    src: "/tmp/blackbox_exporter-{{blackbox_exporter_version}}.linux-amd64/blackbox_exporter"
+    src: "/tmp/bigip_exporter-{{bigip_exporter_version}}.linux-amd64/bigip_exporter"
     dest: /usr/bin
     remote_src: yes
     mode: 0755
-  when:  blackbox_exporter.rc  != 0
+  when:  bigip_exporter.rc  != 0
 
-- name: create blackbox_exporter service file
+- name: create bigip_exporter service file
   copy:
-    src: blackbox_exporter.service
-    dest: /lib/systemd/system/blackbox_exporter.service
+    src: bigip_exporter.service
+    dest: /lib/systemd/system/bigip_exporter.service
 
 
-- name: create blackbox_exporter conf file 
+- name: create bigip_exporter conf file 
   template:
-    src: blackbox_exporter.yml.j2
-    dest: /etc/blackbox_exporter/blackbox_exporter.yml
-    
-- name: create examp-ca   file 
-  copy:
-    src: examp-ca.pem
-    dest: "{{blackbox_exporter_examp_ca_path}}"
+    src: bigip_exporter.yml.j2
+    dest: /etc/prometheus/bigip_exporter.yml
 
-- name: start blackbox_exporter 
+- name: start bigip_exporter 
   systemd: 
-    name: blackbox_exporter 
+    name: bigip_exporter 
     state: restarted 
     enabled: yes
     daemon_reload: yes
 - name: add firewalld rules
   firewalld:
     zone: public
-    port: 9115/tcp
+    port: 9142/tcp
     permanent: true
     state: enabled
 - name: reload firewalld

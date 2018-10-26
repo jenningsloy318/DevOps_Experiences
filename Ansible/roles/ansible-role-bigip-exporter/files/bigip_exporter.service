@@ -1,8 +1,8 @@
 [Unit]
-Description=blackbox_exporter   to monitor tm1
+Description=bigip_exporter to monitor F5 BigIP 
 
 [Service]
-ExecStart=/usr/bin/bigip_exporter --exporter.config /etc/bigip_exporter/bigip_exporter_tm1.yml
+ExecStart=/usr/bin/bigip_exporter --config.file=/etc/bigip_exporter/bigip_exporter.yml
 Restart=always
 RestartSec=2s
 StartLimitInterval=0
