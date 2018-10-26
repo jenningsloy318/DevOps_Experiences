@@ -55,6 +55,16 @@
   ignore_errors: yes
   when: graphite_exporter_stat.rc != 0
 
+- name: enesure graphite conf dir exist
+  file:
+    path: /etc/prometheus
+    state: directory
+    mode: 0755
+- name: copy the grahpite_exporter conf
+  copy:
+    src: graphite.yml
+    dest: /etc/prometheus/graphite.yml
+    mode: 755
 - name: install the service file for graphite_exporter 
   copy:
     src: graphite_exporter.service

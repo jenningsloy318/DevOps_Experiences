@@ -1,0 +1,14 @@
+
+[Unit]
+Description=graphite exporter service
+
+[Service]
+ExecStart=/usr/bin/graphite_exporter --graphite.mapping-config=/etc/prometheus/graphite.yml
+Restart=always
+RestartSec=2s
+StartLimitInterval=0
+KillMode=process
+[Install]
+WantedBy=multi-user.target
+
+

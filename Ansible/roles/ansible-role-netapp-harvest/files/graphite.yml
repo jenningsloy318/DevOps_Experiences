@@ -1,0 +1,136 @@
+mappings:
+- match: 'netapp.perf.*.*.node.*.aggr.*.*.*.*'
+  name: netapp_perf_node_aggr_disk_${7}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    aggr: $4
+    plex: $5
+    disk_type: $6
+- match: 'netapp.perf.*.*.node.*.aggr.*.*.*'
+  name:  netapp_perf_node_aggr_plex_${6}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    aggr: $4
+    plex: $5
+- match: 'netapp.perf.*.*.node.*.aggr.*.*'
+  name:  netapp_perf_aggr_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    aggr: $4
+- match: 'netapp.perf.*.*.node.*.aggr.*'
+  name:  netapp_perf_node_agrr_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.eth_port.*'
+  name:  netapp_perf_node_eth_port_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.flashpool.*'
+  name:  netapp_perf_node_flashpool_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.nfsv3.*'
+  name:  netapp_perf_node_nfsv3_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.processor.*'
+  name:  netapp_perf_node_processor_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.system.*'
+  name:  netapp_perf_node_system_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.vol_summary.*'
+  name:  netapp_perf_node_vol_summary_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.wafl.*'
+  name:  netapp_perf_node_wafl_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.iscsi.*'
+  name:  netapp_perf_node_iscsi_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.svm.*.lif.*'
+  name:  netapp_perf_svm_lif_${4}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+- match: 'netapp.perf.*.*.svm.*.iscsi.*'
+  name:  netapp_perf_svm_iscsi_${4}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+- match: 'netapp.perf.*.*.svm.*.iscsi_lif.*'
+  name:  netapp_perf_svm_svm_iscsi_lif_${4}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+- match: 'netapp.perf.*.*.svm.*.nfsv3.*'
+  name:  netapp_perf_svm_nfsv3_${4}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+- match: 'netapp.perf.*.*.svm.*.qos_policy.*'
+  name:  netapp_perf_svm_qos_policy_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.svm.*.vol.*.*'
+  name:  netapp_perf_svm_vol_qos_policy_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    vol: $4
+- match: 'netapp.perf.*.*.svm.*.vol.*'
+  name:  netapp_perf_svm_vol_${5}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    vol: $4
+
+- match: 'netapp.perf.*.*.svm.*.vol_summary.*'
+  name:  netapp_perf_svm_vol_summary_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+
+- match: 'netapp.poller.perf.*.*.*.*'
+  name:  netapp_poller_perf_${3}_${4}
+  labels:
+    group: $1
+    cluster: $2
