@@ -1,0 +1,12 @@
+credentials:
+{% for conn in ipmi_targets%}
+    {{conn.host}}:
+        user: {{conn.user}} 
+        pass: {{conn.pass}} 
+{% endfor%}
+
+{% for id in ipmi_exclude_sensor_ids %} 
+exclude_sensor_ids:
+  - {{id}}
+{% endfor %}
+

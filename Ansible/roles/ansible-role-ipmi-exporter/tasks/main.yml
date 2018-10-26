@@ -1,0 +1,64 @@
+- name: check if ipmi_exporter is installed and its version 
+  shell: ipmi_exporter --version>/dev/stdout 2>&1|grep ipmi_exporter | grep "{{ipmi_exporter_version}}"
+  register: ipmi_exporter
+  ignore_errors: yes
+
+  
+- name: download ipmi_exporter binary 
+  get_url:
+    url: "{{ ipmi_exporter_binary_url}}"
+    dest: "/tmp/ipmi_exporter-{{ipmi_exporter_version}}.linux-amd64.tar.gz"
+  when:  ipmi_exporter.rc  != 0
+
+- name: Unarchive  telegraf binary 
+  unarchive:
+    src: "/tmp/ipmi_exporter-{{ipmi_exporter_version}}.linux-amd64.tar.gz"
+    dest: /tmp
+    remote_src: yes
+  when:  ipmi_exporter.rc  != 0
+  
+- name: create ipmi_exporter conf dir
+  file:
+    path: /etc/prometheus/
+    state: directory
+    mode: 0755
+
+- name: stop ipmi_exporter if possible
+  systemd:
+    name: ipmi_exporter
+    state: stopped
+  when: ipmi_exporter.rc  != 0
+- name: copy ipmi_exporter binary
+  copy:
+    src: "/tmp/ipmi_exporter-{{ipmi_exporter_version}}.linux-amd64/ipmi_exporter"
+    dest: /usr/bin
+    remote_src: yes
+    mode: 0755
+  when:  ipmi_exporter.rc  != 0
+
+- name: create ipmi_exporter service file
+  copy:
+    src: ipmi_exporter.service
+    dest: /lib/systemd/system/ipmi_exporter.service
+
+
+- name: create ipmi_exporter conf file 
+  template:
+    src: ipmi_exporter.yml.j2
+    dest: /etc/prometheus/ipmi_exporter.yml
+
+- name: start ipmi_exporter 
+  systemd: 
+    name: ipmi_exporter 
+    state: restarted 
+    enabled: yes
+    daemon_reload: yes
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 9142/tcp
+    permanent: true
+    state: enabled
+- name: reload firewalld
+  shell: firewall-cmd --reload    
+    
