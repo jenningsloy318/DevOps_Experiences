@@ -1,0 +1,18 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+
+# list of datasources to insert/update depending
+# what's available in the database
+datasources:
+{% for ds in grafana_provisioning_datasources %}
+- name: {{ ds.name }}
+  tyep: {{ ds.type }}
+  access: {{ ds.access }}
+  orgId: {{ ds.orgId }}
+  url: {{ ds.url }}
+  isDefault： {{ ds.isDefault }}
+  editable: {{ ds.editable }}
+  version: {{ ds.version }}
+{% endfor %}

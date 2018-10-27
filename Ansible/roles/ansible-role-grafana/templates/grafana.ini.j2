@@ -42,7 +42,7 @@ domain = localhost
 enforce_domain = false
 
 # The full public facing url
-root_url = {{grafana_ext_url }}
+root_url = {{grafana_root_url }}
 
 # Log web requests
 router_logging = false
@@ -66,36 +66,36 @@ socket = /tmp/grafana.sock
 # as separate properties or as on string using the url property.
 
 # Either "mysql", "postgres" or "sqlite3", it's your choice
-type = postgres
-host = {{grafana_pgsql_host}}
-name = {{grafana_pgsql_dbname}}
-user = {{grafana_pgsql_dbuser}}
+{% if grafana_db_type == sqlite3 %}
+type = {{ grafana_db_type}}
+path = grafana.db
+{% else  %}
+type = {{grafana_db_type}}
+host = {{grafana_db_host}}
+name = {{grafana_db_dbname}}
+user = {{grafana_db_dbuser}}
+ssl_mode = {{grafana_db_ssl_mode}}
+{% endif %}
 # If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
 password = {{grafana_pgsql_dbpass}}
 # Use either URL or the previous fields to configure the database
 # Example: mysql://user:secret@host:port/database
-url =
 
 # Max conn setting default is 0 (mean not set)
 max_idle_conn =
 max_open_conn =
 
-# For "postgres", use either "disable", "require" or "verify-full"
-# For "mysql", use either "true", "false", or "skip-verify".
-ssl_mode = disable
+
 
 ca_cert_path =
 client_key_path =
 client_cert_path =
 server_cert_name =
 
-# For "sqlite3" only, path relative to data_path setting
-path = grafana.db
-
 #################################### Session #############################
 [session]
 # Either "memory", "file", "redis", "mysql", "postgres", "memcache", default is "file"
-provider = postgres
+provider = file
 
 # Provider config options
 # memory: not have any config yet
@@ -108,7 +108,7 @@ provider = postgres
 # memcache: 127.0.0.1:11211
 
 
-provider_config = user={{grafana_pgsql_dbuser}} password={{grafana_pgsql_dbpass}} host={{grafana_pgsql_host}} port=5432 dbname={{grafana_pgsql_dbname}} sslmode=disable
+provider_config = sessions
 
 
 # Session cookie name
@@ -307,18 +307,27 @@ allow_sign_up = true
 
 #################################### SMTP / Emailing #####################
 [smtp]
+{% if grafana_smtp_enabled  %}
 enabled = true
 host = {{grafana_smtp_host}}
 
-user = 
+{% if grafana_smtp_auth_enabled %}
+user = {{grafana_smtp_auth_user}}
 # If the password contains # or ; you have to wrap it with trippel quotes. Ex """#password;"""
-password =
-cert_file =
-key_file =
-skip_verify = false
-from_address = {{grafana_smtp_from_address}}
-from_name = Grafana
+password = {{grafana_smtp_auth_password}}
+{% endif %}
 
+skip_verify = {{grafana_smtp_ssl_verify}}
+
+
+from_address = {{grafana_smtp_from_address}}
+
+from_name = {{ grafana_smtp_from_name }}
+{% endif %}
+
+{% else %}
+enabled = false
+{% endif %}
 [emails]
 welcome_email_on_sign_up = false
 templates_pattern = emails/*.html
@@ -390,7 +399,7 @@ exchange = grafana_events
 #################################### Dashboard JSON files ################
 [dashboards.json]
 enabled = false
-path = {{grafana_dashpoard_path}}
+path = 
 
 #################################### Usage Quotas ########################
 [quota]

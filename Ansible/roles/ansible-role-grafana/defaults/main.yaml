@@ -3,14 +3,17 @@ grafana_rpm_url: https://s3-us-west-2.amazonaws.com/grafana-releases/release/gra
 grafana_data_path: 
 grafana_log_path:
 grafana_plugins_path:
+grafana_provisioning_path:
 grafana_dashpoard_path:
 grafana_protocol: 
 grafana_http_port: 
+grafana_root_url:
 
-grafana_pgsql_host:
-grafana_pgsql_dbname:
-grafana_pgsql_dbuser:
-grafana_pgsql_dbpass: 
+grafana_db_type:
+grafana_db_host:
+grafana_db_dbname:
+grafana_db_dbuser:
+grafana_db_ssl_mode:
 
 grafana_admin_user:
 grafana_admin_password:
@@ -20,4 +23,22 @@ grafana_smtp_host:
 grafana_smtp_auth_enabled:
 grafana_smtp_auth_user:
 grafana_smtp_auth_password:
+grafana_smtp_skip_ssl_verify: 
 grafana_smtp_from_address:
+grafana_smtp_from_name:
+
+grafana_provisioning_prometheus_datasources:
+- {"name": "prometheus","type": "Prometheus AlertManager","access": "proxy","orgId": 1,"url": "http://loclahost:9090","isDefault": true,"editable": true,"version": 1}
+- {"name": "alertmanager","type": "prometheus","access": "proxy","orgId": 1,"url": "http://loclahost:9090","isDefault": true,"editable": true,"version": 1}
+grafana_provisioning_es_datasources:
+- {"name": "elasticsearch-waf","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "waf-request-*","jsonData": {"esVersion": 56,"timeField": "@timestamp","timeInterval":10}, "isDefault": true,"editable": true,"version": 1}
+- {"name": "elasticsearch-fmc","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "fw-logs-*","jsonData": {"esVersion": 56,"timeField": "@timestamp","timeInterval":10}, "isDefault": true,"editable": true,"version": 1}
+
+
+
+grafana_provisioning_dashboards:
+- {"name": "Host Monitor","orgId": 1,"folder": "Host Monitor","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"path": "{{ grafana_dashpoard_path }}/host_monitor" }
+- {"name": "HANA","orgId": 1,"folder": "HANA","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"path": "{{ grafana_dashpoard_path }}/hana" }
+- {"name": "Firewall","orgId": 1,"folder": "Firewall","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"path": "{{ grafana_dashpoard_path }}/firewall" }
+- {"name": "General","orgId": 1,"folder": "General","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"path": "{{ grafana_dashpoard_path }}/general" }
+- {"name": "Alerts","orgId": 1,"folder": "Alerts","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"path": "{{ grafana_dashpoard_path }}/alerts" }
