@@ -11,6 +11,7 @@
   package: 
     name: "/tmp/grafana-{{grafana_version}}.x86_64.rpm"
     state: installed
+
 - name: install grafana conf
   template:
     src: grafana.ini.j2
@@ -33,10 +34,12 @@
 
 - name: create datasources provisioning file
   template:
-    src: datasources.yaml.j2
+    src: "{{item}}"
     dest: "{{ grafana_dashpoard_provisioning_path }}/datasources"
     owner: grafana
     group: grafana
+  with_fileglob:
+   - "files/*-datasource.yaml.j2"
 
 - name: create dashboards provisioning file
   template:
@@ -44,33 +47,32 @@
     dest: "{{ grafana_dashpoard_provisioning_path }}/dashboards"
     owner: grafana
     group: grafana
-
-- name: modify grafana-server service file (1)
-  lineinfile:
-    path: /etc/sysconfig/grafana-server
-    regexp: '^LOG_DIR='
-    line: 'LOG_DIR={{grafana_log_path }}'
-    state: present
-
-- name: modify grafana-server service file (2)
-  lineinfile:
-    path: /etc/sysconfig/grafana-server
-    regexp: '^DATA_DIR='
-    line: 'DATA_DIR={{grafana_data_path}}'
-    state: present    
-
-- name: modify grafana-server service file (3)
-  lineinfile:
-    path: /etc/sysconfig/grafana-server
-    regexp: '^PLUGINS_DIR='
-    line: 'PLUGINS_DIR={{grafana_plugins_path }}'
-    state: present    
-- name: update dashboard provisioning setting
-  copy:
-    src: "{{item}}"
-    dest: "{{grafana_dashpoard_provisioning_path}}/dashboards"
+  with_fileglob:
+  - "files/*dashboards.yaml.j2"
+  
+- name: ensure dashboards directories exist
+  file:
+    path: "{{item.options.path}}"
+    state: directory
+    owner: grafana
+    group: grafana
   with_items:
-  - 
+  - "{{ grafana_provisioning_dashboards }}"
+
+- name: install the dashboards
+  unarchive:
+    src: "{{item.name}}-Dashboards.zip"
+    dest: "{{ item.options.path)}}"
+  with_items:
+  - "{{grafana_provisioning_dashboards }}"
+
+- name : install prometheus alertmanager datasource plugin
+  unarchive:
+    src: "{{ grafana_prometheus_alertmanager_datasource_url }}"
+    dest: "{{ grafana_plugins_path }}"
+    remote_src: yes
+    owner: grafana
+    group: grafana
 
 - name: start grafana  
   systemd: 

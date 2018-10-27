@@ -1,7 +1,7 @@
 ipmi_exporter_version: 1.0.0
 ipmi_exporter_binary_url: https://github.com/jenningsloy318/ipmi_exporter/releases/download/{{ipmi_exporter_version}}/ipmi_exporter-{{ipmi_exporter_version}}.linux-amd64.tar.gz
 ipmi_targets:
-- {"host":"default", "user":"user","pass":"pass"}
+- {"host": "default", "user": "user","pass": "pass"}
 ipmi_exclude_sensor_ids:
 - 2
 - 29

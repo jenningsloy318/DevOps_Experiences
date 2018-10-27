@@ -1,0 +1,1037 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_ES-WAF-REQUEST",
+      "label": "es-waf-request",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "elasticsearch",
+      "pluginName": "Elasticsearch"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "version": "5.0.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "5.0.4"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": "5.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "columns": [],
+      "datasource": "${DS_ES-WAF-REQUEST}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 19,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "POLICY_NAME",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "POLICY_NAME.keyword",
+          "type": "string"
+        },
+        {
+          "alias": "REQUEST_STATUS",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "REQUEST_STATUS.keyword",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "POLICY_NAME.keyword",
+              "id": "4",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "5"
+              },
+              "type": "terms"
+            },
+            {
+              "fake": true,
+              "field": "REQUEST_STATUS.keyword",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "5"
+              },
+              "type": "terms"
+            }
+          ],
+          "expr": "",
+          "format": "table",
+          "intervalFactor": 1,
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "REQUEST_STATUS: \"blocked\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Blocks",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_ES-WAF-REQUEST}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 20,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "SRC_IP",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "CLIENT_IP.keyword",
+          "type": "string"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "CLIENT_IP.keyword",
+              "id": "5",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "5"
+              },
+              "type": "terms"
+            }
+          ],
+          "expr": "",
+          "format": "table",
+          "intervalFactor": 1,
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "REQUEST_STATUS: \"blocked\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Firewall Denied IP",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_ES-WAF-REQUEST}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 6,
+        "w": 7,
+        "x": 0,
+        "y": 6
+      },
+      "id": 21,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "REQUEST_STATUS",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "REQUEST_STATUS.keyword",
+          "type": "string"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "REQUEST_STATUS.keyword",
+              "id": "5",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "5"
+              },
+              "type": "terms"
+            }
+          ],
+          "expr": "",
+          "format": "table",
+          "intervalFactor": 1,
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Request Status Summary",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_ES-WAF-REQUEST}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 7,
+        "y": 6
+      },
+      "id": 22,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "VIOLATIONS",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "VIOLATIONS.keyword",
+          "type": "string"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "VIOLATIONS.keyword",
+              "id": "5",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "5"
+              },
+              "type": "terms"
+            }
+          ],
+          "expr": "",
+          "format": "table",
+          "intervalFactor": 1,
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Top Violations",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_ES-WAF-REQUEST}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 15,
+        "y": 6
+      },
+      "id": 23,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "VIOLATIONS",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "VIOLATIONS.keyword",
+          "type": "string"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "ATTACK_TYPE.keyword",
+              "id": "5",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_count",
+                "size": "5"
+              },
+              "type": "terms"
+            }
+          ],
+          "expr": "",
+          "format": "table",
+          "intervalFactor": 1,
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Top Attacts",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 12,
+      "panels": [
+        {
+          "columns": [
+            {
+              "text": "timestamp",
+              "value": "timestamp"
+            },
+            {
+              "text": "POLICY_NAME",
+              "value": "POLICY_NAME"
+            },
+            {
+              "text": "POLICY_APPLY_DATE",
+              "value": "POLICY_APPLY_DATE"
+            },
+            {
+              "text": "REQUEST_STATUS",
+              "value": "REQUEST_STATUS"
+            },
+            {
+              "text": "SEVERITY",
+              "value": "SEVERITY"
+            },
+            {
+              "text": "DEST_IP",
+              "value": "DEST_IP"
+            },
+            {
+              "text": "DESP_PORT",
+              "value": "DESP_PORT"
+            },
+            {
+              "text": "URI",
+              "value": "URI"
+            },
+            {
+              "text": "VIOLATIONS",
+              "value": "VIOLATIONS"
+            },
+            {
+              "text": "VIOLATION_RATING",
+              "value": "VIOLATION_RATING"
+            },
+            {
+              "text": "SEVERITY",
+              "value": "SEVERITY"
+            },
+            {
+              "text": "SUPPORT_ID",
+              "value": "SUPPORT_ID"
+            },
+            {
+              "text": "METHOD",
+              "value": "METHOD"
+            }
+          ],
+          "datasource": "es-f5-request",
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 13
+          },
+          "id": 16,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": true
+          },
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "bucketAggs": [],
+              "expr": "",
+              "format": "table",
+              "intervalFactor": 1,
+              "metrics": [
+                {
+                  "field": "select field",
+                  "id": "1",
+                  "meta": {},
+                  "settings": {
+                    "size": 500
+                  },
+                  "type": "raw_document"
+                }
+              ],
+              "query": "POLICY_NAME:\"/Common/vs_grafana_3000\"",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Grafana",
+          "transform": "json",
+          "type": "table"
+        }
+      ],
+      "title": "F5 LOG - Grafana",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 9,
+      "panels": [
+        {
+          "columns": [
+            {
+              "text": "timestamp",
+              "value": "timestamp"
+            },
+            {
+              "text": "POLICY_NAME",
+              "value": "POLICY_NAME"
+            },
+            {
+              "text": "POLICY_APPLY_DATE",
+              "value": "POLICY_APPLY_DATE"
+            },
+            {
+              "text": "REQUEST_STATUS",
+              "value": "REQUEST_STATUS"
+            },
+            {
+              "text": "SEVERITY",
+              "value": "SEVERITY"
+            },
+            {
+              "text": "DEST_IP",
+              "value": "DEST_IP"
+            },
+            {
+              "text": "DESP_PORT",
+              "value": "DESP_PORT"
+            },
+            {
+              "text": "URI",
+              "value": "URI"
+            },
+            {
+              "text": "VIOLATIONS",
+              "value": "VIOLATIONS"
+            },
+            {
+              "text": "VIOLATION_RATING",
+              "value": "VIOLATION_RATING"
+            },
+            {
+              "text": "SEVERITY",
+              "value": "SEVERITY"
+            },
+            {
+              "text": "SUPPORT_ID",
+              "value": "SUPPORT_ID"
+            },
+            {
+              "text": "METHOD",
+              "value": "METHOD"
+            }
+          ],
+          "datasource": "es-f5-request",
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 14
+          },
+          "id": 13,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": true
+          },
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "bucketAggs": [],
+              "expr": "",
+              "format": "table",
+              "intervalFactor": 1,
+              "metrics": [
+                {
+                  "field": "select field",
+                  "id": "1",
+                  "meta": {},
+                  "settings": {
+                    "size": 500
+                  },
+                  "type": "raw_document"
+                }
+              ],
+              "query": "POLICY_NAME:\"/Common/vs_hana_qa_8000\"",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "HANA QA",
+          "transform": "json",
+          "type": "table"
+        }
+      ],
+      "title": "F5 LOG - HANA QA",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 7,
+      "panels": [],
+      "title": "F5 Log - HANA PROD",
+      "type": "row"
+    },
+    {
+      "columns": [
+        {
+          "text": "timestamp",
+          "value": "timestamp"
+        },
+        {
+          "text": "POLICY_NAME",
+          "value": "POLICY_NAME"
+        },
+        {
+          "text": "POLICY_APPLY_DATE",
+          "value": "POLICY_APPLY_DATE"
+        },
+        {
+          "text": "REQUEST_STATUS",
+          "value": "REQUEST_STATUS"
+        },
+        {
+          "text": "SEVERITY",
+          "value": "SEVERITY"
+        },
+        {
+          "text": "DEST_IP",
+          "value": "DEST_IP"
+        },
+        {
+          "text": "DESP_PORT",
+          "value": "DESP_PORT"
+        },
+        {
+          "text": "URI",
+          "value": "URI"
+        },
+        {
+          "text": "VIOLATIONS",
+          "value": "VIOLATIONS"
+        },
+        {
+          "text": "VIOLATION_RATING",
+          "value": "VIOLATION_RATING"
+        },
+        {
+          "text": "SEVERITY",
+          "value": "SEVERITY"
+        },
+        {
+          "text": "SUPPORT_ID",
+          "value": "SUPPORT_ID"
+        },
+        {
+          "text": "METHOD",
+          "value": "METHOD"
+        },
+        {
+          "text": "ATTACK_TYPE",
+          "value": "ATTACK_TYPE"
+        }
+      ],
+      "datasource": "${DS_ES-WAF-REQUEST}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 10,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "bucketAggs": [],
+          "expr": "",
+          "format": "table",
+          "intervalFactor": 1,
+          "metrics": [
+            {
+              "field": "select field",
+              "id": "1",
+              "meta": {},
+              "settings": {
+                "size": 500
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "POLICY_NAME:\"/Common/vs_hana_prod_8000\"",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "HANA Prod",
+      "transform": "json",
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 2,
+      "panels": [
+        {
+          "columns": [
+            {
+              "text": "timestamp",
+              "value": "timestamp"
+            },
+            {
+              "text": "POLICY_NAME",
+              "value": "POLICY_NAME"
+            },
+            {
+              "text": "POLICY_APPLY_DATE",
+              "value": "POLICY_APPLY_DATE"
+            },
+            {
+              "text": "REQUEST_STATUS",
+              "value": "REQUEST_STATUS"
+            },
+            {
+              "text": "SEVERITY",
+              "value": "SEVERITY"
+            },
+            {
+              "text": "DEST_IP",
+              "value": "DEST_IP"
+            },
+            {
+              "text": "DESP_PORT",
+              "value": "DESP_PORT"
+            },
+            {
+              "text": "URI",
+              "value": "URI"
+            },
+            {
+              "text": "VIOLATIONS",
+              "value": "VIOLATIONS"
+            },
+            {
+              "text": "VIOLATION_RATING",
+              "value": "VIOLATION_RATING"
+            },
+            {
+              "text": "SEVERITY",
+              "value": "SEVERITY"
+            },
+            {
+              "text": "SUPPORT_ID",
+              "value": "SUPPORT_ID"
+            },
+            {
+              "text": "METHOD",
+              "value": "METHOD"
+            }
+          ],
+          "datasource": "es-f5-request",
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 16
+          },
+          "id": 5,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": true
+          },
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "bucketAggs": [],
+              "expr": "",
+              "format": "table",
+              "intervalFactor": 1,
+              "metrics": [
+                {
+                  "field": "select field",
+                  "id": "1",
+                  "meta": {},
+                  "settings": {
+                    "size": 500
+                  },
+                  "type": "raw_document"
+                }
+              ],
+              "query": "POLICY_NAME:\"/Common/vs_staging_8000\"",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "HANA Staging",
+          "transform": "json",
+          "type": "table"
+        }
+      ],
+      "title": "F5 LOG - HANA Staging",
+      "type": "row"
+    }
+  ],
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now/M",
+    "to": "now/M"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "WAF Log",
+  "uid": "pOSLCYdmz",
+  "version": 17
+}

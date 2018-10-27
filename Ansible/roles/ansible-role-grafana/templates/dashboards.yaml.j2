@@ -1,20 +1,13 @@
 apiVersion: 1
 
 providers:
-- name: 'Host Monitor'
-  orgId: 1
-  folder: 'Host'
-  type: file
-  disableDeletion: false
-  updateIntervalSeconds: 10 #how often Grafana will scan for changed dashboards
+{% for dashboard in grafana_provisioning_dashboards %}
+- name: {{ dashboard.name }}
+  orgId: {{ dashboard.orgId }}
+  folder: {{ dashboard.folder }}
+  type: {{ dashboard.type }}
+  disableDeletion: {{ dashboard.disableDeletion }}
+  updateIntervalSeconds: {{ dashboard.updateIntervalSeconds }}
   options:
-    path: {{ grafana_dashpoard_path}}/host_monitor
-
-- name: 'HANA Monitor'
-  orgId: 1
-  folder: 'HANA'
-  type: file
-  disableDeletion: false
-  updateIntervalSeconds: 10 #how often Grafana will scan for changed dashboards
-  options:
-    path: {{ grafana_dashpoard_path}}/host_monitor
+    path: {{ dashboard.options.path }}
+{% endfor %}
