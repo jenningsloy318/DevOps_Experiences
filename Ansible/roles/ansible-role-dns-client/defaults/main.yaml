@@ -1,0 +1,12 @@
+dns_nameservers:
+- 114.114.114.114
+
+dns_searchs:
+- abc.com
+- abc.net
+
+dns_domain: abc.com
+
+options:
+- option1
+- option2
