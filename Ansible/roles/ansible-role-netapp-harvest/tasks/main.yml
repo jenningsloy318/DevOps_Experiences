@@ -119,7 +119,7 @@
   args:
     warn: false 
   register: journalctl_graphite_exporter
-- debug: var=journalctl_graphite_exporter.std_outlines
+- debug: var=journalctl_graphite_exporter.stdout_lines
 - name: restart netapp-harvest
   systemd:
     name: netapp-harvest
@@ -131,4 +131,4 @@
   args:
     warn: false 
   register: journalctl_netapp_harvest
-- debug: var=journalctl_netapp_harvest.std_outlines
+- debug: var=journalctl_netapp_harvest.stdout_lines
