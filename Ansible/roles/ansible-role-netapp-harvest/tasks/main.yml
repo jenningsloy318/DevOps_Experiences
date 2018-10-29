@@ -114,10 +114,21 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-
+- name: show service result 
+  shell: journalctl -u graphite_exporter 
+  args:
+    warn: false 
+  register: journalctl_graphite_exporter
+- debug: var=journalctl_graphite_exporter.std_outlines
 - name: restart netapp-harvest
   systemd:
     name: netapp-harvest
     state: restarted
     enabled: yes
     daemon_reload: yes
+- name: show service result 
+  shell: journalctl -u netapp-harvest 
+  args:
+    warn: false 
+  register: journalctl_netapp_harvest
+- debug: var=journalctl_netapp_harvest.std_outlines
