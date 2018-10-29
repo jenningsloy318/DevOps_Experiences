@@ -3,6 +3,38 @@
     src: netapp-harvest_1.4.1.zip
     dest: /tmp
 
+- name: install netapp-harvest dependency
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+  - epel-release
+  - unzip
+  - perl
+  - perl-JSON
+  - perl-libwww-perl 
+  - perl-XML-Parser
+  - perl-Net-SSLeay 
+  - perl-Time-HiRes
+  - perl-LWP-Protocol-https 
+  - perl-IO-Socket-SSL
+  - perl-Excel-Writer-XLSX
+  when: ansible_os_family == "RedHat"  
+
+- name: install netapp-harvest dependency 
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+  - unzip 
+  - perl 
+  - libjson-perl 
+  - libwww-perl
+  - libxml-parser-perl
+  - liblwp-protocol-https-perl
+  - libexcel-writer-xlsx-perl
+  when: ansible_os_family == "Debian"    
+
 - name: install netapp harvest
   apt:
     deb: /tmp/netapp-harvest_1.4.1_all.deb
