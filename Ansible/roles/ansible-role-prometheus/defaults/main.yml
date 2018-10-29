@@ -4,7 +4,7 @@ alertmanager_addrs:
 prometheus_storage_tsdb_path: 
 prometheus_storage_tsdb_retention:
 
-prometheus_job_list:
+prometheus_file_sd_job_list:
 - { 'job_name': 'prometheus', 'metrics_path': '/metrics'}
 - { 'job_name': 'alertmanager', 'metrics_path': '/metrics'}
 - { 'job_name': 'grafana', 'metrics_path': '/metrics'}
@@ -15,3 +15,13 @@ prometheus_job_list:
 - { 'job_name': 'nginx', 'metrics_path': '/metrics'}
 - { 'job_name': 'vcenter', 'metrics_path': '/metrics'}
 - { 'job_name': 'netapp-harvest', 'metrics_path': '/metrics'}
+
+
+prometheus_consul_sd_job_list:
+- { 'job_name': 'prometheus', 'metrics_path': '/metrics','consule_server': 'localhost:8500','consule_token': 'dfslfk','consule_datacenter': 'sc','consule_services': ['service1','service2'],'tag': 'prometheus','consule_node_meta': {'key1': 'value1','key2': 'value2'},'consule_allow_stale': 'true','refresh_interval': '10s'}
+
+prometheus_file_sd_alertmanager_list:
+- /etc/prometheus/alertmanagers.yml
+
+prometheus_consul_sd_alertmanager_list:
+- {'consule_server': 'localhost:8500','consule_token': 'dfslfk','consule_datacenter': 'sc','consule_services': ['service1','service2'],'tag': 'alertmanager','consule_node_meta': {'key1': 'value1','key2': 'value2'},'consule_allow_stale': 'true','refresh_interval': '10s'}
