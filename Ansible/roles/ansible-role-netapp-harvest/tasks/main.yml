@@ -58,6 +58,8 @@
   args:
     warn: false 
     chdir: /tmp
+  register: extract_sdk
+- debug: var=extract_sdk.stdout_lines
 
 - name: configure netapp-harvest
   template:
