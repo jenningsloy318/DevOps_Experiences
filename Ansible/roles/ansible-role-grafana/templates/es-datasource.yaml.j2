@@ -19,7 +19,7 @@ datasources:
     esVersion: {{ ds.jsonData.timeField }}
     timeField: {{ ds.jsonData.timeField|default("@timestamp") }}
     timeInterval: {{ds.jsonData.timeInterval|default("10")}}
-  isDefault： {{ ds.isDefault }}
+  isDefault: {{ ds.isDefault }}
   editable: {{ ds.editable }}
   version: {{ ds.version }}
 {% endfor %}

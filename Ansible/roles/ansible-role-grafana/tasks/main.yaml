@@ -39,7 +39,7 @@
 - name: create datasources provisioning file
   template:
     src: "{{item}}"
-    dest: "{{ grafana_provisioning_path }}/datasources"
+    dest: "{{ grafana_provisioning_path }}/datasources/{{ item | basename | regex_replace('.j2') }}"
     owner: grafana
     group: grafana
   with_fileglob:
