@@ -62,7 +62,7 @@
 - name: install the dashboards
   unarchive:
     src: "{{item.name}}-Dashboards.zip"
-    dest: "{{ item.options.path)}}"
+    dest: "{{ item.options.path }}"
   with_items:
   - "{{grafana_provisioning_dashboards }}"
 
