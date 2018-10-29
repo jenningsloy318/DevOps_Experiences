@@ -18,6 +18,7 @@
     dest: /etc/grafana/grafana.ini
     owner: grafana
     group: grafana
+  register: grafana_conf
 
 
 - name: create required directories 
@@ -85,6 +86,7 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
+  when: grafana_conf is changed
 - name: add firewalld rules
   firewalld:
     zone: public
