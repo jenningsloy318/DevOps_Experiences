@@ -1,4 +1,4 @@
-grafana_version: 5.0.4-1
+grafana_version: 5.3.2-1
 grafana_rpm_url: https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-{{grafana_version}}.x86_64.rpm 
 grafana_data_path: 
 grafana_log_path:
