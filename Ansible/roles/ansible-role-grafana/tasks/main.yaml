@@ -90,3 +90,10 @@
 - name: reload firewalld 
   shell: firewall-cmd --reload
   when: ansible_os_family == "RedHat"
+
+- name: show service restart result 
+  shell: journalctl -u grafana-server 
+  args:
+    warn: false 
+  register: journalctl_grafana_server
+- debug: var=journalctl_grafana_server.stdout_lines
