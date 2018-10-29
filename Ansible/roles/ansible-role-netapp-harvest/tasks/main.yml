@@ -54,7 +54,7 @@
     src: netapp-manageability-sdk-9.4.zip
     dest: /tmp
 - name: extrat the netapp-manageability-sdk file to harvest installation 
-  shell:  unzip -of -j netapp-manageability-sdk-9.4.zip netapp-manageability-sdk-9.4/lib/perl/NetApp/* -d /opt/netapp-harvest/lib
+  shell:  unzip -j netapp-manageability-sdk-9.4.zip netapp-manageability-sdk-9.4/lib/perl/NetApp/* -d /opt/netapp-harvest/lib
   args:
     warn: false 
     chdir: /tmp
