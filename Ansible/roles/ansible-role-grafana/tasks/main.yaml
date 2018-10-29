@@ -28,9 +28,9 @@
   - "{{ grafana_data_path }}"
   - "{{ grafana_log_path }}"
   - "{{ grafana_plugins_path }}"
-  - "{{ grafana_dashpoard_provisioning_path }}"
-  - "{{ grafana_dashpoard_provisioning_path }}/datasources"
-  - "{{ grafana_dashpoard_provisioning_path }}/dashboards"
+  - "{{ grafana_provisioning_path }}"
+  - "{{ grafana_provisioning_path }}/datasources"
+  - "{{ grafana_provisioning_path }}/dashboards"
 
 - name: create datasources provisioning file
   template:
