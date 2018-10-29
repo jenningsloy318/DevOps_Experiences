@@ -67,6 +67,7 @@
     dest: /opt/netapp-harvest/netapp-harvest.conf
     owner: netapp-harvest
     group: netapp-harvest
+  register: netapp_harvert_conf
 
 - name: check if graphite_exporter is installed
   shell: graphite_exporter   --version >/dev/stdout 2>&1|grep "graphite_exporter_version"
@@ -103,17 +104,19 @@
     src: graphite.yml
     dest: /etc/prometheus/graphite.yml
     mode: 755
+  register: grahpite_exporter_conf
 - name: install the service file for graphite_exporter 
   copy:
     src: graphite_exporter.service
     dest: /lib/systemd/system/graphite_exporter.service
-
+  register: grahpite_exporter_svc
 - name: restart graphite_exporter
   systemd:
     name: graphite_exporter
     state: restarted
     enabled: yes
     daemon_reload: yes
+  when: grahpite_exporter_conf is changed or grahpite_exporter_svc is changed
 - name: show service result 
   shell: journalctl -u graphite_exporter 
   args:
@@ -126,6 +129,7 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
+  when: netapp_harvert_conf is changed
 - name: show service result 
   shell: journalctl -u netapp-harvest 
   args:
