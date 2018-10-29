@@ -27,7 +27,7 @@ grafana_smtp_skip_ssl_verify:
 grafana_smtp_from_address:
 grafana_smtp_from_name:
 grafana_prometheus_alertmanager_datasource_version: 0.0.6
-grafana_prometheus_alertmanager_datasource_url: https://github.com/camptocamp/grafana-prometheus-alertmanager-datasource/archive/{{grafana_prometheus_alertmanager_datasource_version}}.zip
+grafana_prometheus_alertmanager_datasource_url: "https://github.com/camptocamp/grafana-prometheus-alertmanager-datasource/archive/{{grafana_prometheus_alertmanager_datasource_version}}.zip"
 grafana_provisioning_prometheus_datasources:
 - {"name": "prometheus","type": "prometheus","access": "proxy","orgId": 1,"url": "http://loclahost:9090","isDefault": true,"editable": true,"version": 1}
 grafana_provisioning_es_datasources:

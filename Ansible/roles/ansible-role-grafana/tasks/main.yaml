@@ -16,6 +16,9 @@
   template:
     src: grafana.ini.j2
     dest: /etc/grafana/grafana.ini
+    owner: grafana
+    group: grafana
+
 
 - name: create required directories 
   file: 
@@ -35,20 +38,20 @@
 - name: create datasources provisioning file
   template:
     src: "{{item}}"
-    dest: "{{ grafana_dashpoard_provisioning_path }}/datasources"
+    dest: "{{ grafana_provisioning_path }}/datasources"
     owner: grafana
     group: grafana
   with_fileglob:
-   - "files/*-datasource.yaml.j2"
+   - "templates/*-datasource.yaml.j2"
 
 - name: create dashboards provisioning file
   template:
     src: dashboards.yaml.j2
-    dest: "{{ grafana_dashpoard_provisioning_path }}/dashboards"
+    dest: "{{ grafana_provisioning_path }}/dashboards"
     owner: grafana
     group: grafana
   with_fileglob:
-  - "files/*dashboards.yaml.j2"
+  - "templates/*dashboards.yaml.j2"
   
 - name: ensure dashboards directories exist
   file:
@@ -63,6 +66,8 @@
   unarchive:
     src: "{{item.name}}-Dashboards.zip"
     dest: "{{ item.options.path }}"
+    owner: grafana
+    group: grafana
   with_items:
   - "{{grafana_provisioning_dashboards }}"
 
