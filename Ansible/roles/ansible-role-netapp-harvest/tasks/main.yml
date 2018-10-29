@@ -1,7 +1,3 @@
-- name:  extract netapp-harvest
-  unarchive:
-    src: netapp-harvest_1.4.1.zip
-    dest: /tmp
 
 - name: install netapp-harvest dependency
   yum:
@@ -36,6 +32,11 @@
   - liblwp-protocol-https-perl
   - libexcel-writer-xlsx-perl
   when: ansible_os_family == "Debian"    
+  
+- name:  extract netapp-harvest
+  unarchive:
+    src: netapp-harvest_1.4.1.zip
+    dest: /tmp
 
 - name: install netapp harvest
   apt:
