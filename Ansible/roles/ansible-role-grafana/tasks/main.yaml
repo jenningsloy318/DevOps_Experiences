@@ -47,8 +47,8 @@
 
 - name: create dashboards provisioning file
   template:
-    src: dashboards.yaml.j2
-    dest: "{{ grafana_provisioning_path }}/dashboards"
+    src: "{{item}}"
+    dest: "{{ grafana_provisioning_path }}/dashboards/{{ item | basename | regex_replace('.j2') }}"
     owner: grafana
     group: grafana
   with_fileglob:
