@@ -7,6 +7,7 @@
   yum:
     name: "{{item}}"
     state: present
+    update_cache: yes
   with_items:
   - epel-release
   - unzip
@@ -19,6 +20,7 @@
   - perl-LWP-Protocol-https 
   - perl-IO-Socket-SSL
   - perl-Excel-Writer-XLSX
+
   when: ansible_os_family == "RedHat"  
 
 - name: install netapp-harvest dependency 
