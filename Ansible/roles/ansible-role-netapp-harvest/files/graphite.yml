@@ -1,13 +1,13 @@
 mappings:
 - match: 'netapp.perf.*.*.node.*.aggr.*.*.*.*'
-  name: netapp_perf_node_aggr_disk_${7}
+  name: netapp_perf_node_aggr_plex_rg_${7}
   labels:
     group: $1
     cluster: $2
     node: $3
     aggr: $4
     plex: $5
-    disk_type: $6
+    rg: $6
 - match: 'netapp.perf.*.*.node.*.aggr.*.*.*'
   name:  netapp_perf_node_aggr_plex_${6}
   labels:
@@ -17,7 +17,7 @@ mappings:
     aggr: $4
     plex: $5
 - match: 'netapp.perf.*.*.node.*.aggr.*.*'
-  name:  netapp_perf_aggr_${5}
+  name:  netapp_perf_node_aggr_${5}
   labels:
     group: $1
     cluster: $2
