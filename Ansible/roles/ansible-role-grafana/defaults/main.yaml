@@ -42,7 +42,7 @@ grafana_provisioning_alertmanager_datasources:
 
 
 grafana_provisioning_dashboards:
-- {"name": "Host","orgId": 1,"folder": "Host Monitor","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/host_monitor"} }
+- {"name": "Host","orgId": 1,"folder": "Host","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/host_monitor"} }
 - {"name": "HANA","orgId": 1,"folder": "HANA","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/hana"} }
 - {"name": "Firewall","orgId": 1,"folder": "Firewall","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/firewall"} }
 - {"name": "General","orgId": 1,"folder": "General","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/general"} }
