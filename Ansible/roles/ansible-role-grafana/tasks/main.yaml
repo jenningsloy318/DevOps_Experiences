@@ -44,6 +44,7 @@
     group: grafana
   with_fileglob:
    - "templates/*-datasource.yaml.j2"
+  register: grafana_provisioning_path_datasources
 
 - name: create dashboards provisioning file
   template:
@@ -53,6 +54,8 @@
     group: grafana
   with_fileglob:
   - "templates/*dashboards.yaml.j2"
+  register: grafana_provisioning_path_dashboards
+
   
 - name: ensure dashboards directories exist
   file:
@@ -86,7 +89,7 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-  when: grafana_conf is changed
+  when: grafana_conf is changed or grafana_provisioning_path_datasources is changed or grafana_provisioning_path_dashboards is changed
 - name: add firewalld rules
   firewalld:
     zone: public
