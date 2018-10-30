@@ -38,7 +38,7 @@ grafana_provisioning_es_datasources:
 
 grafana_provisioning_alertmanager_datasources:
 
-- {"name": "alertmanager","type": "Prometheus AlertManager","access": "proxy","orgId": 1,"url": "http://loclahost:9090","isDefault": false,"editable": true,"version": 1}
+- {"name": "alertmanager","type": "camptocamp-prometheus-alertmanager-datasource","access": "proxy","orgId": 1,"url": "http://loclahost:9090","isDefault": false,"editable": true,"version": 1,"jsonData": {"severity_critical": "Critical","severity_high": "High","severity_info": "Info","severity_warning": "Warning"} }
 
 
 grafana_provisioning_dashboards:

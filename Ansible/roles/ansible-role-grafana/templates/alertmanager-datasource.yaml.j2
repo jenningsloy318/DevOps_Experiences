@@ -15,4 +15,9 @@ datasources:
   isDefault: {{ ds.isDefault }}
   editable: {{ ds.editable }}
   version: {{ ds.version }}
+  jsonData: 
+    severity_critical: "{{ ds.jsonData.severity_critical }}"
+    severity_high: "{{ ds.jsonData.severity_high }}"
+    severity_info: "{{ ds.jsonData.severity_info }}"
+    severity_warning: "{{ ds.jsonData.severity_warning }}"
 {% endfor %}
