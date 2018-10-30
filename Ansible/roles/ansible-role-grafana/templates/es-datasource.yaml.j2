@@ -14,8 +14,8 @@ datasources:
   url: {{ ds.url }}
   database: "{{ds.database}}"
   jsonData:
-    esVersion: {{ ds.jsonData.esVersion }}
-    timeField: {{ ds.jsonData.timeField|default("@timestamp") }}
+    esVersion: "{{ ds.jsonData.esVersion }}"
+    timeField: "{{ ds.jsonData.timeField|default('@timestamp') }}"
   isDefault: {{ ds.isDefault }}
   editable: {{ ds.editable }}
   version: {{ ds.version }}
