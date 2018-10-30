@@ -1,0 +1,53 @@
+
+- name: run the playbook tasks on the localhost
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+  - ansible-role-grafana
+  vars:
+  - grafana_version: 5.3.2
+  - grafana_rpm_url: https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-{{grafana_version}}-1.x86_64.rpm
+  - grafana_data_path: /data/monitoring
+  - grafana_log_path: /data/monitoring/logs
+  - grafana_plugins_path: /data/monitoring/plugins
+  - grafana_provisioning_path: /data/monitoring/provisioning
+  - grafana_dashpoard_path: /data/monitoring/dashpoards
+  - grafana_protocol:  http
+  - grafana_http_port: 3000
+  - grafana_root_url:
+  - grafana_db_type: sqlite3
+  - grafana_db_host:
+  - grafana_db_dbname:
+  - grafana_db_dbuser:
+  - grafana_db_ssl_mode:
+  - grafana_admin_user: admin
+  - grafana_admin_password: admin123
+  - grafana_smtp_enabled: false
+  - grafana_smtp_host:
+  - grafana_smtp_auth_enabled:
+  - grafana_smtp_auth_user:
+  - grafana_smtp_auth_password:
+  - grafana_smtp_skip_ssl_verify:
+  - grafana_smtp_from_address:
+  - grafana_smtp_from_name:
+  - grafana_prometheus_alertmanager_datasource_version: 0.0.6
+  - grafana_prometheus_alertmanager_datasource_url: https://github.com/camptocamp/grafana-prometheus-alertmanager-datasource/archive/{{grafana_prometheus_alertmanager_datasource_version}}.zip
+  - grafana_provisioning_prometheus_datasources:
+    - {"name": "prometheus","type": "prometheus","access": "proxy","orgId": 1,"url": "http://10.36.52.179:9090","isDefault": true,"editable": true,"version": 1}
+  - grafana_provisioning_es_datasources:
+    - {"name": "elasticsearch-waf","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://IP:9200","database": "waf-request-*","jsonData": {"esVersion": 56,"timeField": "@timestamp"}, "isDefault": false,"editable": true,"version": 1}
+    - {"name": "elasticsearch-fmc","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://IP:9200","database": "fw-logs-*","jsonData": {"esVersion": 56,"timeField": "
+@timestamp"}, "isDefault": false,"editable": true,"version": 1}
+    - {"name": "es-filebeat-hana-services","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://IP:9200","database": "filebeat-hana-services-*","jsonData": {"esVersion": 56,"timeField": "@timestamp"}, "isDefault": false,"editable": true,"version": 1}
+    - {"name": "es-filebeat-hana-available","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://IP:9200","database": "filebeat-hana-available-*","jsonData": {"esVersion": 56,"timeField": "@timestamp"}, "isDefault": false,"editable": true,"version": 1}
+  - grafana_provisioning_alertmanager_datasources:
+    - {"name": "alertmanager","type": "camptocamp-prometheus-alertmanager-datasource","access": "proxy","orgId": 1,"url": "http://IP:9093","isDefault": false,"editable": true,"version": 1,"jsonData": {"severity_critical": "Critical","severity_high": "High","severity_info": "Info","severity_warning": "Warning"} }
+
+  - grafana_provisioning_dashboards:
+    - {"name": "Host","orgId": 1,"folder": "Host","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/host"} }
+    - {"name": "HANA","orgId": 1,"folder": "HANA","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/hana"} }
+    - {"name": "Firewall","orgId": 1,"folder": "Firewall","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/firewall"} }
+    - {"name": "General","orgId": 1,"folder": "General Overall","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/general
+"} }
+    - {"name": "Alerts","orgId": 1,"folder": "Alerts","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/alerts"} }
