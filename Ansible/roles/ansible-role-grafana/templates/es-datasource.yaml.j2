@@ -12,9 +12,7 @@ datasources:
   access: {{ ds.access }}
   orgId: {{ ds.orgId }}
   url: {{ ds.url }}
-  password：
-  user:
-  database:
+  database: {{ds.database}}
   jsonData:
     esVersion: {{ ds.jsonData.timeField }}
     timeField: {{ ds.jsonData.timeField|default("@timestamp") }}
