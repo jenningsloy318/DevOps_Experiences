@@ -1,16 +1,13 @@
-- name: check if rpm is download 
-  stat:
-    path: "/tmp/grafana-{{grafana_version}}.x86_64.rpm"
-- name: download the package
-  get_url:
-    url: "{{grafana_rpm_url}}"
-    dest: "/tmp/grafana-{{grafana_version}}.x86_64.rpm"
-    mode: 0440
-
 - name: install grafana
   package: 
-    name: "/tmp/grafana-{{grafana_version}}.x86_64.rpm"
+    name: "{{grafana_rpm_url}}"
     state: installed
+  register: result
+  until: '"failed" not in result'
+  retries: 5
+  delay: 10
+  when: ansible_os_family == 'RedHat'
+
 
 - name: install grafana conf
   template:
