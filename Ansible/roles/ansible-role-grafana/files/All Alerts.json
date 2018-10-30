@@ -1,34 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_ALERTMANAGER",
-      "label": "alertmanager",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "camptocamp-prometheus-alertmanager-datasource",
-      "pluginName": "Prometheus AlertManager"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "camptocamp-prometheus-alertmanager-datasource",
-      "name": "Prometheus AlertManager",
-      "version": "0.0.5"
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.0.4"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -50,7 +20,7 @@
   "panels": [
     {
       "columns": [],
-      "datasource": "${DS_ALERTMANAGER}",
+      "datasource": "alertmanager",
       "fontSize": "100%",
       "gridPos": {
         "h": 7,

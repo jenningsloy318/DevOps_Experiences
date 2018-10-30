@@ -1,34 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_ES-WAF-REQUEST",
-      "label": "es-waf-request",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "elasticsearch",
-      "pluginName": "Elasticsearch"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "elasticsearch",
-      "name": "Elasticsearch",
-      "version": "5.0.0"
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.0.4"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -50,7 +20,7 @@
   "panels": [
     {
       "columns": [],
-      "datasource": "${DS_ES-WAF-REQUEST}",
+      "datasource": "elasticsearch-waf",
       "fontSize": "100%",
       "gridPos": {
         "h": 6,
@@ -153,7 +123,7 @@
     },
     {
       "columns": [],
-      "datasource": "${DS_ES-WAF-REQUEST}",
+      "datasource": "elasticsearch-waf",
       "fontSize": "100%",
       "gridPos": {
         "h": 6,
@@ -229,7 +199,7 @@
     },
     {
       "columns": [],
-      "datasource": "${DS_ES-WAF-REQUEST}",
+      "datasource": "elasticsearch-waf",
       "fontSize": "100%",
       "gridPos": {
         "h": 6,
@@ -305,7 +275,7 @@
     },
     {
       "columns": [],
-      "datasource": "${DS_ES-WAF-REQUEST}",
+      "datasource": "elasticsearch-waf",
       "fontSize": "100%",
       "gridPos": {
         "h": 6,
@@ -381,7 +351,7 @@
     },
     {
       "columns": [],
-      "datasource": "${DS_ES-WAF-REQUEST}",
+      "datasource": "elasticsearch-waf",
       "fontSize": "100%",
       "gridPos": {
         "h": 6,
@@ -795,7 +765,7 @@
           "value": "ATTACK_TYPE"
         }
       ],
-      "datasource": "${DS_ES-WAF-REQUEST}",
+      "datasource": "elasticsearch-waf",
       "fontSize": "100%",
       "gridPos": {
         "h": 12,

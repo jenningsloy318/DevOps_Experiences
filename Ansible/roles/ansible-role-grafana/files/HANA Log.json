@@ -1,42 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_ES-FILEBEAT-HANA-SERVICES",
-      "label": "es-filebeat-hana-services",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "elasticsearch",
-      "pluginName": "Elasticsearch"
-    },
-    {
-      "name": "DS_ES-FILEBEAT-HANA-AVAILABLE",
-      "label": "es-filebeat-hana-available",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "elasticsearch",
-      "pluginName": "Elasticsearch"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "elasticsearch",
-      "name": "Elasticsearch",
-      "version": "5.0.0"
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.0.4"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -80,7 +42,7 @@
           "value": "CONTENT"
         }
       ],
-      "datasource": "${DS_ES-FILEBEAT-HANA-SERVICES}",
+      "datasource": "es-filebeat-hana-services",
       "fontSize": "100%",
       "gridPos": {
         "h": 20,
@@ -189,7 +151,7 @@
     },
     {
       "columns": [],
-      "datasource": "${DS_ES-FILEBEAT-HANA-AVAILABLE}",
+      "datasource": "es-filebeat-hana-available",
       "fontSize": "100%",
       "gridPos": {
         "h": 20,
@@ -291,7 +253,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_ES-FILEBEAT-HANA-SERVICES}",
+        "datasource": "es-filebeat-hana-services",
         "hide": 0,
         "includeAll": false,
         "label": null,
