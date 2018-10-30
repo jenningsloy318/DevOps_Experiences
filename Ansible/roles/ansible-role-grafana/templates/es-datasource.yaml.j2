@@ -8,13 +8,13 @@ apiVersion: 1
 datasources:
 {% for ds in grafana_provisioning_es_datasources %}
 - name: {{ ds.name }}
-  tyep: {{ ds.type }}
+  type: {{ ds.type }}
   access: {{ ds.access }}
   orgId: {{ ds.orgId }}
   url: {{ ds.url }}
-  database: {{ds.database}}
+  database: "{{ds.database}}"
   jsonData:
-    esVersion: {{ ds.jsonData.esVersion }}
+    esVersion: "{{ ds.jsonData.esVersion }}"
     timeField: {{ ds.jsonData.timeField|default("@timestamp") }}
     timeInterval: {{ds.jsonData.timeInterval|default("10")}}
   isDefault: {{ ds.isDefault }}

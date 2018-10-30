@@ -8,7 +8,7 @@ apiVersion: 1
 datasources:
 {% for ds in grafana_provisioning_alertmanager_datasources %}
 - name: {{ ds.name }}
-  tyep: {{ ds.type }}
+  type: {{ ds.type }}
   access: {{ ds.access }}
   orgId: {{ ds.orgId }}
   url: {{ ds.url }}
