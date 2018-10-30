@@ -8,10 +8,10 @@ apiVersion: 1
 datasources:
 {% for ds in grafana_provisioning_prometheus_datasources %}
 - name: {{ ds.name }}
-  type: {{ ds.type }}
-  access: {{ ds.access }}
+  type: "{{ ds.type }}"
+  access: "{{ ds.access }}"
   orgId: {{ ds.orgId }}
-  url: {{ ds.url }}
+  url: "{{ ds.url }}"
   isDefault: {{ ds.isDefault }}
   editable: {{ ds.editable }}
   version: {{ ds.version }}
