@@ -31,10 +31,10 @@ grafana_prometheus_alertmanager_datasource_url: "https://github.com/camptocamp/g
 grafana_provisioning_prometheus_datasources:
 - {"name": "prometheus","type": "prometheus","access": "proxy","orgId": 1,"url": "http://loclahost:9090","isDefault": true,"editable": true,"version": 1}
 grafana_provisioning_es_datasources:
-- {"name": "elasticsearch-waf","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "waf-request-*","jsonData": {"esVersion": 56,"timeField": "@timestamp","timeInterval":10}, "isDefault": false,"editable": true,"version": 1}
-- {"name": "elasticsearch-fmc","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "fw-logs-*","jsonData": {"esVersion": 56,"timeField": "@timestamp","timeInterval":10}, "isDefault": false,"editable": true,"version": 1}
-- {"name": "es-filebeat-hana-services","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "filebeat-hana-services-*","jsonData": {"esVersion": 56,"timeField": "@timestamp","timeInterval":10}, "isDefault": false,"editable": true,"version": 1}
-- {"name": "es-filebeat-hana-available","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "filebeat-hana-available-*","jsonData": {"esVersion": 56,"timeField": "@timestamp","timeInterval":10}, "isDefault": false,"editable": true,"version": 1}
+- {"name": "elasticsearch-waf","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "waf-request-*","jsonData": {"esVersion": 56,"timeField": "@timestamp"}, "isDefault": false,"editable": true,"version": 1}
+- {"name": "elasticsearch-fmc","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "fw-logs-*","jsonData": {"esVersion": 56,"timeField": "@timestamp",}, "isDefault": false,"editable": true,"version": 1}
+- {"name": "es-filebeat-hana-services","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "filebeat-hana-services-*","jsonData": {"esVersion": 56,"timeField": "@timestamp"}, "isDefault": false,"editable": true,"version": 1}
+- {"name": "es-filebeat-hana-available","type": "elasticsearch","access": "proxy","orgId": 1,"url": "http://loclahost:9090","database": "filebeat-hana-available-*","jsonData": {"esVersion": 56,"timeField": "@timestamp"}, "isDefault": false,"editable": true,"version": 1}
 
 grafana_provisioning_alertmanager_datasources:
 
