@@ -73,6 +73,9 @@ Example playbook: App.yml
       sudo: yes
 ```
 
+3. programmer tips 
+  - for templating files, if the content contains `{{ some conteent}}` which is not the ansible varaible, and we need to keep it as it is, we need add  `{%raw%} {{ some conteent}} {%endraw%}` to enclose them.
+
 Note for ansible-role-openstack
 ---
 
