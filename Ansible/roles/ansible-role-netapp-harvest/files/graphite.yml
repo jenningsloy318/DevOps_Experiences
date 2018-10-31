@@ -8,14 +8,22 @@ mappings:
     aggr: $4
     plex: $5
     rg: $6
-- match: 'netapp.perf.*.*.node.*.aggr.*.*.*'
-  name:  netapp_perf_node_aggr_plex_${6}
+- match: 'netapp.perf.*.*.node.*.aggr.*.plex0.*'
+  name:  netapp_perf_node_aggr_plex_${5}
   labels:
     group: $1
     cluster: $2
     node: $3
     aggr: $4
-    plex: $5
+    plex: plex0
+- match: 'netapp.perf.*.*.node.*.aggr.*.vol_summary.*'
+  name: netapp_perf_node_aggr_vol_sunmmay_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    aggr: $4
+
 - match: 'netapp.perf.*.*.node.*.aggr.*.*'
   name:  netapp_perf_node_aggr_${5}
   labels:
@@ -29,6 +37,13 @@ mappings:
     group: $1
     cluster: $2
     node: $3
+- match: 'netapp.perf.*.*.node.*.eth_port.*.*'
+  name:  netapp_perf_node_eth_port_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    interface: $4
 - match: 'netapp.perf.*.*.node.*.eth_port.*'
   name:  netapp_perf_node_eth_port_${4}
   labels:
@@ -41,12 +56,40 @@ mappings:
     group: $1
     cluster: $2
     node: $3
+- match: 'netapp.perf.*.*.node.*.flashcache.*.*'
+  name:  netapp_perf_node_flashcache_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    cache: $4
 - match: 'netapp.perf.*.*.node.*.nfsv3.*'
   name:  netapp_perf_node_nfsv3_${4}
   labels:
     group: $1
     cluster: $2
     node: $3
+- match: 'netapp.perf.*.*.node.*.headroom.aggr.*.*.*'
+  name:  netapp_perf_node_headroom_aggr_${6}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    aggr: $4
+    disk_type: $5
+- match: 'netapp.perf.*.*.node.*.headroom.processor.*'
+  name:  netapp_perf_node_headroom_processor_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.node.*.hostadapter.*.*'
+  name:  netapp_perf_node_hostadapter_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    hostadapter: $4
 - match: 'netapp.perf.*.*.node.*.processor.*'
   name:  netapp_perf_node_processor_${4}
   labels:
@@ -61,6 +104,19 @@ mappings:
     node: $3
 - match: 'netapp.perf.*.*.node.*.vol_summary.*'
   name:  netapp_perf_node_vol_summary_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf.*.*.svm.*.vol_summary.*'
+  name:  netapp_perf_svm_vol_summary_${4}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+
+- match: 'netapp.perf.*.*.node.*.wafl.*.*'
+  name:  netapp_perf_node_wafl_${4}_${5}
   labels:
     group: $1
     cluster: $2
@@ -83,6 +139,13 @@ mappings:
     group: $1
     cluster: $2
     svm: $3
+- match: 'netapp.perf.*.*.svm.*.lif.*.*'
+  name:  netapp_perf_svm_lif_${5}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3    
+    lif: $4
 - match: 'netapp.perf.*.*.svm.*.iscsi.*'
   name:  netapp_perf_svm_iscsi_${4}
   labels:
@@ -95,6 +158,13 @@ mappings:
     group: $1
     cluster: $2
     svm: $3
+- match: 'netapp.perf.*.*.svm.*.iscsi_lif.*.*'
+  name:  netapp_perf_svm_svm_iscsi_lif_${5}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    iscsi_lif: $4
 - match: 'netapp.perf.*.*.svm.*.nfsv3.*'
   name:  netapp_perf_svm_nfsv3_${4}
   labels:
@@ -107,8 +177,9 @@ mappings:
     group: $1
     cluster: $2
     node: $3
+
 - match: 'netapp.perf.*.*.svm.*.vol.*.*'
-  name:  netapp_perf_svm_vol_qos_policy_${5}
+  name:  netapp_perf_svm_vol_${5}
   labels:
     group: $1
     cluster: $2
@@ -121,16 +192,63 @@ mappings:
     cluster: $2
     svm: $3
     vol: $4
-
-- match: 'netapp.perf.*.*.svm.*.vol_summary.*'
-  name:  netapp_perf_svm_vol_summary_${4}
+- match: 'netapp.perf.*.*.svm.*.qos_policy.*.*'
+  name: netapp_perf_svm_qos_policy_${5}
   labels:
     group: $1
     cluster: $2
-    node: $3
+    svc: $3
+    qos_policy: $4
+- match: 'netapp.perf.*.*.svm.*.qos_policy.*.*.*'
+  name: netapp_perf_svm_qos_policy_${5}_${6}
+  labels:
+    group: $1
+    cluster: $2
+    svc: $3
+    qos_policy: $4    
+- match: 'netapp.perf.*.*.svm.*.vol.*.qos_read_io_type.*'
+  name: netapp_perf_svm_vol_qos_read_io_type_${5}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    vol: $4
+- match: 'netapp.perf.*.*.svm.*.vol.*.lun.*.*'
+  name: netapp_perf_svm_vol_lun_${6}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    vol: $4
+    lun: $5
+
 
 - match: 'netapp.poller.perf.*.*.*.*'
   name:  netapp_poller_perf_${3}_${4}
   labels:
     group: $1
     cluster: $2
+
+- match: 'netapp.perf.*.*.node.*.headroom.aggr.*.*.*.*'
+  name: netapp_perf_node_headroom_aggr_${7}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    aggr: $4
+    disk_type: $5
+    emwa_frequence: $6
+- match: 'netapp.perf.*.*.node.*.headroom.processor.*.*'
+  name: netapp_perf_node_headroom_processor_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    emwa_frequence: $4
+- match: 'netapp.perf.*.*.node.*.processor.domain_busy.*'
+  name: netapp_perf_node_processor_domain_busy
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    domain: $4
