@@ -178,13 +178,26 @@ mappings:
     cluster: $2
     node: $3
 
-- match: 'netapp.perf.*.*.svm.*.vol.*.*'
-  name:  netapp_perf_svm_vol_${5}
+- match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+Node\d*)\.vol\.(\w+)\.(\w+)'
+  name:  netapp_perf_node_vol_${5}
+  match_type: regex
   labels:
     group: $1
     cluster: $2
     node: $3
     vol: $4
+
+
+- match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+SVM\d*)\.vol\.(\w+)\.(\w+)'
+  name:  netapp_perf_svm_vol_${5}
+  match_type: regex
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    vol: $4
+
+
 - match: 'netapp.perf.*.*.svm.*.vol.*'
   name:  netapp_perf_svm_vol_${5}
   labels:
