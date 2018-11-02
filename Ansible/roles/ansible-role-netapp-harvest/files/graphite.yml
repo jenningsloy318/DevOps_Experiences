@@ -1,13 +1,13 @@
 mappings:
 - match: 'netapp.perf.*.*.node.*.aggr.*.*.*.*'
-  name: netapp_perf_node_aggr_plex_rg_${7}
+  name: netapp_perf_node_aggr_plex_raid_group_${7}
   labels:
     group: $1
     cluster: $2
     node: $3
     aggr: $4
     plex: $5
-    rg: $6
+    raid_group: $6
 - match: 'netapp.perf.*.*.node.*.aggr.*.plex0.*'
   name:  netapp_perf_node_aggr_plex_${5}
   labels:
@@ -144,7 +144,7 @@ mappings:
   labels:
     group: $1
     cluster: $2
-    svm: $3    
+    svm: $3
     lif: $4
 - match: 'netapp.perf.*.*.svm.*.iscsi.*'
   name:  netapp_perf_svm_iscsi_${4}
@@ -205,7 +205,7 @@ mappings:
     group: $1
     cluster: $2
     svc: $3
-    qos_policy: $4    
+    qos_policy: $4
 - match: 'netapp.perf.*.*.svm.*.vol.*.qos_read_io_type.*'
   name: netapp_perf_svm_vol_qos_read_io_type_${5}
   labels:
