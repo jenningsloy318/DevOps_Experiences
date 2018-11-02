@@ -75,6 +75,8 @@ Example playbook: App.yml
 
 3. programmer tips 
   - for templating files, if the content contains `{{ some conteent}}` which is not the ansible varaible, and we need to keep it as it is, we need add  `{%raw%} {{ some conteent}} {%endraw%}` to enclose them.
+  - shell module tips
+  The Ansible shell module is a straightforward tool. With some conditionals and functions, it’s usefulness can be improved and tasks can be quite smart,`creates`, `find`, and `until` clause are useful. creates causes shell to run only if a file does not exist, find causes shell to run only once if certain output exists, and using until and find causes a command to run repeatedly waiting for specific output.
 
 Note for ansible-role-openstack
 ---
