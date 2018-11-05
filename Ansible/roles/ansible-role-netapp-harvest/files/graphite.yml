@@ -17,7 +17,7 @@ mappings:
     aggr: $4
     plex: plex0
 - match: 'netapp.perf.*.*.node.*.aggr.*.vol_summary.*'
-  name: netapp_perf_node_aggr_vol_sunmmay_${5}
+  name: netapp_perf_node_aggr_vol_summary_${5}
   labels:
     group: $1
     cluster: $2
@@ -108,13 +108,20 @@ mappings:
     group: $1
     cluster: $2
     node: $3
-- match: 'netapp.perf.*.*.svm.*.vol_summary.*'
+- match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+Node\d*)\.vol_summary\.(\w+)'
+  match_type: regex
+  name:  netapp_perf_svm_vol_summary_${4}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+- match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+SVM\d*)\.vol_summary\.(\w+)'
+  match_type: regex
   name:  netapp_perf_svm_vol_summary_${4}
   labels:
     group: $1
     cluster: $2
     svm: $3
-
 - match: 'netapp.perf.*.*.node.*.wafl.*.*'
   name:  netapp_perf_node_wafl_${4}_${5}
   labels:
@@ -139,12 +146,21 @@ mappings:
     group: $1
     cluster: $2
     svm: $3
-- match: 'netapp.perf.*.*.svm.*.lif.*.*'
+- match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+SVM\d*)\.lif\.(.*)\.(\w+)'
+  match_type: regex
   name:  netapp_perf_svm_lif_${5}
   labels:
     group: $1
     cluster: $2
     svm: $3
+    lif: $4
+- match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+Node\d*)\.lif\.(.*)\.(\w+)'
+  match_type: regex
+  name:  netapp_perf_svm_lif_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
     lif: $4
 - match: 'netapp.perf.*.*.svm.*.iscsi.*'
   name:  netapp_perf_svm_iscsi_${4}
@@ -179,14 +195,13 @@ mappings:
     node: $3
 
 - match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+Node\d*)\.vol\.(\w+)\.(\w+)'
-  name:  netapp_perf_node_vol_${5}
+  name:  netapp_perf_svm_vol_${5}
   match_type: regex
   labels:
     group: $1
     cluster: $2
     node: $3
     vol: $4
-
 
 - match: 'netapp.perf\.(\w+)\.(\w+)\.svm\.(\w+SVM\d*)\.vol\.(\w+)\.(\w+)'
   name:  netapp_perf_svm_vol_${5}
@@ -210,14 +225,14 @@ mappings:
   labels:
     group: $1
     cluster: $2
-    svc: $3
+    svm: $3
     qos_policy: $4
 - match: 'netapp.perf.*.*.svm.*.qos_policy.*.*.*'
   name: netapp_perf_svm_qos_policy_${5}_${6}
   labels:
     group: $1
     cluster: $2
-    svc: $3
+    svm: $3
     qos_policy: $4
 - match: 'netapp.perf.*.*.svm.*.vol.*.qos_read_io_type.*'
   name: netapp_perf_svm_vol_qos_read_io_type_${5}
