@@ -282,7 +282,7 @@ lue}}'
       description: 'F5 CPU on instance {{$labels.instance}} of job {{$labels.job}} is not running'
       summary: 'F5 CPU is not running'
   - alert: F5 memory usage high
-    expr: 1 - memTotalFree / memTotalReal > 0.9
+    expr: 1 - (memTotalFree+memBuffer+memShared+memCached) / memTotalReal > 0.9
     for: 5m
     labels:
       severity: critical
