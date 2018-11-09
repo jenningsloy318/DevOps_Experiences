@@ -169,18 +169,18 @@ mappings:
     cluster: $2
     svm: $3
 - match: 'netapp.perf.*.*.svm.*.iscsi_lif.*'
-  name:  netapp_perf_svm_svm_iscsi_lif_${4}
+  name:  netapp_perf_svm_iscsi_lif_${4}
   labels:
     group: $1
     cluster: $2
     svm: $3
 - match: 'netapp.perf.*.*.svm.*.iscsi_lif.*.*'
-  name:  netapp_perf_svm_svm_iscsi_lif_${5}
+  name:  netapp_perf_svm_iscsi_lif_${5}
   labels:
     group: $1
     cluster: $2
     svm: $3
-    iscsi_lif: $4
+    lif: $4
 - match: 'netapp.perf.*.*.svm.*.nfsv3.*'
   name:  netapp_perf_svm_nfsv3_${4}
   labels:
@@ -277,3 +277,42 @@ mappings:
     cluster: $2
     node: $3
     domain: $4
+
+- match: 'netapp.capacity.*.*.node.*.aggr.*.*'
+  name: netapp_capacity_node_aggr_${5}
+  labels:
+    group: $1
+    cluster: $2
+    node: $3
+    aggr: $4
+- match: 'netapp.capacity\.(\w+)\.(\w+)\.svm\.(\w+)\.(\w+root)\.(\w+)\.(\w+)\.(\w+)$'
+  match_type: regex
+  name: netapp_capacity_svm_${5}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    vol: $4
+- match: 'netapp.capacity.*.*.svm.*.vol.*.*'
+  name: netapp_capacity_svm_vol_${5}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    vol: $4
+
+- match: 'netapp.capacity.*.*.svm.*.vol_summary.*'
+  name: netapp_capacity_svm_vol_summary_${4}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+
+- match: 'netapp.capacity.*.*.svm.*.vol.*.lun.*.*'
+  name: netapp_capacity_svm_vol_lun_${6}
+  labels:
+    group: $1
+    cluster: $2
+    svm: $3
+    vol: $4
+    lun: $5
