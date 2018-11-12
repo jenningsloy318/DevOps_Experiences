@@ -1,8 +1,8 @@
 modules:
-  ibm_imm:
-    version: 1
+  imm2:
+    version: 2
     auth:
-      community: 'sapSuning'
+      community: '"{{snmp_community}}"'
     timeout: 30s
     walk:
       - 1.3.6.1.2.1.1.3  # systemuptime
@@ -17,6 +17,9 @@ modules:
       - 1.3.6.1.4.1.2.3.51.3.1.13.1.2.1 # RAID controller
       - 1.3.6.1.4.1.2.3.51.3.1.13.1.3.1 # RAID drive
       - 1.3.6.1.2.1.2.2.1               #network if
+      - 1.3.6.1.4.1.2021.10.1 # Load 1/5/15
+      - 1.3.6.1.4.1.2021.4  # mem
+
     lookups:
       - old_index: fanIndex
         new_index: 1.3.6.1.4.1.2.3.51.3.1.3.2.1.2
@@ -38,9 +41,10 @@ modules:
         new_index: 1.3.6.1.4.1.2.3.51.3.1.13.1.3.1.2
       - old_index: ifIndex
         new_index: 1.3.6.1.2.1.2.2.1.2
+      - old_index: laIndex
+        new_index: laNames
     overrides:
       fanSpeed:
-        type: DisplayString
         regex_extracts:
           Percent:
             - regex: '.(\d+)%.*'
@@ -52,14 +56,15 @@ modules:
               value: '1'
             - regex: '(offline)'
               value: '0'
+        type: 'DisplayString'
   
-  lenovo_xcc:
+  xcc:
     version: 3
     auth:
-      username: 'snmpuser'
+      username: '{{snmp_user}}'
       security_level: authPriv
-      password: Snmpuser@2018
-      priv_password: Snmpuser@2018
+      password: "{{snmp_pass}}"
+      priv_password: "{{snmp_pass}}"
       auth_protocol: SHA
       priv_protocol: DES
     timeout: 30s
@@ -75,6 +80,8 @@ modules:
       - 1.3.6.1.4.1.19046.11.1.1.11.2.1 # power supply      
       - 1.3.6.1.2.1.1.3  # systemuptime
       - 1.3.6.1.2.1.2.2.1 # network if
+      - 1.3.6.1.4.1.2021.10.1 # Load 1/5/15 
+      - 1.3.6.1.4.1.2021.4  # mem
     lookups:
       - old_index: tempIndex
         new_index: 1.3.6.1.4.1.19046.11.1.1.1.2.1.2
@@ -96,9 +103,10 @@ modules:
         new_index: 1.3.6.1.4.1.19046.11.1.1.13.1.3.1.2
       - old_index: powerIndex
         new_index: 1.3.6.1.4.1.19046.11.1.1.11.2.1.2
+      - old_index: laIndex
+        new_index: laNames
     overrides:
       fanSpeed:
-        type: DisplayString
         regex_extracts:
           Percent:
             - regex: '.(\d+)%.*'
@@ -110,11 +118,12 @@ modules:
               value: '1'
             - regex: '(offline)'
               value: '0'
+        type: 'DisplayString'
   
-  cisco:
+  cisco_sw:
     version: 2
     auth:
-      community: 'sapSuning'
+      community: '"{{snmp_community}}"'
     timeout: 20s
     walk:
       - 1.3.6.1.2.1.1.3  # systemuptime
@@ -137,7 +146,7 @@ modules:
   netapp:
     version: 2
     auth:
-      community: 'sapSuning'
+      community: '"{{snmp_community}}"'
     timeout: 20s
     walk:
       - 1.3.6.1.2.1.1.3 # sysUpTimeInstance
@@ -156,10 +165,10 @@ modules:
         new_index: 1.3.6.1.4.1.789.1.6.2.1.24
       - old_index: 1.3.6.1.4.1.789.1.6.11.1.1
         new_index: 1.3.6.1.4.1.789.1.6.11.1.2
-  f5:
+  bigip:
     version: 2
     auth:
-      community: 'sapSuning'
+      community: '"{{snmp_community}}"'
     timeout: 20s
     walk:
       - 1.3.6.1.2.1.1.3 # sysUpTimeInstance
@@ -180,8 +189,6 @@ modules:
         new_index: 1.3.6.1.2.1.2.2.1.2
       - old_index: hrStorageIndex
         new_index: 1.3.6.1.2.1.25.2.3.1.3       
-      - old_index: hrDeviceIndex
-        new_index: 1.3.6.1.2.1.25.3.2.1.3
       - old_index: prIndex
         new_index: 1.3.6.1.4.1.2021.2.1.2
       - old_index: dskIndex
@@ -192,7 +199,7 @@ modules:
   actilib:
     version: 2
     auth:
-      community: 'sapSuning'
+      community: '"{{snmp_community}}"'
     timeout: 20s
     walk:
       - 1.3.6.1.2.1.1.3 # sysUpTimeInstance
@@ -202,10 +209,10 @@ modules:
       - old_index: ifIndex
         new_index: 1.3.6.1.2.1.2.2.1.2
 
-  fw:
+  firepower:
     version: 2
     auth:
-      community: 'sapSuning'
+      community: '"{{snmp_community}}"'
     timeout: 20s
     walk:
       - 1.3.6.1.2.1.1.3 # sysUpTimeInstance

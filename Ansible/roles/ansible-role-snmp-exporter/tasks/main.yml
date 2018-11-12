@@ -1,3 +1,36 @@
+- name: download cisco mibs 
+  unarchive:
+    src:  ftp://ftp.cisco.com/pub/mibs/v2/v2.tar.gz
+    dest: /usr/share/snmp/mibs/cisco
+    remote_src: yes
+
+- name: download f5 mibs
+  unarchive:
+    src: https://{{BIGIP_IP}}/docs/mibs/mibs_f5.tar.gz
+    dest: /usr/share/snmp/mibs/f5
+    remote_src: yes
+    validate_certs: no
+
+
+- name: download lenovo mibs
+  unarchive:
+    src: 
+    - https://download.lenovo.com/servers/mig/2018/07/18/19010/lnvgy_fw_xcc_cdi324q-1.90_lenovoxcc-anyos_noarch.mib
+    - https://download.lenovo.com/servers/mig/2018/07/18/19010/lnvgy_fw_xcc_cdi324q-1.90_lenovosmi-anyos_noarch.mib
+    dest: /usr/share/snmp/mibs/lenovo
+    remote_src: yes
+    
+- name: download paloalto mibs 
+  unarchive:
+    src:  https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/zip/technical-documentation/snmp-mib-modules/PAN-MIB-MODULES-7.0.zip
+    dest: /usr/share/snmp/mibs/paloalto
+    remote_src: yes
+
+- name: add mib path to /etc/snmp/snmp.conf
+  
+
+
+
 - name: check snmp_export
   shell: /usr/bin/snmp_export  --version |grep -i snmp_exporter |grep {{ snmp_exporter_version }}
   register: snmp_export
@@ -7,7 +40,7 @@
 
 - name: download telegraf binary 
   get_url:
-    url: "{{ snmp_binary_url}}"
+    url: "{{ snmp_exporter_binary_url}}"
     dest: "/tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz"
   when:  snmp_export.rc  != 0
   
@@ -24,7 +57,7 @@
     dest: /usr/bin
     remote_src: yes
     mode: 0755
-    
+
 - name: create snmp_exporter conf dir
   file:
     path: /etc/snmp_exporter/
