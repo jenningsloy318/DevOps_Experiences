@@ -1,6 +1,6 @@
-snmp_exporter_version: 0.10.0
+snmp_exporter_version: 0.13.0
 snmp_exporter_binary_url: https://github.com/prometheus/snmp_exporter/releases/download/v{{snmp_exporter_version}}/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz
-BIGIP_IP:
+bigip_address:
 snmp_user:
 snmp_pass:
 snmp_community:

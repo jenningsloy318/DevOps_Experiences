@@ -1,78 +1,133 @@
+
+- name: install dependency
+  yum:
+    name:
+        - net-snmp
+        - net-snmp-utils
+  when: ansible_os_family == "Redhat"
+
+- name: install dependency
+  apt:
+    name:
+        - snmp
+  when: ansible_os_family == "Debian"
+- name: create required directories
+  file:
+    path: "{{item}}"
+    state: directory
+  with_items:
+    - /usr/share/snmp/mibs/cisco
+    - /usr/share/snmp/mibs/lenovo
+    - /usr/share/snmp/mibs/paloalto
+    - /usr/share/snmp/mibs/f5
+
+
 - name: download cisco mibs 
   unarchive:
     src:  ftp://ftp.cisco.com/pub/mibs/v2/v2.tar.gz
     dest: /usr/share/snmp/mibs/cisco
+    extra_opts: [--strip-components=3]
     remote_src: yes
+  retries: 5
+  delay: 5
 
 - name: download f5 mibs
+  copy:
+    src: mibs_f5.tar.gz
+    dest: /tmp
+- name: extract f5 mibs
   unarchive:
-    src: https://{{BIGIP_IP}}/docs/mibs/mibs_f5.tar.gz
+    src:  /tmp/mibs_f5.tar.gz
     dest: /usr/share/snmp/mibs/f5
+    extra_opts: [--strip-components=1]
+
+
+- name: download lenovo xcc mibs
+  get_url:
+    url: "{{item}}"
+    dest: "/usr/share/snmp/mibs/lenovo/{{ item | basename | regex_replace('.*(lenovo[A-Za-z]*).*$','\\1.mib') }}"
     remote_src: yes
-    validate_certs: no
-
-
-- name: download lenovo mibs
-  unarchive:
-    src: 
+  with_items:
     - https://download.lenovo.com/servers/mig/2018/07/18/19010/lnvgy_fw_xcc_cdi324q-1.90_lenovoxcc-anyos_noarch.mib
     - https://download.lenovo.com/servers/mig/2018/07/18/19010/lnvgy_fw_xcc_cdi324q-1.90_lenovosmi-anyos_noarch.mib
-    dest: /usr/share/snmp/mibs/lenovo
+  retries: 3
+
+- name: download lenovo imm2 mibs 
+  unarchive:
+    src:  https://download.lenovo.com/servers/mig/2018/10/16/19437/lnvgy_fw_imm2_tcoo46e-5.10_anyos_noarch.uxz
+    dest: /usr/share/snmp/mibs/lenovo/
     remote_src: yes
+    exclude:
+        - imm2_tcoo46e-5.10.upd
+        - immRegistries.zip
+        - OpenSourceNotices.html
+  retries: 5
+  delay: 5
+  
     
 - name: download paloalto mibs 
   unarchive:
     src:  https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/zip/technical-documentation/snmp-mib-modules/PAN-MIB-MODULES-7.0.zip
     dest: /usr/share/snmp/mibs/paloalto
     remote_src: yes
-
-- name: add mib path to /etc/snmp/snmp.conf
-  
+  retries: 3
 
 
+- name: copy generator binary
+  copy:
+    src: generator
+    dest: /usr/bin/generator
+    mode: 755
+    owner: root
+    group: root
 
-- name: check snmp_export
-  shell: /usr/bin/snmp_export  --version |grep -i snmp_exporter |grep {{ snmp_exporter_version }}
-  register: snmp_export
+- name: create generator.yml
+  template:
+    src: generator.yml.j2
+    dest: /etc/prometheus/generator.yml
+
+- name: generate snmp.yml
+  shell:  /usr/bin/generator generate 
+  args:
+      chdir:  /etc/prometheus/
+      warn: no
+  environment:
+    MIBDIRS: /usr/share/snmp/mibs:/usr/share/mibs/iana:/usr/share/mibs/ietf:/usr/share/mibs/netsnmp:/usr/share/snmp/mibs/lenovo/:/usr/share/snmp/mibs/cisco/:/usr/share/snmp/mibs/f5/:/usr/share/snmp/mibs/paloalto/
+
+- name: check snmp_exporter
+  shell: /usr/bin/snmp_exporter  --version >/dev/stdout 2>&1  |grep -i snmp_exporter |grep {{ snmp_exporter_version }}
+  register: snmp_exporter
   ignore_errors: yes
 
 - name: download snmp_exporter
-
-- name: download telegraf binary 
   get_url:
     url: "{{ snmp_exporter_binary_url}}"
     dest: "/tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz"
-  when:  snmp_export.rc  != 0
+  when:  snmp_exporter.rc  != 0
   
 - name: Unarchive  snmp_exporter binary 
   unarchive:
     src: "/tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz"
     dest: /tmp
     remote_src: yes
-  when: snmp_export.rc  != 0
+  when: snmp_exporter.rc  != 0
 
 - name: copy snmp_exporter binary
   copy:
-    src: /tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64/snmp_exporter"
+    src: "/tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64/snmp_exporter"
     dest: /usr/bin
     remote_src: yes
     mode: 0755
 
 - name: create snmp_exporter conf dir
   file:
-    path: /etc/snmp_exporter/
+    path: /etc/prometheus/
     state: directory
     mode: 0755 
 
-- name: copy snmp_exporter conf
-  copy:
-    src: /tmp/snmp_exporter-{{snmp_exporter_version}}.linux-amd64/snmp.yml"
-    dest: /etc/snmp_exporter/
-    remote_src: yes
-    mode: 0644
 
 - name: create snmp_exporter service file
-  template:
+  copy:
     src: snmp_exporter.service
     dest: /lib/systemd/system/snmp_exporter.service
     
@@ -82,4 +137,23 @@
     state: restarted 
     enabled: yes
     daemon_reload: yes
-    
+
+
+- name: add ufw file rule
+  ufw:
+    rule: allow
+    port: 9116
+    proto: tcp
+  when: ansibe_os_family == "Debian"
+
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 9116/udp
+    permanent: true
+    state: enabled
+  when: ansible_os_family == "RedHat"
+
+- name: reload firewalld
+  shell: firewall-cmd --reload  
+  when: ansible_os_family == "RedHat"    
