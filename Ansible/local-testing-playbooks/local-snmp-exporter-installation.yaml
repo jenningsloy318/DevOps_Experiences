@@ -1,0 +1,13 @@
+
+- name: run the playbook tasks on the localhost
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+  - ansible-role-snmp-exporter
+  vars:
+    snmp_exporter_version: 0.10.0
+    snmp_exporter_binary_url: https://github.com/prometheus/snmp_exporter/releases/download/v{{snmp_exporter_version}}/snmp_exporter-{{snmp_exporter_version}}.linux-amd64.tar.gz
+    snmp_user: snmpuser
+    snmp_pass: snmppass
+    snmp_community: snmpcommunity
