@@ -48,6 +48,5 @@
     - {"name": "Host","orgId": 1,"folder": "Host","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/host"} }
     - {"name": "HANA","orgId": 1,"folder": "HANA","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/hana"} }
     - {"name": "Firewall","orgId": 1,"folder": "Firewall","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/firewall"} }
-    - {"name": "General","orgId": 1,"folder": "General Overall","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/general
-"} }
+    - {"name": "General","orgId": 1,"folder": "General Overall","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/general"} }
     - {"name": "Alerts","orgId": 1,"folder": "Alerts","type": "file","disableDeletion": false,"updateIntervalSeconds": 10,"options": {"path": "{{ grafana_dashpoard_path }}/alerts"} }
