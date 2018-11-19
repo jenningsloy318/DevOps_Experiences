@@ -335,30 +335,6 @@ lue}}'
     annotations:
       description: 'Netapp storage has {{$labels.diskPrefailedCount}} prefailed disks on instance {{$labels.instance}} of job {{$labels.job}}'
       summary:  'Netapp Storage has prefailed disks'
-  - alert: Netapp Storage has  disks being Reconstructing
-    expr: diskReconstructingCount{job="netapp"} != 0
-    for: 3m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Netapp storage has {{$labels.diskReconstructingCount}}  disks being Reconstructing on instance {{$labels.instance}} of job {{$labels.job}}'
-      summary:  'Netapp Storage has disks being Reconstructing'
-  - alert: Netapp Storage has parity disks being Reconstructing
-    expr: diskReconstructingParityCount{job="netapp"} != 0
-    for: 3m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Netapp storage has {{$labels.diskReconstructingParityCount}}  Parity disks being Reconstructing on instance {{$labels.instance}} of job {{$labels.job}}'
-      summary:  'Netapp Storage  has parity disks being Reconstructing'
-  - alert: Netapp Storage has  disks being scrubbed
-    expr: diskScrubbingCount{job="netapp"} != 0
-    for: 3m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Netapp storage has {{$labels.diskScrubbingCount}}   disks being scrubbed on instance {{$labels.instance}} of job {{$labels.job}}'
-      summary:  'Netapp Storage  has disks being scrubbed'
   - alert: Netapp Storage enclosure communitcation is not active
     expr: enclContactState{job="netapp"} != 3
     for: 3m
