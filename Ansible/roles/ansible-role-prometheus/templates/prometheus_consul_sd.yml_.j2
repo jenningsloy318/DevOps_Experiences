@@ -1,0 +1,67 @@
+global:
+  scrape_interval: 15s
+rule_files:
+- '/etc/prometheus/alert.rules.yml'
+
+scrape_configs:
+{% if prometheus_consul_sd_job_list is defined %}
+{% for job in prometheus_consul_sd_job_list %}
+
+- job_name: {{ job.job_name }}
+  scrape_interval: 30s
+  scrape_timeout: 30s
+  metrics_path:  {{ job.metrics_path }}
+  params:
+    module: [lenovo_xcc]
+{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="snmp_exporter" %}
+  relabel_configs:
+    - source_labels: [__meta_consul_service_address]
+      target_label: __address__
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: {{job.target_meta.proxy_addr }} # The SNMP exporter's real hostname:port.
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){1}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){2}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){3}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){4}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+  consul_sd_configs:
+   - server: {{ job.consule_server }}
+     datacenter: {{ job.consule_datacenter }}
+     services:  
+     - {{ job.consule_service }} 
+
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+alerting:
+  alertmanagers:
+{% if prometheus_consul_sd_alertmanager_list is defined %}
+{% for alertmanager in prometheus_consul_sd_alertmanager_list %}
+  - consul_sd_config:
+    server: {{ alertmanager.consule_server }}
+    datacenter: {{ alertmanager.consule_datacenter }}
+    services: 
+    - {{ alertmanager.consule_service }}
+{% endfor %}
+{% endif %}
