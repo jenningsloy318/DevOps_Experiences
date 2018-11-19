@@ -5,15 +5,16 @@ rule_files:
 
 scrape_configs:
 {% if prometheus_consul_sd_job_list is defined %}
+
 {% for job in prometheus_consul_sd_job_list %}
 
 - job_name: {{ job.job_name }}
   scrape_interval: 30s
   scrape_timeout: 30s
   metrics_path:  {{ job.metrics_path }}
-  params:
-    module: [lenovo_xcc]
 {% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="snmp_exporter" %}
+  params:
+    module: [{{job.target_meta.snmp_module}}]
   relabel_configs:
     - source_labels: [__meta_consul_service_address]
       target_label: __address__
@@ -23,33 +24,53 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement: {{job.target_meta.proxy_addr }} # The SNMP exporter's real hostname:port.
-    - source_labels: [__meta_consul_tags]
-      regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
-      replacement: '${2}'
-      target_label: '${1}'
-    - source_labels: [__meta_consul_tags]
-      regex: ',(?:[^,]+,){1}([^=]+)=([^,]+),.*'
-      replacement: '${2}'
-      target_label: '${1}'
-    - source_labels: [__meta_consul_tags]
-      regex: ',(?:[^,]+,){2}([^=]+)=([^,]+),.*'
-      replacement: '${2}'
-      target_label: '${1}'
-    - source_labels: [__meta_consul_tags]
-      regex: ',(?:[^,]+,){3}([^=]+)=([^,]+),.*'
-      replacement: '${2}'
-      target_label: '${1}'
-    - source_labels: [__meta_consul_tags]
-      regex: ',(?:[^,]+,){4}([^=]+)=([^,]+),.*'
-      replacement: '${2}'
-      target_label: '${1}'
+{% endif %}
+{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="ipmi_exporter" %}
+  relabel_configs:
+  - source_labels: [__meta_consul_service_address]
+    target_label: __param_target
+  - source_labels: [__param_target]
+    target_label: instance
+  - separator: ;
+    regex: .*
+    target_label: __address__
+    replacement: {{job.target_meta.proxy_addr }} # The IPMI exporter's real hostname:port.
+    action: replace
+{% endif %}
+{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="bigip_exporter" %}
+
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: {{job.target_meta.proxy_addr }}  # The bigip exporter's real hostname:port.
+{% endif %}
+  - source_labels: [__meta_consul_tags]
+    regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
+    replacement: '${2}'
+    target_label: '${1}'
+  - source_labels: [__meta_consul_tags]
+    regex: ',(?:[^,]+,){1}([^=]+)=([^,]+),.*'
+    replacement: '${2}'
+    target_label: '${1}'
+  - source_labels: [__meta_consul_tags]
+    regex: ',(?:[^,]+,){2}([^=]+)=([^,]+),.*'
+    replacement: '${2}'
+    target_label: '${1}'
+  - source_labels: [__meta_consul_tags]
+    regex: ',(?:[^,]+,){3}([^=]+)=([^,]+),.*'
+    replacement: '${2}'
+    target_label: '${1}'
+  - source_labels: [__meta_consul_tags]
+    regex: ',(?:[^,]+,){4}([^=]+)=([^,]+),.*'
+    replacement: '${2}'
+    target_label: '${1}'
   consul_sd_configs:
    - server: {{ job.consule_server }}
      datacenter: {{ job.consule_datacenter }}
      services:  
      - {{ job.consule_service }} 
-
-{% endif %}
 
 {% endfor %}
 {% endif %}
@@ -62,6 +83,10 @@ alerting:
     server: {{ alertmanager.consule_server }}
     datacenter: {{ alertmanager.consule_datacenter }}
     services: 
-    - {{ alertmanager.consule_service }}
+{% for srv in alertmanager.consule_service %}
+    - {{ srv }}
+{% endfor %}
+
 {% endfor %}
 {% endif %}
+

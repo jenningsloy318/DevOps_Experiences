@@ -18,12 +18,13 @@ prometheus_file_sd_job_list:
 
 
 prometheus_consul_sd_job_list:
-- { 'job_name': 'prometheus', 'metrics_path': '/metrics','target_meta':{'type':'direct'},'consule_server': 'localhost:8500','consule_datacenter': 'sc','consule_service': 'service1'}
-- { 'job_name': 'ipmi_exporter', 'metrics_path': '/ipmi','target_meta':{'type':'proxy','proxy_type':'ipmi_exporter','proxy_addr':'localhost:9116'},'consule_server': 'localhost:8500','consule_datacenter': 'sc','consule_services': 'service1'}
-- { 'job_name': 'snmp_exporter', 'metrics_path': '/ipmi','target_meta':{'type':'proxy','proxy_type':'snmp_exporter','proxy_addr':'localhost:9116'},'consule_server': 'localhost:8500','consule_datacenter': 'sc','consule_services': 'service1'}
+- { 'job_name': 'prometheus', 'metrics_path': '/metrics','target_meta':{'type':'direct'},'consule_server': 'localhost:8500','consule_datacenter': 'dc1','consule_service': 'prometheus'}
+- { 'job_name': 'ipmi_exporter', 'metrics_path': '/ipmi','target_meta':{'type':'proxy','proxy_type':'ipmi_exporter','proxy_addr':'localhost:9290'},'consule_server': 'localhost:8500','consule_datacenter': 'dc1','consule_service': 'ipmi_exporter'}
+- { 'job_name': 'snmp_exporter', 'metrics_path': '/ipmi','target_meta':{'type':'proxy','proxy_type':'snmp_exporter','proxy_addr':'localhost:9116','snmp_module':'xcc'},'consule_server': 'localhost:8500','consule_datacenter': 'dc1','consule_service': 'snmp_exporter'}
+- { 'job_name': 'snmp_exporter', 'metrics_path': '/bigip','target_meta':{'type':'proxy','proxy_type':'bigip_exporter','proxy_addr':'localhost:9142'},'consule_server': 'localhost:8500','consule_datacenter': 'dc1','consule_service': 'bigip_exporter'}
 
 prometheus_file_sd_alertmanager_list:
 - /etc/prometheus/alertmanagers.yml
 
 prometheus_consul_sd_alertmanager_list:
-- {'consule_server': 'localhost:8500','consule_token': 'dfslfk','consule_datacenter': 'sc','consule_services': ['service1','service2'],'tag': 'alertmanager','consule_node_meta': {'key1': 'value1','key2': 'value2'},'consule_allow_stale': 'true','refresh_interval': '10s'}
+- {'consule_server': 'localhost:8500','consule_datacenter': 'dc1','consule_service': 'alertmanager'}
