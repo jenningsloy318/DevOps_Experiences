@@ -12,6 +12,12 @@ scrape_configs:
   scrape_interval: 30s
   scrape_timeout: 30s
   metrics_path:  {{ job.metrics_path }}
+
+{% if job.target_meta.type == "direct" %}
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: instance
+{% endif %}
 {% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="snmp_exporter" %}
   params:
     module: [{{job.target_meta.snmp_module}}]
@@ -38,13 +44,12 @@ scrape_configs:
     action: replace
 {% endif %}
 {% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="bigip_exporter" %}
-
-    - source_labels: [__address__]
-      target_label: __param_target
-    - source_labels: [__param_target]
-      target_label: instance
-    - target_label: __address__
-      replacement: {{job.target_meta.proxy_addr }}  # The bigip exporter's real hostname:port.
+  - source_labels: [__address__]
+    target_label: __param_target
+  - source_labels: [__param_target]
+    target_label: instance
+  - target_label: __address__
+    replacement: {{job.target_meta.proxy_addr }}  # The bigip exporter's real hostname:port.
 {% endif %}
   - source_labels: [__meta_consul_tags]
     regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
