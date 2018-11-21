@@ -169,12 +169,12 @@ scrape_configs:
   scrape_timeout: 30s
   metrics_path:  {{ job.metrics_path }}
 
-{% if job.target_meta.type == "direct" %}
+{% if job.target_meta.type == 'direct' %}
   relabel_configs:
     - source_labels: [__address__]
       target_label: instance
 {% endif %}
-{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="snmp_exporter" %}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'snmp_exporter' %}
   params:
     module: [{{job.target_meta.module}}]
   relabel_configs:
@@ -187,7 +187,7 @@ scrape_configs:
     - target_label: __address__
       replacement: {{job.target_meta.proxy_addr }} # The SNMP exporter's real hostname:port.
 {% endif %}
-{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type=="ipmi_exporter" %}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'ipmi_exporter' %}
   relabel_configs:
   - source_labels: [__meta_consul_service_address]
     target_label: __param_target
@@ -199,7 +199,7 @@ scrape_configs:
     replacement: {{job.target_meta.proxy_addr }} # The IPMI exporter's real hostname:port.
     action: replace
 {% endif %}
-{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type=="bigip_exporter" %}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'bigip_exporter' %}
   relabel_configs:
   - source_labels: [__address__]
     target_label: __param_target
@@ -209,7 +209,7 @@ scrape_configs:
     replacement: {{job.target_meta.proxy_addr }}  # The bigip exporter's real hostname:port.
 {% endif %}
 
-{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type=="blackbox_exporter" %}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'blackbox_exporter' %}
   params:
     module: [{{job.target_meta.module}}]
   relabel_configs:
@@ -220,7 +220,7 @@ scrape_configs:
     - target_label: __address__
       replacement: {{job.target_meta.proxy_addr }}  # The blackbox exporter's real hostname:port.
 {% endif %}
-{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type=="hana_exporter" %}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'hana_exporter' %}
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
