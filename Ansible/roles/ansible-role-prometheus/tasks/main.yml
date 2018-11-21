@@ -78,8 +78,8 @@
     src: "{{item.job_name}}-targets.yml"
     dest: /etc/prometheus/tgroups/
     mode: 0755
-  with_items:
-  - "{{prometheus_job_list}}"
+  with_fileglob:
+    - "files/*-targets.yml"
 
 
 
