@@ -21,7 +21,7 @@
 
 - name: create prometheus service file
   template:
-    src: prometheus.service
+    src: prometheus.service.j2
     dest: /lib/systemd/system/prometheus.service
 
 
