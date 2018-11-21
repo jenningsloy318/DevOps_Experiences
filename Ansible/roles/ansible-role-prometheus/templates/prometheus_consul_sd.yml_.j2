@@ -20,7 +20,7 @@ scrape_configs:
 {% endif %}
 {% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="snmp_exporter" %}
   params:
-    module: [{{job.target_meta.snmp_module}}]
+    module: [{{job.target_meta.module}}]
   relabel_configs:
     - source_labels: [__meta_consul_service_address]
       target_label: __address__
@@ -44,12 +44,34 @@ scrape_configs:
     action: replace
 {% endif %}
 {% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="bigip_exporter" %}
+  relabel_configs:
   - source_labels: [__address__]
     target_label: __param_target
   - source_labels: [__param_target]
     target_label: instance
   - target_label: __address__
     replacement: {{job.target_meta.proxy_addr }}  # The bigip exporter's real hostname:port.
+{% endif %}
+
+{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="blackbox_exporter" %}
+  params:
+    module: [{{job.target_meta.module}}]
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: {{job.target_meta.proxy_addr }}  # The blackbox exporter's real hostname:port.
+{% endif %}
+{% if job.target_meta.type == "proxy" and job.target_meta.proxy_type="hana_exporter" %}
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: {{job.target_meta.proxy_addr }}   ### the address of the hana-exporter address
 {% endif %}
   - source_labels: [__meta_consul_tags]
     regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
@@ -88,9 +110,7 @@ alerting:
     server: {{ alertmanager.consule_server }}
     datacenter: {{ alertmanager.consule_datacenter }}
     services: 
-{% for srv in alertmanager.consule_service %}
-    - {{ srv }}
-{% endfor %}
+    - {{ alertmanager.consule_service }}
 
 {% endfor %}
 {% endif %}

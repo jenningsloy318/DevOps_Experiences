@@ -62,7 +62,7 @@ scrape_configs:
      - source_labels: [__param_target]
        target_label: instance
      - target_label: __address__
-       replacement: {{job.hana_exporter_host}}:9460  ### the address of the hana-exporter address
+       replacement: {{job.hana_exporter_addr}}   ### the address of the hana-exporter address
 {% endif %}
 
 {% if job.job_name == 'blackbox_exporter' %}
@@ -78,9 +78,69 @@ scrape_configs:
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: {{job.blackbox_exporter_host}}:9115  # The blackbox exporter's real hostname:port.
+      replacement: {{job.blackbox_exporter_addr}} # The blackbox exporter's real hostname:port.
 
 {% endif %}
+
+{% if job.job_name == 'bigip_exporter' %}
+- job_name: '{{ job.job_name }}'
+  metrics_path: '{{ job.metrics_path }}'
+  params:
+    module: [http_2xx]
+  file_sd_configs:
+    - files: ['tgroups/bigip-targets.yml']  
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement:  {{job.bigip_exporter_addr}}   # The bigip exporter's real hostname:port.
+{% endif %}
+
+{% if job.job_name == 'snmp_exporter' %}
+- job_name: '{{ job.job_name }}'
+  metrics_path: '{{ job.metrics_path }}'
+  params:
+    module: [http_2xx]
+  file_sd_configs:
+    - files: ['tgroups/snmp-targets.yml']  
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement:  {{job.snmp_exporter_addr}}   # The snmp exporter's real hostname:port.
+{% endif %}
+
+{% if job.job_name == 'ipmi_exporter' %}
+- job_name: '{{ job.job_name }}'
+  metrics_path: '{{ job.metrics_path }}'
+  params:
+    module: [http_2xx]
+  file_sd_configs:
+    - files: ['tgroups/ipmi-targets.yml']  
+  relabel_configs:
+    - source_labels: [__address__]
+      separator: ;
+      regex: (.*)(:80)?
+      target_label: __param_target
+      replacement: ${1}
+      action: replace
+    - source_labels: [__param_target]
+      separator: ;
+      regex: (.*)
+      target_label: instance
+      replacement: ${1}
+      action: replace
+    - separator: ;
+      regex: .*
+      target_label: __address__
+      replacement: {{job.ipmi_exporter_addr}}  
+      action: replace
+{% endif %}
+
 
 {% if job.job_name == 'nginx_exporter' %}
 - job_name: '{{ job.job_name }}'
