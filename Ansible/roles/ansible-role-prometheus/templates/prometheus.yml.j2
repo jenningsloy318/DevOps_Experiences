@@ -4,31 +4,30 @@ rule_files:
 - '/etc/prometheus/alert.rules.yml'
 
 scrape_configs:
-{% if prometheus_file_sd_job_list is defined  %}
-{% for job in prometheus_file_sd_job_list %}
-
-{% if job.job_name == 'prometheus' %}
+{% if prometheus_file_sd_job_list is defined  -%}
+{% for job in prometheus_file_sd_job_list -%}
+{% if job.job_name == 'prometheus' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/prometheus-targets.yml']  
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'alertmanager' %}
+{% if job.job_name == 'alertmanager' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/alertmanager-targets.yml']  
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'grafana' %}
+{% if job.job_name == 'grafana' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
     - files: ['tgroups/grafana-targets.yml']  
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'telegraf' %}
+{% if job.job_name == 'telegraf' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
@@ -38,18 +37,16 @@ scrape_configs:
       regex: '(.*):.*'
       target_label: instance
       replacement: ${1}
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'mysql_exporter' %}
+{% if job.job_name == 'mysql_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
   - files: ['tgroups/mysql-targets.yml']
-{% endif %}
+{% endif -%}
 
-
-{% if job.job_name == 'hana_exporter' %}
-
+{% if job.job_name == 'hana_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   scrape_timeout: 30s
@@ -63,9 +60,9 @@ scrape_configs:
        target_label: instance
      - target_label: __address__
        replacement: {{job.hana_exporter_addr}}   ### the address of the hana-exporter address
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'blackbox_exporter' %}
+{% if job.job_name == 'blackbox_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
   params:
@@ -80,9 +77,9 @@ scrape_configs:
     - target_label: __address__
       replacement: {{job.blackbox_exporter_addr}} # The blackbox exporter's real hostname:port.
 
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'bigip_exporter' %}
+{% if job.job_name == 'bigip_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
   params:
@@ -96,9 +93,9 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement:  {{job.bigip_exporter_addr}}   # The bigip exporter's real hostname:port.
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'snmp_exporter' %}
+{% if job.job_name == 'snmp_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
   params:
@@ -112,9 +109,9 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement:  {{job.snmp_exporter_addr}}   # The snmp exporter's real hostname:port.
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'ipmi_exporter' %}
+{% if job.job_name == 'ipmi_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
   params:
@@ -139,42 +136,42 @@ scrape_configs:
       target_label: __address__
       replacement: {{job.ipmi_exporter_addr}}  
       action: replace
-{% endif %}
+{% endif -%}
 
 
-{% if job.job_name == 'nginx_exporter' %}
+{% if job.job_name == 'nginx_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
   - files: ['tgroups/nginx-targets.yml']
-{% endif %}
+{% endif -%}
 
-{% if job.job_name == 'netapp-harvest' %}
+{% if job.job_name == 'netapp-harvest' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: {{ job.metrics_path }}
   file_sd_configs:
   - files: ['tgroups/netapp.yml']
-{% endif %}
+{% endif -%}
 
-{% endfor %}
+{% endfor -%}
 
-{% endif %}
+{% endif -%}
 
-{% if prometheus_consul_sd_job_list is defined %}
+{% if prometheus_consul_sd_job_list is defined -%}
 
-{% for job in prometheus_consul_sd_job_list %}
+{% for job in prometheus_consul_sd_job_list -%}
 
 - job_name: {{ job.job_name }}
   scrape_interval: 30s
   scrape_timeout: 30s
   metrics_path:  {{ job.metrics_path }}
 
-{% if job.target_meta.type == 'direct' %}
+{% if job.target_meta.type == 'direct' -%}
   relabel_configs:
     - source_labels: [__address__]
       target_label: instance
-{% endif %}
-{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'snmp_exporter' %}
+{% endif -%}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'snmp_exporter' -%}
   params:
     module: [{{job.target_meta.module}}]
   relabel_configs:
@@ -186,8 +183,8 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement: {{job.target_meta.proxy_addr }} # The SNMP exporter's real hostname:port.
-{% endif %}
-{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'ipmi_exporter' %}
+{% endif -%}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'ipmi_exporter' -%}
   relabel_configs:
   - source_labels: [__meta_consul_service_address]
     target_label: __param_target
@@ -198,8 +195,8 @@ scrape_configs:
     target_label: __address__
     replacement: {{job.target_meta.proxy_addr }} # The IPMI exporter's real hostname:port.
     action: replace
-{% endif %}
-{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'bigip_exporter' %}
+{% endif -%}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'bigip_exporter' -%}
   relabel_configs:
   - source_labels: [__address__]
     target_label: __param_target
@@ -207,9 +204,9 @@ scrape_configs:
     target_label: instance
   - target_label: __address__
     replacement: {{job.target_meta.proxy_addr }}  # The bigip exporter's real hostname:port.
-{% endif %}
+{% endif -%}
 
-{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'blackbox_exporter' %}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'blackbox_exporter' -%}
   params:
     module: [{{job.target_meta.module}}]
   relabel_configs:
@@ -219,8 +216,8 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement: {{job.target_meta.proxy_addr }}  # The blackbox exporter's real hostname:port.
-{% endif %}
-{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'hana_exporter' %}
+{% endif -%}
+{% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'hana_exporter' -%}
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
@@ -228,7 +225,7 @@ scrape_configs:
       target_label: instance
     - target_label: __address__
       replacement: {{job.target_meta.proxy_addr }}   ### the address of the hana-exporter address
-{% endif %}
+{% endif -%}
   - source_labels: [__meta_consul_tags]
     regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
     replacement: '${2}'
@@ -255,25 +252,25 @@ scrape_configs:
      services:  
      - {{ job.consule_service }} 
 
-{% endfor %}
-{% endif %}
+{% endfor -%}
+{% endif -%}
 
 alerting:
   alertmanagers:
-{% if prometheus_file_sd_alertmanager_list is defined %}
-{% for alertmanager in prometheus_file_sd_alertmanager_list %}
+{% if prometheus_file_sd_alertmanager_list is defined -%}
+{% for alertmanager in prometheus_file_sd_alertmanager_list -%}
   - file_sd_configs:
     - files: 
       - {{ alertmanager }}
-{% endfor %}
-{% endif %}
-{% if prometheus_consul_sd_alertmanager_list is defined %}
-{% for alertmanager in prometheus_consul_sd_alertmanager_list %}
+{% endfor -%}
+{% endif -%}
+{% if prometheus_consul_sd_alertmanager_list is defined -%}
+{% for alertmanager in prometheus_consul_sd_alertmanager_list -%}
   - consul_sd_config:
     server: {{ alertmanager.consule_server }}
     datacenter: {{ alertmanager.consule_datacenter }}
     services: 
     - {{ alertmanager.consule_service }}
 
-{% endfor %}
-{% endif %}
+{% endfor -%}
+{% endif -%}
