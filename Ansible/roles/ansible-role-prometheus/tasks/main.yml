@@ -1,4 +1,5 @@
 
+
 - name: add prometheus repo
   yum_repository:
     name: prometheus
@@ -46,13 +47,16 @@
   with_items:
   - {src: "alertmanagers.yml.j2",target: "/etc/prometheus/alertmanagers.yml"}
   - {src: "prometheus.yml.j2",target: "/etc/prometheus/prometheus.yml"}
-
+  register: prometheus_conf
 
 
 - name: create alert.rules.yml conf file
   copy:
-    src: alert.rules.yml
+    src: "{{item}}"
     dest: /etc/prometheus/alert.rules.yml
+  with_items:
+  - alert.rules.yml
+  - oob-alert.rules.yml   ps 
 
 - name: start prometheus service if not running
   systemd: 
