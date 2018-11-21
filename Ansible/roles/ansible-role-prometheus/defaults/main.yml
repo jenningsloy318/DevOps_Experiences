@@ -13,7 +13,7 @@ prometheus_file_sd_job_list:
 - { 'job_name': 'hana_exporter', 'metrics_path': '/hana','hana_exporter_addr': '192.168.0.1:9460' }
 - { 'job_name': 'blackbox_exporter', 'metrics_path': '/probe','blackbox_exporter_addr':'192.168.0.1:9115'}
 - { 'job_name': 'snmp_exporter', 'metrics_path': '/snmp','snmp_exporter_addr':'192.168.0.1:9116' }
-- { 'job_name': 'ipmi_exporter', 'metrics_path': '/ipmi','snmp_exporter_addr':'192.168.0.1:9290' }
+- { 'job_name': 'ipmi_exporter', 'metrics_path': '/ipmi','ipmi_exporter_addr':'192.168.0.1:9290' }
 - { 'job_name': 'bigpip_exporter', 'metrics_path': '/bigip','bigpip_exporter_addr':'192.168.0.1:9142' }
 
 - { 'job_name': 'nginx_exporter', 'metrics_path': '/metrics'}
