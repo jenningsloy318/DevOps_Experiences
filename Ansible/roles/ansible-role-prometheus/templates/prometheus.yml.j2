@@ -174,7 +174,7 @@ scrape_configs:
   {% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'snmp_exporter' -%}
   params:
     module: 
-    -  {{ job.target_meta.module }} 
+    -  {{ job.target_meta.module }}
   relabel_configs:
   - source_labels: [__meta_consul_service_address]
     target_label: __address__
@@ -273,11 +273,11 @@ alerting:
   {% endif -%}
   {% if prometheus_consul_sd_alertmanager_list is defined -%}
   {% for alertmanager in prometheus_consul_sd_alertmanager_list -%}
-  - consul_sd_config:
-    server: {{ alertmanager.consule_server }}
-    datacenter: {{ alertmanager.consule_datacenter }}
-    services: 
-    - {{ alertmanager.consule_service }}
+  - consul_sd_configs:
+    - server: {{ alertmanager.consule_server }}
+      datacenter: {{ alertmanager.consule_datacenter }}
+      services: 
+      - {{ alertmanager.consule_service }}
 
   {% endfor -%}
   {% endif -%}
