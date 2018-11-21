@@ -165,7 +165,6 @@ scrape_configs:
   scrape_interval: 30s
   scrape_timeout: 30s
   metrics_path:  {{ job.metrics_path }}
-
 {% if job.target_meta.type == 'direct' -%}
   relabel_configs:
     - source_labels: [__address__]
@@ -226,31 +225,31 @@ scrape_configs:
     - target_label: __address__
       replacement: {{job.target_meta.proxy_addr }}   ### the address of the hana-exporter address
 {% endif -%}
-  - source_labels: [__meta_consul_tags]
-    regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
-    replacement: '${2}'
-    target_label: '${1}'
-  - source_labels: [__meta_consul_tags]
-    regex: ',(?:[^,]+,){1}([^=]+)=([^,]+),.*'
-    replacement: '${2}'
-    target_label: '${1}'
-  - source_labels: [__meta_consul_tags]
-    regex: ',(?:[^,]+,){2}([^=]+)=([^,]+),.*'
-    replacement: '${2}'
-    target_label: '${1}'
-  - source_labels: [__meta_consul_tags]
-    regex: ',(?:[^,]+,){3}([^=]+)=([^,]+),.*'
-    replacement: '${2}'
-    target_label: '${1}'
-  - source_labels: [__meta_consul_tags]
-    regex: ',(?:[^,]+,){4}([^=]+)=([^,]+),.*'
-    replacement: '${2}'
-    target_label: '${1}'
-  consul_sd_configs:
-   - server: {{ job.consule_server }}
-     datacenter: {{ job.consule_datacenter }}
-     services:  
-     - {{ job.consule_service }} 
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){0}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){1}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){2}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){3}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    - source_labels: [__meta_consul_tags]
+      regex: ',(?:[^,]+,){4}([^=]+)=([^,]+),.*'
+      replacement: '${2}'
+      target_label: '${1}'
+    consul_sd_configs:
+     - server: {{ job.consule_server }}
+       datacenter: {{ job.consule_datacenter }}
+       services:  
+       - {{ job.consule_service }} 
 
 {% endfor -%}
 {% endif -%}

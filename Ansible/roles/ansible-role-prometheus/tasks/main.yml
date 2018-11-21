@@ -75,7 +75,7 @@
 
 - name: and more targets
   copy:
-    src: "{{item.job_name}}-targets.yml"
+    src: "{{item}}"
     dest: /etc/prometheus/tgroups/
     mode: 0755
   with_fileglob:
