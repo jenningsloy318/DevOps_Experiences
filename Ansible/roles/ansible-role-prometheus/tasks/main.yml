@@ -55,7 +55,7 @@
     src: "{{item}}"
     dest: /etc/prometheus/
   with_fileglob:
-    - "{{ role_path }}files/*.alert.rules.yml"
+    - "{{ role_path }}/files/*.alert.rules.yml"
   register: prometheus_alerts_rules
 
 
@@ -90,7 +90,7 @@
     dest: /etc/prometheus/tgroups/
     mode: 0755
   with_fileglob:
-    - "files/*-targets.yml"
+    - "{{ role_path }}/files/*-targets.yml"
 
 
 
