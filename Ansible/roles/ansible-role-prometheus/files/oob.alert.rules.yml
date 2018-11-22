@@ -57,8 +57,7 @@ groups:
     labels:
       severity: warning
     annotations:
-      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$va
-lue}}'
+      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$value}}'
       summary:  'Switch Temperature value is high'
   - alert: Switch Temperaturev value is High
     expr: ciscoEnvMonTemperatureStatusValue >= ciscoEnvMonTemperatureThreshold * 0.9
@@ -66,8 +65,7 @@ lue}}'
     labels:
       severity: critical
     annotations:
-      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$va
-lue}}'
+      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$value}}'
       summary:  'Switch Temperature value is high'
   - alert: Switch Memory usage is high
     expr: cpmCPUMemoryUsed{job="switch"} /(cpmCPUMemoryFree{job="switch"} + cpmCPUMemoryUsed{job="switch"}) >= 80
