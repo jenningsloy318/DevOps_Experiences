@@ -58,18 +58,22 @@
     - "{{ role_path }}/files/*.alert.rules.yml"
   register: prometheus_alerts_rules
 
-
+- name: check prometheus service state 
+  service_facts:
+  register: service_facts_all
 - name: start prometheus service if not running
   systemd: 
     name: prometheus
     state: started
     enabled: yes
     daemon_reload: yes
+  when: service_facts_all.services['prometheus'].state  == "stopped"
+
 - name: reload prometheus if needed 
   uri:
     url: http://localhost:9090/-/reload
     method: POST
-  when: prometheus_conf is changed or prometheus_alerts_rules is changed  
+  when: (prometheus_conf is changed or prometheus_alerts_rules is changed  ) and service_facts_all.services['prometheus'].state  == "running"
 
 
 - name: change file owner
