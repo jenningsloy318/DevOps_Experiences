@@ -1,3 +1,4 @@
+
 groups:
 - name: Basic
   rules:
@@ -10,21 +11,21 @@ groups:
       description: '{{$labels.instance}} of job {{$labels.job}} has been down for  more than 5 minutes.'
       summary: 'Instance down.'
   - alert: Netowrk interface is down
-    expr: irate(ifOutOctets[5m] offset 5m)  != 0 and rate(ifOutOctets[5m])== 0  and ifAdminStatus == 1 and ifOperStatus == 2
+    expr: (ifAdminStatus  offset 5m  == 1 and ifOperStatus offset 5m == 1)  and (ifAdminStatus == 2 or ifOperStatus == 2)
     for: 5m
     labels:
       severity: critical
     annotations:
       description: 'Network interface {{$labels.ifDescr}} {{$labels.ifName}}  on instance {{$labels.instance}} of job {{$labels.job}} has been down for  more than 5 minutes.'
       summary: 'Network Interface is down.'
-  - alert: Network connection is broken
-    expr: irate(ifOutOctets[5m] offset 5m)  != 0 and rate(ifOutOctets[5m])== 0  and ifAdminStatus == 1 and ifOperStatus == 1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Connection on network interface {{$labels.ifDescr}} {{$labels.ifName}}  on instance {{$labels.instance}} of job {{$labels.job}} has been broken for 5 minutes '
-      summary: 'Network connection is broken'
+      #  - alert: Network connection is broken
+      #    expr:  increase(ifOutOctets[5m])== 0 and increase(ifOutOctets[5m])== 0  and ifAdminStatus == 1 and ifOperStatus == 1
+      #    for: 5m
+      #    labels:
+      #      severity: critical
+      #    annotations:
+      #      description: 'Connection on network interface {{$labels.ifDescr}} {{$labels.ifName}}  on instance {{$labels.instance}} of job {{$labels.job}} has been broken for 5 minutes '
+      #      summary: 'Network connection is broken'
 - name: Cisco switches
   rules:
   - alert: Switch Fan is not working properly
@@ -57,7 +58,8 @@ groups:
     labels:
       severity: warning
     annotations:
-      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$value}}'
+      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$va
+lue}}'
       summary:  'Switch Temperature value is high'
   - alert: Switch Temperaturev value is High
     expr: ciscoEnvMonTemperatureStatusValue >= ciscoEnvMonTemperatureThreshold * 0.9
@@ -65,7 +67,8 @@ groups:
     labels:
       severity: critical
     annotations:
-      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$value}}'
+      description: 'Switch Temperature value on module  {{$labels.ciscoEnvMonTemperatureStatusDescr}} of instance {{$labels.instance}} of job {{$labels.job}} is high, current value is {{$va
+lue}}'
       summary:  'Switch Temperature value is high'
   - alert: Switch Memory usage is high
     expr: cpmCPUMemoryUsed{job="switch"} /(cpmCPUMemoryFree{job="switch"} + cpmCPUMemoryUsed{job="switch"}) >= 80
@@ -101,166 +104,62 @@ groups:
       summary:  'Switch CPU usage is high'
 - name: Blade servers
   rules:
-  - alert: Blade Server CPU is unhealthy
-    expr: cpuVpdHealthStatus{cpuVpdHealthStatus="Warning"} == 1
+  - alert: Blade Server Fan is not healthy
+    expr: ipmi_fan_speed_state !=0
     for: 5m
     labels:
       severity: warning
     annotations:
-      description: 'Blade Servers CPU {{$labels.cpuVpdDescription}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server CPU is unhealthy.'
-  - alert: Blade Server CPU is unhealthy
-    expr: cpuVpdHealthStatus{cpuVpdHealthStatus="Critical"} == 1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server CPU {{$labels.cpuVpdDescription}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server CPU is unhealthy.'
-  - alert: Blade Server Memory is unhealthy
-    expr: memoryHealthStatus{memoryHealthStatus="Warning"} == 1
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      description: 'Blade Server Memory module {{$labels.memoryVpdDescription}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server Memory is unhealthy.'
-  - alert: Blade Server Memory is unhealthy
-    expr: memoryHealthStatus{memoryHealthStatus="Critical"} == 1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server Memory module {{$labels.memoryVpdDescription}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server Memory is unhealthy.'
-  - alert: Blade Server Disk is unhealthy
-    expr: diskHealthStatus{diskHealthStatus="Warning"} == 1
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      description: 'Blade Server Disk {{$labels.diskFruName}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server Disk is unhealthy.'
-  - alert: Blade Server Disk is unhealthy
-    expr: diskHealthStatus{diskHealthStatus="Critical"} == 1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server Disk {{$labels.diskFruName}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server Disk is unhealthy.'
-  - alert: Blade Server FAN is unhealthy
-    expr: fanHealthStatus{fanHealthStatus="Warning"} == 0
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      description: 'Blade Server Fan {{$labels.fanDescr}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
+      description: 'Blade Servers Fan  of module "{{$labels.name}}" on  {{$labels.hostname}} of job {{$labels.job}} is unhealthy.'
       summary: 'Blade Server Fan is unhealthy.'
-  - alert: Blade Server FAN is unhealthy
-    expr: fanHealthStatus{fanHealthStatus="Critical"} == 0
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server Fan {{$labels.fanDescr}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server Fan is unhealthy.'
-  - alert: Blade Server Power supply is unhealthy
-    expr: powerHealthStatus{powerHealthStatus="Warning"} == 0
+  - alert: Blade Server Power State is not healthy
+    expr: ipmi_power_state !=0
     for: 5m
     labels:
       severity: warning
     annotations:
-      description: 'Blade Server Power supply {{$labels.powerFruName}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server Power supply is unhealthy.'
-  - alert: Blade Server Power supply is unhealthy
-    expr: powerHealthStatus{powerHealthStatus="Critical"} == 0
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server Power supply {{$labels.powerFruName}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy.'
-      summary: 'Blade Server Power supply is unhealthy.'
-  - alert: Blade Server RAID controller Battery Capacity is decreased
-    expr: raidCtrlBatBCKChgCap != raidCtrlBatBCKDgnChgCap
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server RAID controller Battery {{$labels.raidCtrlName}} on instance {{$labels.instance}} of job {{$labels.job}} is decreased'
-      summary: 'Blade Server RAID controller Battery is decreased'
-  - alert: Blade Server RAID controller Battery is abnormal
-    expr: raidCtrlBatBCKStatus{raidCtrlBatBCKStatus = "Warning"} == 1
+      description: 'Blade Servers Power State of module  "{{$labels.name}}" on  {{$labels.hostname}} of job {{$labels.job}} is unhealthy.'
+      summary: 'Blade Server Power State is unhealthy.'
+  - alert: Blade Server Temperature is not healthy
+    expr: ipmi_temperature_state !=0
     for: 5m
     labels:
       severity: warning
     annotations:
-      description: 'Blade Server RAID controller Battery {{$labels.raidCtrlName}} on instance {{$labels.instance}} of job {{$labels.job}} is abnormal'
-      summary: 'Blade Server RAID controller Battery is abnormal'
-  - alert: Blade Server RAID controller Battery is abnormal
-    expr: raidCtrlBatBCKStatus{raidCtrlBatBCKStatus = "Critical"} == 1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server RAID controller Battery {{$labels.raidCtrlName}} on instance {{$labels.instance}} of job {{$labels.job}} is abnormal'
-      summary: 'Blade Server RAID controller Battery is abnormal'
-  - alert: Blade Server RAID drive is unhealthy
-    expr: raidDriveState{raidDriveHealthStataus="Warning"} == 1
+      description: 'Blade Servers Temperature  of module  "{{$labels.name}}" on  {{$labels.hostname}} of job {{$labels.job}} is unhealthy.'
+      summary: 'Blade Server Temperature is unhealthy.'
+  - alert: Blade Server CPU is not healthy
+    expr: ipmi_sensor_state{id !="11",type="Processor"} !=0
     for: 5m
     labels:
       severity: warning
     annotations:
-      description: 'Blade Server RAID drive {{$labels.raidDriveName}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy'
-      summary: 'Blade Server RAID controller Battery is unhealthy'
-  - alert: Blade Server RAID drive is unhealthy
-    expr: raidDriveState{raidDriveHealthStataus="Critical"} == 1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server RAID drive {{$labels.raidDriveName}} on instance {{$labels.instance}} of job {{$labels.job}} is unhealthy'
-      summary: 'Blade Server RAID controller Battery is unhealthy'
-  - alert: Blade Server System is unhealthy
-    expr: systemHealthStat != 255
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server Instance {{$labels.instance}} of job {{$labels.job}} is unhealthy'
-      summary: 'Blade Server Instance is unhealthy'
-  - alert: Blade Server Temperature is abnormal
-    expr: tempHealthStatus{tempHealthStatus="Warning"} == 1
+      description: 'Blade Servers CPU  "{{$labels.name}}" on  {{$labels.hostname}} of job {{$labels.job}} is unhealthy.'
+      summary: 'Blade Server CPU is unhealthy.'
+  - alert: Blade Server Memory is not healthy
+    expr: ipmi_sensor_state{id !="35",type="Memory"} !=0
     for: 5m
     labels:
       severity: warning
     annotations:
-      description: 'Blade Server Temperature of module {{$labels.tempDescr}} on instance {{$labels.instance}} of job {{$labels.job}} is abnormal'
-      summary: 'Blade Server Temperature is abnormal'
-  - alert: Blade Server Temperature is abnormal
-    expr: tempHealthStatus{tempHealthStatus="Critical"} == 1
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Blade Server Temperature of module {{$labels.tempDescr}} on instance {{$labels.instance}} of job {{$labels.job}} is abnormal'
-      summary: 'Blade Server Temperature is abnormal'
-  - alert: Blade Server voltage is abnormal
-    expr: voltHealthStatus{voltHealthStatus="Warning"} == 0
+      description: 'Blade Servers Memory  "{{$labels.name}}" on  {{$labels.hostname}} of job {{$labels.job}} is unhealthy.'
+      summary: 'Blade Server Memory is unhealthy.'
+  - alert: Blade Server Disk is not healthy
+    expr: ipmi_sensor_state{name=~"Drive.{2}",type="Drive Slot"} !=0
     for: 5m
     labels:
       severity: warning
     annotations:
-      description: 'Blade Server Voltage of module {{$labels.voltDescr}} on instance {{$labels.instance}} of job {{$labels.job}} is abnormal'
-      summary: 'Blade Server Voltage is abnormal'
-  - alert: Blade Server voltage is abnormal
-    expr: voltHealthStatus{voltHealthStatus="Critical"} == 0
+      description: 'Blade Servers Disk  "{{$labels.name}}" on  {{$labels.hostname}} of job {{$labels.job}} is unhealthy.'
+      summary: 'Blade Server Disk is unhealthy.'
+  - alert: Blade Server Power Supply is not healthy
+    expr: ipmi_sensor_state{type="Power Supply"} !=0
     for: 5m
     labels:
-      severity: critical
+      severity: warning
     annotations:
-      description: 'Voltage of module {{$labels.voltDescr}} on instance {{$labels.instance}} of job {{$labels.job}} is abnormal'
-      summary: 'Voltage is abnormal'
+      description: 'Blade Servers Power Supply  "{{$labels.name}}" on  {{$labels.hostname}} of job {{$labels.job}} is unhealthy.'
+      summary: 'Blade Server Power Supply is unhealthy.'
 - name: f5
   rules:
   - alert: F5 Disk usage is high
@@ -397,14 +296,6 @@ groups:
     annotations:
       description: 'Netapp storage enclosure {{$labels.enclIndex}} has overvoltage warning on instance {{$labels.instance}} of job {{$labels.job}}'
       summary:  'Netapp Storage enclosure has overvoltage warning'
-  - alert: Netapp Storage  status of the referenced disk drive is not active
-    expr: raidPStatus{job="netapp"} != 1
-    for: 3m
-    labels:
-      severity: critical
-    annotations:
-      description: 'Netapp storage status of the referenced disk drive  on instance {{$labels.instance}} of job {{$labels.job}} is not active: voluem {{$labels.raidPVol}}'
-      summary:  'Netapp Storage status of the referenced disk drive is not active'
   - alert: Netapp Storage  plex is offiline
     expr: plexStatus{job="netapp"} == 1
     for: 3m
@@ -431,3 +322,13 @@ groups:
     annotations:
       description: 'OOB monitor: BigIP F5 pool {{$labels.pool}} on instance  {{$labels.instance}} of job {{$labels.job}} has been down for  more than 2 minutes.'
       summary: 'OOB monitor: bigip pool is not available '
+- name: URL
+  rules:
+  - alert: URL is not accessible
+    expr: probe_success == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      description: 'OOB monitor: URL  {{$labels.instance}}  is inaccessible'
+      summary: 'OOB monitor: URL is not accessible'
