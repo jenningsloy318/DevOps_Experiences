@@ -210,7 +210,6 @@ scrape_configs:
   {% endif -%}
 
   {% if job.target_meta.type == 'proxy' and job.target_meta.proxy_type == 'blackbox_exporter' -%}
-
   params:
     module: 
     - {{job.target_meta.module }} 
