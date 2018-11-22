@@ -67,7 +67,7 @@ scrape_configs:
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
   params:
-    module: [http_2xx]
+    module: ['{{ job.module }}']
   file_sd_configs:
     - files: ['tgroups/blackbox-targets.yml']  
   relabel_configs:
@@ -83,8 +83,6 @@ scrape_configs:
 {% if job.job_name == 'bigip_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
-  params:
-    module: [http_2xx]
   file_sd_configs:
     - files: ['tgroups/bigip-targets.yml']  
   relabel_configs:
@@ -100,7 +98,7 @@ scrape_configs:
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
   params:
-    module: [http_2xx]
+    module: ['{{ job.module }}']
   file_sd_configs:
     - files: ['tgroups/snmp-targets.yml']  
   relabel_configs:
@@ -115,8 +113,6 @@ scrape_configs:
 {% if job.job_name == 'ipmi_exporter' -%}
 - job_name: '{{ job.job_name }}'
   metrics_path: '{{ job.metrics_path }}'
-  params:
-    module: [http_2xx]
   file_sd_configs:
     - files: ['tgroups/ipmi-targets.yml']  
   relabel_configs:
