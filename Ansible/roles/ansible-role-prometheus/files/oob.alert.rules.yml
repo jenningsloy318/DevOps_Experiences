@@ -302,6 +302,31 @@ groups:
     annotations:
       description: 'Netapp storage plex {{$labels.plexIndex}} on instance {{$labels.instance}} of job {{$labels.job}} is offline'
       summary:  'Netapp Storage plex is offiline'
+  - alert: Netapp Storage volume usage is high
+    expr: netapp_capacity_svm_vol_afs_used_percent  > 90
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      description: 'Netapp Storage volume {{$labels.vol }}  in cluster {{$labels.cluster}}  group {{$labels.group}}  svm  {{$labels.svm}}  usage is high, current usage is {{$value}}%'
+      summary:  'Netapp Storage volume usage is high'
+  - alert: Netapp Storage SVM usage is high
+    expr: netapp_capacity_svm_vol_summary_afs_used_percent  > 90
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      description: 'Netapp Storage SVM {{$labels.svm}}   in cluster {{$labels.cluster}}  group {{$labels.group}} usage is high, current usage is {{$value}}%'
+      summary:  'Netapp Storage SVM usage is high'
+  - alert: Netapp Storage node CPU usage is high
+    expr: netapp_perf_node_processor_avg_processor_busy  > 80
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      description: 'Netapp Storage  node {{$labels.node}}   CPU in cluster {{$labels.cluster}}  group {{$labels.group}} usage is high, current usage is {{$value}}%'
+      summary:  'Netapp Storage node CPU usage is high'
+
 - name: F5 Objects
   rules:
   - alert: bigip Virtual server is not available
