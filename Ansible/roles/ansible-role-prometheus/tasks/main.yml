@@ -24,6 +24,8 @@
   template:
     src: prometheus.service.j2
     dest: /lib/systemd/system/prometheus.service
+  register: prometheus_service
+  notify: restart_prometheus
 
 
 - name: create prometheus file sd dir
@@ -42,8 +44,6 @@
     mode: 0755
     owner: prometheus
     group: prometheus
-  notify:
-    reload_prometheus_conf
   with_items:
   - {src: "alertmanagers.yml.j2",target: "/etc/prometheus/alertmanagers.yml"}
   - {src: "prometheus.yml.j2",target: "/etc/prometheus/prometheus.yml"}
@@ -53,10 +53,11 @@
 - name: create alert.rules.yml conf file
   copy:
     src: "{{item}}"
-    dest: /etc/prometheus/alert.rules.yml
-  with_items:
-  - alert.rules.yml
-  - oob-alert.rules.yml   ps 
+    dest: /etc/prometheus/
+  with_fileglob:
+    - "{{ role_path }}files/*.alert.rules.yml"
+  register: prometheus_alerts_rules
+
 
 - name: start prometheus service if not running
   systemd: 
@@ -64,6 +65,12 @@
     state: started
     enabled: yes
     daemon_reload: yes
+- name: reload prometheus if needed 
+  uri:
+    url: http://localhost:9090/-/reload
+    method: POST
+  when: prometheus_conf is changed or prometheus_alerts_rules is changed  
+
 
 - name: change file owner
   file:
@@ -74,8 +81,8 @@
   with_items:
   - "{{ prometheus_storage_tsdb_path}}"
   - /etc/prometheus
-  notify:
-    reload_prometheus_conf  
+
+
 
 - name: and more targets
   copy:

@@ -1,7 +1,8 @@
 global:
   scrape_interval: 15s
 rule_files:
-- '/etc/prometheus/alert.rules.yml'
+- '/etc/prometheus/inb.alert.rules.yml'
+- '/etc/prometheus/oob.alert.rules.yml'
 
 scrape_configs:
 {% if prometheus_file_sd_job_list is defined  -%}
