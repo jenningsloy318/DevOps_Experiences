@@ -63,11 +63,13 @@
     owner: root 
     group: root 
     mode: 0644
+  register: telegraf_conf
 
 - name: install telegraf.service
   copy: 
     src: telegraf.service
     dest: /usr/lib/systemd/system/telegraf.service
+  register: telegraf_service
 
 - name: restart_telegraf
   systemd: 
@@ -75,6 +77,7 @@
     state: restarted 
     enabled: yes 
     daemon_reload: yes
+  when: telegraf_conf is changed or telegraf_service is changed
 
 - name: add firewalld rules
   firewalld:
