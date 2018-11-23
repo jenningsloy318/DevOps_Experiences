@@ -93,9 +93,9 @@ receivers:
   wechat_configs:
   - send_resolved: true
     message: '{{alertmanager_alert_subject_head}}:{%raw%} {{ template "wechat.default.message" . }}'{%endraw%}
-    to_user: "{{alertmanager_wechat_user_id|default("")}}"
-    to_party: "{{alertmanager_wechat_party_id|default("")}}"
-    to_tag: "{{alertmanager_wechat_tag|default("")}}"
+    to_user: "{{alertmanager_wechat_to_user_id|default("")}}"
+    to_party: "{{alertmanager_wechat_to_party_id|default("")}}"
+    to_tag: "{{alertmanager_wechat_to_tag_id|default("")}}"
     agent_id: "{{alertmanager_wechat_agent_id}}"
 {%endif%}
 
