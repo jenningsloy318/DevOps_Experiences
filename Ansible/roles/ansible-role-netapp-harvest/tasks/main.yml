@@ -136,3 +136,12 @@
     warn: false 
   register: journalctl_netapp_harvest
 - debug: var=journalctl_netapp_harvest.stdout_lines
+
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 9108/tcp
+    permanent: true
+    state: enabled
+- name: reload firewalld
+  shell: firewall-cmd --reload    
