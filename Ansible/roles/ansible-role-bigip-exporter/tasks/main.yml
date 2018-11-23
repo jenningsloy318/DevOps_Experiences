@@ -10,7 +10,7 @@
     dest: "/tmp/bigip_exporter-{{bigip_exporter_version}}.linux-amd64.tar.gz"
   when:  bigip_exporter.rc  != 0
 
-- name: Unarchive  telegraf binary 
+- name: Unarchive bigip binary 
   unarchive:
     src: "/tmp/bigip_exporter-{{bigip_exporter_version}}.linux-amd64.tar.gz"
     dest: /tmp
@@ -40,19 +40,22 @@
   copy:
     src: bigip_exporter.service
     dest: /lib/systemd/system/bigip_exporter.service
+  register: bigip_exporter_service
 
 
 - name: create bigip_exporter conf file 
   template:
     src: bigip_exporter.yml.j2
     dest: /etc/prometheus/bigip_exporter.yml
+  register: bigip_exporter_conf
 
-- name: start bigip_exporter 
+- name: restart bigip_exporter 
   systemd: 
     name: bigip_exporter 
     state: restarted 
     enabled: yes
     daemon_reload: yes
+  when: bigip_exporter_service is changed or bigip_exporter_conf is changed
 - name: add firewalld rules
   firewalld:
     zone: public
