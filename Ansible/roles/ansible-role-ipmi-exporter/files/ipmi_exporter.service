@@ -7,8 +7,7 @@ Type=simple
 User=root
 Group=root
 WorkingDirectory=/tmp
-ExecStart=/usr/bin/ipmi_exporter --config.file=/etc/ipmi_exporter/ipmi.yml
-RestartSec=1
+ExecStart=/usr/bin/ipmi_exporter --config.file=/etc/prometheus/ipmi.yml
 Restart=on-failure
 StandardOutput=syslog
 StandardError=syslog
