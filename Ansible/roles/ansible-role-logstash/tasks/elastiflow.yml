@@ -93,24 +93,24 @@
     daemon_reload: yes
 - name: set up index for elastiflow on kibana
   uri:
-    url: "http://{{KIBABA_ADDR}}/api/saved_objects/index-pattern/elastiflow-*"
+    url: "http://{{KIBANA_ADDR}}/api/saved_objects/index-pattern/elastiflow-*"
     method: POST
-    body: /tmp/elastiflow-master/kibana/elastiflow.index_pattern.json
-    body_format: json
-    user: "{{KIBABA_USER}}"
+    src: /tmp/elastiflow-master/kibana/elastiflow.index_pattern.json
+    user: "{{KIBANA_USER}}"
     password: "{{KIBANA_PASS}}"
+    force_basic_auth: yes
     headers:
         Content-Type: "application/json"
         kbn-xsrf: true
 
-- name: set up index for elastiflow on kibana
+- name: import elastiflow dashboard
   uri:
-    url:  "http://{{KIBABA_ADDR}}//api/kibana/dashboards/import" 
+    url:  "http://{{KIBANA_ADDR}}//api/kibana/dashboards/import" 
     method: POST
-    body: /tmp/elastiflow-master/kibana/elastiflow.dashboards.6.4.x.json
-    body_format: json
-    user: "{{KIBABA_USER}}"
+    src: /tmp/elastiflow-master/kibana/elastiflow.dashboards.6.4.x.json
+    user: "{{KIBANA_USER}}"
     password: "{{KIBANA_PASS}}"
+    force_basic_auth: yes
     headers:
         Content-Type: "application/json"
         kbn-xsrf: true
