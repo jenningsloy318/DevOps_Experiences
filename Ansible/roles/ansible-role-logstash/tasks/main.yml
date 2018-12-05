@@ -1,15 +1,32 @@
-- name: ensure logstash is installed
-  apt:
-    deb: "https://artifacts.elastic.co/downloads/logstash/logstash-{{LOGSTAASH_VERSION}}.deb"
+- name: add logstash repo
+  yum_repository:
+    name: logstash-6.x
+    description: Elastic repository for 6.x packages
+    baseurl: https://artifacts.elastic.co/packages/6.x/yum
+    gpgcheck: 1
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: 1
+    autorefresh: 1
+    type: rpm-md
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
+
+- name: add logstash repo
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
     state: present
+    filename: elastic-6.x
+  when: ansible_os_family == "Debian"
+
+- name: Add an apt logstash  
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
   when: ansible_os_family == "Debian"
 
 - name: ensure logstash is installed
-  yum:
-    name: "https://artifacts.elastic.co/downloads/logstash/logstash-{{LOGSTAASH_VERSION}}.rpm"
+  package:
+    name: logstash={{LOGSTAASH_VERSION}}
     state: present
-  when: ansible_os_family == "RedHat"
-
+ 
 - name: install dependencies
   package:
     name: "{{item}}"
