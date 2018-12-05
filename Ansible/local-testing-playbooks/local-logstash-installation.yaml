@@ -1,0 +1,13 @@
+
+- name: run the playbook tasks on the localhost
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+  - ansible-role-logstash
+  vars:
+  - LOGSTAASH_VERSION: 6.4.3
+  - ES_HOST_1: 10.36.52.184
+  - ES_HOST_2: 10.36.52.185
+  - ES_HOST_3: 10.36.52.186
+  - KIBABA_HOST: 10.36.52.175

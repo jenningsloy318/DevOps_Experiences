@@ -1,9 +1,0 @@
-- name: set LOGSTASH_PACKAGE_URL
-  set_fact:
-    LOGSTASH_PACKAGE_URL =  https://artifacts.elastic.co/downloads/logstash/logstash-{{LOGSTAASH_VERSION}}.deb
-  when: ansible_os_familay == "Debian"
-
-- name: set LOGSTASH_PACKAGE_URL
-  set_fact:
-    LOGSTASH_PACKAGE_URL =  https://artifacts.elastic.co/downloads/logstash/logstash-{{LOGSTAASH_VERSION}}.rpm
-  when: ansible_os_familay == "RedHat"
