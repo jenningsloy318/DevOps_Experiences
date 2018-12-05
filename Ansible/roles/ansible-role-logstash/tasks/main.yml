@@ -1,9 +1,14 @@
-- import_tasks: set_var.yml
+- name: ensure logstash is installed
+  apt:
+    deb: "https://artifacts.elastic.co/downloads/logstash/logstash-{{LOGSTAASH_VERSION}}.deb"
+    state: present
+  when: ansible_os_family == "Debian"
 
 - name: ensure logstash is installed
-  package:
-    name: "{{LOGSTASH_PACKAGE_URL}}"
-    state: installed
+  yum:
+    name: "https://artifacts.elastic.co/downloads/logstash/logstash-{{LOGSTAASH_VERSION}}.rpm"
+    state: present
+  when: ansible_os_family == "RedHat"
 
 - name: install dependencies
   package:

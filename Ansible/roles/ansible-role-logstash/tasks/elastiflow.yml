@@ -69,32 +69,41 @@
   lineinfile:
     path:  /etc/systemd/system/logstash.service.d/elastiflow.conf
     regexp: '(^Environment="ELASTIFLOW_ES_HOST1=).*$'
-    line:  '\1{{ES_HOST_1}}'
+    line:  '\1{{ES_HOST_1}}:9200'
 
 - name: configure ES cluster nodes (3)
   lineinfile:
     path:  /etc/systemd/system/logstash.service.d/elastiflow.conf
     regexp: '(^Environment="ELASTIFLOW_ES_HOST2=).*$'
-    line:  '\1{{ES_HOST_2}}'
+    line:  '\1{{ES_HOST_2}}:9200'
 
 - name: configure ES cluster nodes (4)
   lineinfile:
     path:  /etc/systemd/system/logstash.service.d/elastiflow.conf
     regexp: '(^Environment="ELASTIFLOW_ES_HOST3=).*$'
-    line:  '\1{{ES_HOST_3}}'
+    line:  '\1{{ES_HOST_3}}:9200'
 
 - name: restart logstash 
   systemd:
     name: logstash
     state: restarted
     daemon_reload: yes
+- name: set up index for elastiflow on kibana
+  uri:
+    url: "http://{{KIBABA_HOST}}:5601/api/saved_objects/index-pattern/elastiflow-*"
+    method: POST
+    body: /tmp/elastiflow-master/kibana/elastiflow.index_pattern.json
+    body_format: json
+    headers:
+        Content-Type: "application/json"
+        kbn-xsrf: true
 
 - name: set up index for elastiflow on kibana
-  shell: curl -X POST  -H "Content-Type: application/json"  -H "kbn-xsrf: true"  "http://{{KIBABA_HOST}}:5601/api/saved_objects/index-pattern/elastiflow-*"  -d @/tmp/elastiflow-master/kibana/elastiflow.index_pattern.json
-  args:
-    warn: no
-
-- name: create dashboard for elasticsearch on kibana
-  shell: curl -X POST  -H "Content-Type: application/json"  -H "kbn-xsrf: true"  "http://{{KIBABA_HOST}}:5601//api/kibana/dashboards/import"  -d @/tmp/elastiflow-master/kibana/elastiflow.dashboards.6.4.x.json
-  args:
-    warn: no
+  uri:
+    url:  "http://{{KIBABA_HOST}}:5601//api/kibana/dashboards/import" 
+    method: POST
+    body: /tmp/elastiflow-master/kibana/elastiflow.dashboards.6.4.x.json
+    body_format: json
+    headers:
+        Content-Type: "application/json"
+        kbn-xsrf: true
