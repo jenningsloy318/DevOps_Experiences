@@ -21,10 +21,17 @@
   when: ansible_os_family == "Debian"
 
 - name: ensure logstash is installed
-  package:
-    name: logstash={{LOGSTAASH_VERSION}}
+  yum:
+    name: "logstash-{{LOGSTAASH_VERSION}}"
     state: present
- 
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
+
+- name: ensure logstash is installed
+  yum:
+    name: "logstash={{LOGSTAASH_VERSION}}"
+    state: present
+  when: ansible_os_family == "Debian"
+
 - name: install dependencies
   package:
     name: "{{item}}"
