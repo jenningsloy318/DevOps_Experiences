@@ -1,0 +1,16 @@
+- import_tasks: set_var.yml
+
+- name: ensure logstash is installed
+  package:
+    name: "{{LOGSTASH_PACKAGE_URL}}"
+    state: installed
+
+- name: install dependencies
+  package:
+    name: "{{item}}"
+    state: installed
+  with_items:
+  - unzip 
+  - curl
+
+- import_tasks: elastiflow.yml 
