@@ -68,22 +68,22 @@
 - name: configure ES cluster nodes (2)
   lineinfile:
     path:  /etc/systemd/system/logstash.service.d/elastiflow.conf
-    regexp: '(^Environment="ELASTIFLOW_ES_HOST_1=).*$'
-    line:  '\1{{ES_HOST_1}}:9200"'
+    regexp: '^(Environment="ELASTIFLOW_ES_HOST_1)=.*$'
+    line:  '\1={{ES_HOST_1}}:9200"'
     backrefs: yes
 
 - name: configure ES cluster nodes (3)
   lineinfile:
     path:  /etc/systemd/system/logstash.service.d/elastiflow.conf
-    regexp: '(^Environment="ELASTIFLOW_ES_HOST_2=).*$'
-    line:  '\1{{ES_HOST_2}}:9200"'
+    regexp: '^(Environment="ELASTIFLOW_ES_HOST_2)=.*$'
+    line:  '\1={{ES_HOST_2}}:9200"'
     backrefs: yes
 
 - name: configure ES cluster nodes (4)
   lineinfile:
     path:  /etc/systemd/system/logstash.service.d/elastiflow.conf
-    regexp: '(^Environment="ELASTIFLOW_ES_HOST_3=).*$'
-    line:  '\1{{ES_HOST_3}}:9200"'
+    regexp: '^(Environment="ELASTIFLOW_ES_HOST_3)=.*$'
+    line:  '\1={{ES_HOST_3}}:9200"'
     backrefs: yes
 
 - name: restart logstash 
