@@ -91,9 +91,10 @@
     name: logstash
     state: restarted
     daemon_reload: yes
+
 - name: set up index for elastiflow on kibana
   uri:
-    url: "http://{{KIBANA_ADDR}}/api/saved_objects/index-pattern/elastiflow-*"
+    url: "{{KIBABA_SCHEMA}}://{{KIBANA_ADDR}}/api/saved_objects/index-pattern/elastiflow-*"
     method: POST
     src: /tmp/elastiflow-master/kibana/elastiflow.index_pattern.json
     user: "{{KIBANA_USER}}"
@@ -102,15 +103,17 @@
     headers:
         Content-Type: "application/json"
         kbn-xsrf: true
+  ignore_errors: yes
 
 - name: import elastiflow dashboard
   uri:
-    url:  "http://{{KIBANA_ADDR}}//api/kibana/dashboards/import" 
+    url: "{{KIBABA_SCHEMA}}://{{KIBANA_ADDR}}//api/kibana/dashboards/import"
     method: POST
-    src: /tmp/elastiflow-master/kibana/elastiflow.dashboards.6.4.x.json
+    src:  /tmp/elastiflow-master/kibana/elastiflow.dashboards.6.4.x.json
     user: "{{KIBANA_USER}}"
     password: "{{KIBANA_PASS}}"
     force_basic_auth: yes
     headers:
         Content-Type: "application/json"
         kbn-xsrf: true
+  ignore_errors: yes
