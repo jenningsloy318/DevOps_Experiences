@@ -41,3 +41,21 @@
   - curl
 
 - import_tasks: elastiflow.yml 
+
+- name: modify logstash.yml to enable read configure from piplines.yml
+  lineinfile:
+    regexp: '^(path.config.*)'
+    line: '#\1'
+    backrefs: yes
+
+- name: configure JVM heap (1)
+  lineinfile:
+      path: /etc/logstash/jvm.options  
+      regexp: '^-Xms\\d+g$' 
+      line: '-Xms4g'
+
+- name: configure JVM heap (2)
+  lineinfile:
+      path: /etc/logstash/jvm.options  
+      regexp: '^-Xmx\\d+g$' 
+      line: '-Xmx4g'    

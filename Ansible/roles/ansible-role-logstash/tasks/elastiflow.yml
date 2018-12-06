@@ -9,14 +9,12 @@
   lineinfile:
       path: /etc/logstash/jvm.options  
       regexp: '^-Xms\\d+g$' 
-      backup: yes
       line: '-Xms4g'
 
 - name: configure JVM heap (2)
   lineinfile:
       path: /etc/logstash/jvm.options  
       regexp: '^-Xmx\\d+g$' 
-      backup: yes
       line: '-Xmx4g'      
 
 - name: install  logstash-codec-sflow plugins
