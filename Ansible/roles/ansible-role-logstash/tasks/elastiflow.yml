@@ -49,7 +49,7 @@
 
 - name:  add elastiflow to logstash pipeline
   copy:
-      src: /etc/logstash/pipelines.yml  
+      src: pipelines.yml  
       dest: /etc/logstash/pipelines.yml  
 
 - name: enable ES cluster output
