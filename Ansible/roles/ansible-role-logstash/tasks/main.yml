@@ -44,6 +44,7 @@
 
 - name: modify logstash.yml to enable read configure from piplines.yml
   lineinfile:
+    path: /etc/logstash/logstash.yml
     regexp: '^(path.config.*)'
     line: '#\1'
     backrefs: yes
