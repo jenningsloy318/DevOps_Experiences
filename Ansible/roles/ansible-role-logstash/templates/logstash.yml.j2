@@ -1,0 +1,11 @@
+modules:
+  - name: arcsight
+    var.input.smartconnector.bootstrap_servers: "eb_host:514"
+    var.elasticsearch.hosts: "localhost:9200"
+    var.elasticsearch.username: "elastic"
+    var.elasticsearch.password: "YOUR_PASSWORD"
+    var.kibana.host: “localhost:5601”
+    var.kibana.username: "elastic"
+    var.kibana.password: "YOUR_PASSWORD"
+  - name: netflow
+    var.input.udp.port: 9996

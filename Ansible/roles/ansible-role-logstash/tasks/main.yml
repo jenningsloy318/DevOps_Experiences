@@ -48,7 +48,21 @@
     regexp: '^(path.config.*)'
     line: '#\1'
     backrefs: yes
-
+- name: add module setting to /etc/logstash/logstash.yml
+  blockinfile:
+      path: /etc/logstash/logstash.yml
+      group: undefined # not required. Name of the group that should own the file/directory, as would be fed to I(chown).
+      insertafter: '^# modules:' 
+      block: |
+        modules:
+            - name: arcsight
+                var.input.smartconnector.bootstrap_servers: "0.0.0.0:514"
+                var.elasticsearch.hosts: "{{ES_CLUSTER_INSTANCE_1}},{{ES_CLUSTER_INSTANCE_2}},{{ES_CLUSTER_INSTANCE_3}}"
+                var.elasticsearch.username: "{{ES_CLUSTER_USER}}"
+                var.elasticsearch.password: "{{ES_CLUSTER_PASS}}"
+                var.kibana.host: "{{KIBANA_INSTANCE}}"
+                var.kibana.username: "{{KIBANA_USER}}"
+                var.kibana.password: "{{KIBANA_PASS}}"
 - name: configure JVM heap (1)
   lineinfile:
       path: /etc/logstash/jvm.options  
