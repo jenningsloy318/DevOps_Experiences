@@ -169,3 +169,40 @@ sometimes, insdie a domain we can redirect do other url
 ```
 
 As above, for `/metrics` and `/status`, it will rediect to default_server.
+
+
+## 6. Configure to use ldap auth 
+
+ add following snip to `/etc/nginx/nginx.conf` before line `include /etc/nginx/conf.d/*.conf;`, so each other vhost can utilize this ldap setting
+ ```conf
+    ldap_server ad_1 {
+      # user search base.
+      url "ldaps://server1.389.local/DC=389,DC=local?uid?sub?(objectClass=*)";
+      # bind as
+      binddn "uid=devops,ou=people,dc=389,dc=local";
+      # bind pw
+      binddn_passwd Cqmyg@711;
+      # group attribute name which contains member object
+      group_attribute member;
+      #group_attribute memberuid;
+      # search for full DN in member object
+      group_attribute_is_dn on;
+      # matching algorithm (any / all)
+      #satisfy any;
+      # list of allowed groups
+      #require group "CN=Admins,OU=My Security Groups,DC=company,DC=com";
+      #require group "CN=New York Users,OU=My Security Groups,DC=company,DC=com";
+      # list of allowed users
+      # require 'valid_user' cannot be used together with 'user' as valid user is a superset
+      require valid_user;
+      #require user "uid=devops,OU=people,DC=389,DC=local";
+      #require user "CN=Robocop,OU=Users,OU=New York Office,OU=Offices,DC=company,DC=com";
+      ssl_check_cert on;
+      ssl_ca_file /etc/openldap/cacerts/cacert.asc;
+    }
+```
+then add following lines to vhost conf if retuired, above the location directives
+```
+    auth_ldap "Forbidden";
+    auth_ldap_servers ad_1;
+```
