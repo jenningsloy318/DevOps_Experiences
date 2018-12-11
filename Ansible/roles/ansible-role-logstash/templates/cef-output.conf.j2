@@ -1,0 +1,8 @@
+output {
+  if[type] == "CEF" {
+  elasticsearch {
+    id => "cef-elasticsearch_multi"
+    hosts => ["{{ES_CLUSTER_INSTANCE_1}}","{{ES_CLUSTER_INSTANCE_2}}","{{ES_CLUSTER_INSTANCE_3}}" ]
+  }
+}
+}
