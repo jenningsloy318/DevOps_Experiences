@@ -8,69 +8,70 @@
     enabled: 1
   when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
 
+- name: Add logstash apt key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    keyring: /etc/apt/trusted.gpg.d/elasticsearch.gpg
+  when: ansible_os_family == "Debian"
+
 - name: add logstash repo
   apt_repository:
     repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
     state: present
     filename: elastic-6.x
-  when: ansible_os_family == "Debian"
-
-- name: Add an apt logstash  
-  apt_key:
-    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    update_cache: yes
   when: ansible_os_family == "Debian"
 
 - name: ensure logstash is installed
-  yum:
-    name: "logstash-{{LOGSTAASH_VERSION}}"
+  package:
+    name: "logstash"
     state: present
-  when: ansible_os_family == "RedHat" or ansible_os_family == "Suse"
 
-- name: ensure logstash is installed
-  yum:
-    name: "logstash={{LOGSTAASH_VERSION}}"
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: install dependencies
+- name: install other tools
   package:
     name: "{{item}}"
-    state: installed
+    state: present
   with_items:
   - unzip 
   - curl
 
-- import_tasks: elastiflow.yml 
 
-- name: modify logstash.yml to enable read configure from piplines.yml
-  lineinfile:
-    path: /etc/logstash/logstash.yml
-    regexp: '^(path.config.*)'
-    line: '#\1'
-    backrefs: yes
-- name: add module setting to /etc/logstash/logstash.yml
-  blockinfile:
-      path: /etc/logstash/logstash.yml
-      group: undefined # not required. Name of the group that should own the file/directory, as would be fed to I(chown).
-      insertafter: '^# modules:' 
-      block: |
-        modules:
-            - name: arcsight
-                var.input.smartconnector.bootstrap_servers: "0.0.0.0:514"
-                var.elasticsearch.hosts: "{{ES_CLUSTER_INSTANCE_1}},{{ES_CLUSTER_INSTANCE_2}},{{ES_CLUSTER_INSTANCE_3}}"
-                var.elasticsearch.username: "{{ES_CLUSTER_USER}}"
-                var.elasticsearch.password: "{{ES_CLUSTER_PASS}}"
-                var.kibana.host: "{{KIBANA_INSTANCE}}"
-                var.kibana.username: "{{KIBANA_USER}}"
-                var.kibana.password: "{{KIBANA_PASS}}"
+
+- name: include tasks for each enabled pipeline
+  include_tasks: "{{ pipeline.id }}.yml"
+  with_items:
+  - "{{ LOGSTASH_ENABLED_PIPELINES }}"
+  loop_control:
+    loop_var: pipeline
+
+- name: create pipelines.yml
+  template:
+    src: pipelines.yml.j2
+    dest: /etc/logstash/pipelines.yml
+
+- name: create /etc/logstash/logstash.yml
+  template:
+    src: logstash.yml.j2
+    dest: /etc/logstash/logstash.yml
 - name: configure JVM heap (1)
   lineinfile:
       path: /etc/logstash/jvm.options  
       regexp: '^-Xms\\d+g$' 
       line: '-Xms4g'
+      create: yes
 
 - name: configure JVM heap (2)
   lineinfile:
       path: /etc/logstash/jvm.options  
       regexp: '^-Xmx\\d+g$' 
       line: '-Xmx4g'    
+- name:  configure pipelines
+  template:
+      src: pipelines.yml.j2
+      dest: /etc/logstash/pipelines.yml  
+
+- name: restart logstash 
+  systemd:
+    name: logstash
+    state: restarted
+    daemon_reload: yes    

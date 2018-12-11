@@ -14,11 +14,13 @@
     executable: /bin/bash
   
 - name: update logstash plugins
-  shell: /usr/share/logstash/bin/logstash-plugin update "{{item}}"
+  shell: /usr/share/logstash/bin/logstash-plugin update "{{logstash_plugin}}"
   with_items:
   - logstash-codec-netflow
   - logstash-input-udp
   - logstash-filter-dns
+  loop_control:
+    loop_var: logstash_plugin
   args:
     warn: no
     executable: /bin/bash
@@ -29,16 +31,13 @@
     warn: no
     executable: /bin/bash
 
-- name: copy elastiflow systemd conf 
+- name: copy logstash.service conf file of  elastiflow pipeline 
   shell: sudo cp -a /tmp/elastiflow-master/logstash.service.d /etc/systemd/system/
   args:
     warn: no
     executable: /bin/bash
 
-- name:  add elastiflow to logstash pipeline
-  copy:
-      src: pipelines.yml  
-      dest: /etc/logstash/pipelines.yml  
+
 
 - name: enable ES cluster output
   shell: mv 30_output_10_single.logstash.conf 30_output_10_single.logstash.conf.disabled && mv 30_output_20_multi.logstash.conf.disabled 30_output_20_multi.logstash.conf
@@ -86,12 +85,6 @@
     regexp: '^(Environment="ELASTIFLOW_ES_PASSWD)=.*$'
     line:  '\1={{ES_CLUSTER_PASS}}"'
     backrefs: yes
-
-- name: restart logstash 
-  systemd:
-    name: logstash
-    state: restarted
-    daemon_reload: yes
 
 - name: set up index for elastiflow on kibana
   uri:
