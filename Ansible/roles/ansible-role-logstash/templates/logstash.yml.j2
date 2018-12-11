@@ -1,11 +1,19 @@
+
+path.data: {{LOGSTASH_DATA_PATH}}
+path.logs: {{LOGSTASH_LOGS_PATH}}
+
+{% if LOGSTASH_ENABLED_MODULES is defined %}
+{% for module in LOGSTASH_ENABLED_MODULES %}
+{% if module.name == 'arcsight' %}
 modules:
-  - name: arcsight
-    var.input.smartconnector.bootstrap_servers: "eb_host:514"
-    var.elasticsearch.hosts: "localhost:9200"
-    var.elasticsearch.username: "elastic"
-    var.elasticsearch.password: "YOUR_PASSWORD"
-    var.kibana.host: “localhost:5601”
-    var.kibana.username: "elastic"
-    var.kibana.password: "YOUR_PASSWORD"
-  - name: netflow
-    var.input.udp.port: 9996
+  - name: {{module.name}}
+    var.input.{{module.vars.input.type}}.bootstrap_servers: "{{module.vars.input.host}}"
+    var.elasticsearch.hosts: "{{module.vars.es_hosts}}"
+    var.elasticsearch.username:  "{{module.vars.es_username|default('')}}"
+    var.elasticsearch.password: "{{module.vars.password|default('')}}"
+    var.kibana.host: "{{module.vars.kibana_host}}"
+    var.kibana.username: "{{module.vars.kibana_username}}"
+    var.kibana.password: "{{module.vars.kibana_password}}"
+{% endif %}
+{% endfor %}
+{% endif %}
