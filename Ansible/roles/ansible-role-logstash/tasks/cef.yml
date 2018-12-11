@@ -5,11 +5,13 @@
     executable: /bin/bash
 
 - name: create cef input and fileter conf
-  file:
+  copy:
     src: "{{cef_conf}}"
     dest: /etc/logstash/cef/conf.d/
   with_fileglob:
   - "{{role_path}}/files/cef*.conf"
+  loop_control:
+    loop_var: cef_conf
 
 - name: create cef output conf
   template:
