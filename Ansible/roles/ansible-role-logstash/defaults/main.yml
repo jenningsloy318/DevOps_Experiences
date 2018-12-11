@@ -11,6 +11,4 @@ KIBANA_USER:
 KIBANA_PASS:
 LOGSTASH_ENABLED_PIPELINES:
 - {'id': 'elastiflow','path': '/etc/logstash/elastiflow/conf.d/*.conf'}
-
-LOGSTASH_ENABLED_MODULES:
-- {'name': 'arcsight', 'vars': {'input': {'type': 'smartconnector','host': '0.0.0.0:514'},'es_hosts': '{{ES_CLUSTER_INSTANCE_1}},{{ES_CLUSTER_INSTANCE_2}},{{ES_CLUSTER_INSTANCE_3}}', 'es_username': '{{ES_CLUSTER_USER}}','es_password': '{{ES_CLUSTER_PASS}}','kibana_host': '{{KIBANA_INSTANCE}}','kibana_username': '{{KIBANA_USER}}','kibana_password': '{{KIBANA_PASS}}' } }
+- {'id': 'cef','path': '/etc/logstash/cef/conf.d/*.conf'}
