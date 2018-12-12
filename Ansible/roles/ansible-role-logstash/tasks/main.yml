@@ -58,14 +58,14 @@
   lineinfile:
       path: /etc/logstash/jvm.options  
       regexp: '^-Xms\\d+g$' 
-      line: '-Xms4g'
+      line: '-Xms{{LOGSTASH_JVM_XMX_SIZE|lower}}'
       create: yes
 
 - name: configure JVM heap (2)
   lineinfile:
       path: /etc/logstash/jvm.options  
       regexp: '^-Xmx\\d+g$' 
-      line: '-Xmx4g'    
+      line: '-Xmx{{LOGSTASH_JVM_XMX_SIZE|lower}}'    
 - name:  configure pipelines
   template:
       src: pipelines.yml.j2
