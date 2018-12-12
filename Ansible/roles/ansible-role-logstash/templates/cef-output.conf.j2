@@ -2,7 +2,7 @@ output {
   if[type] == "CEF" {
   elasticsearch {
     id => "cef-elasticsearch_multi"
-    hosts => ["{{ES_CLUSTER_INSTANCE_1}}","{{ES_CLUSTER_INSTANCE_2}}","{{ES_CLUSTER_INSTANCE_3}}" ]
+    hosts => ["{{ES_CLUSTER_INSTANCE_1}}:9200","{{ES_CLUSTER_INSTANCE_2}}:9200","{{ES_CLUSTER_INSTANCE_3}}:9200" ]
     index => "cef-%{+YYYY.MM.dd}"
   }
 }

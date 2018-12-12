@@ -16,4 +16,4 @@
 - name: create cef output conf
   template:
     src: cef-output.conf.j2
-    dest: /etc/logstash/cef/conf.d/
+    dest: /etc/logstash/cef/conf.d/cef-output.conf
