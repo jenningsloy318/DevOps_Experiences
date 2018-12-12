@@ -66,7 +66,7 @@
   lineinfile:
       path: /etc/logstash/jvm.options
       regexp: '^-(Xmx)\\d+g$'
-      line: '\-\1{{LOGSTASH_JVM_XMX_SIZE|lower}}'
+      line: '\-\1{{LOGSTASH_JVM_XMS_SIZE|lower}}'
       backrefs: yes
  
 - name:  configure pipelines
