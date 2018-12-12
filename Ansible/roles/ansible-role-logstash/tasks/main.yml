@@ -54,18 +54,21 @@
     src: logstash.yml.j2
     dest: /etc/logstash/logstash.yml
 
+
 - name: configure JVM heap (1)
   lineinfile:
-      path: /etc/logstash/jvm.options  
-      regexp: '^-Xms\\d+g$' 
-      line: '-Xms{{LOGSTASH_JVM_XMX_SIZE|lower}}'
-      create: yes
+      path: /etc/logstash/jvm.options
+      regexp: '^(-Xms)\\d+g$'
+      line: '\1{{LOGSTASH_JVM_XMX_SIZE|lower}}'
+      backrefs: yes
 
 - name: configure JVM heap (2)
   lineinfile:
-      path: /etc/logstash/jvm.options  
-      regexp: '^-Xmx\\d+g$' 
-      line: '-Xmx{{LOGSTASH_JVM_XMX_SIZE|lower}}'    
+      path: /etc/logstash/jvm.options
+      regexp: '^-(Xmx)\\d+g$'
+      line: '\-\1{{LOGSTASH_JVM_XMX_SIZE|lower}}'
+      backrefs: yes
+ 
 - name:  configure pipelines
   template:
       src: pipelines.yml.j2
