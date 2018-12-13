@@ -21,3 +21,33 @@
   template:
     src: arcsight-output.conf.j2
     dest: /etc/logstash/cef/conf.d/arcsight-output.conf
+
+
+
+- name: set up index for arcsight on kibana
+  uri:
+    url: "{{KIBABA_SCHEMA}}://{{KIBANA_INSTANCE}}/api/saved_objects/index-pattern/arcsight-*"
+    method: POST
+    src: /usr/share/logstash/x-pack/modules/arcsight/configuration/kibana/6.x/index-pattern/arcsight.json
+    user: "{{KIBANA_USER}}"
+    password: "{{KIBANA_PASS}}"
+    force_basic_auth: yes
+    headers:
+        Content-Type: "application/json"
+        kbn-xsrf: true
+  ignore_errors: yes
+
+- name: import elastiflow dashboard
+  uri:
+    url: "{{KIBABA_SCHEMA}}://{{KIBANA_INSTANCE}}/api/kibana/dashboards/import"
+    method: POST
+    src:  "{{dashboard}}"
+    user: "{{KIBANA_USER}}"
+    password: "{{KIBANA_PASS}}"
+    force_basic_auth: yes
+    headers:
+        Content-Type: "application/json"
+        kbn-xsrf: true
+  with_fileglob:
+  - /usr/share/logstash/x-pack/modules/arcsight/configuration/kibana/6.x/dashboard/*
+  ignore_errors: yes
