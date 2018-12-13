@@ -24,7 +24,10 @@
   args:
     warn: no
     executable: /bin/bash
-
+- name: clear prvious conf if exists
+  shell: rm -rf /etc/logstash/elastiflow /etc/systemd/system/logstash.service.d
+  args:
+    warn: no
 - name: copy elastiflow to /etc/logstash
   shell: cp -a /tmp/elastiflow-master/logstash/elastiflow /etc/logstash/
   args:

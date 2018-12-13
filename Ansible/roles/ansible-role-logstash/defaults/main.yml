@@ -13,4 +13,4 @@ KIBANA_USER:
 KIBANA_PASS:
 LOGSTASH_ENABLED_PIPELINES:
 - {'id': 'elastiflow','path': '/etc/logstash/elastiflow/conf.d/*.conf'}
-- {'id': 'cef','path': '/etc/logstash/cef/conf.d/*.conf'}
+- {'id': 'arcsight','path': '/etc/logstash/cef/conf.d/*.conf'}
