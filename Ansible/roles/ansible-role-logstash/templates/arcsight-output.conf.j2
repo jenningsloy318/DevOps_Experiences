@@ -4,6 +4,8 @@ output {
     id => "cef-elasticsearch_multi"
     hosts => ["{{ES_CLUSTER_INSTANCE_1}}:9200","{{ES_CLUSTER_INSTANCE_2}}:9200","{{ES_CLUSTER_INSTANCE_3}}:9200" ]
     index => "cef-%{+YYYY.MM.dd}"
+    template => "/usr/share/logstash/x-pack/modules/arcsight/configuration/elasticsearch/"
+    template_name => "arcsight-*"
   }
 }
 }
