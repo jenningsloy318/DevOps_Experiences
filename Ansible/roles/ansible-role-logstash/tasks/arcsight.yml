@@ -50,4 +50,6 @@
         kbn-xsrf: true
   with_fileglob:
   - /usr/share/logstash/x-pack/modules/arcsight/configuration/kibana/6.x/dashboard/*
+  loop_control:
+    loop_var: dashboard
   ignore_errors: yes
