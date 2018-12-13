@@ -11,7 +11,7 @@
 - name: create cef input and fileter conf
   copy:
     src: "{{cef_conf}}"
-    dest: /etc/logstash/cef/conf.d/
+    dest: /etc/logstash/arcsight/conf.d/
   with_fileglob:
   - "{{role_path}}/files/arcsight*.conf"
   loop_control:
@@ -20,7 +20,7 @@
 - name: create cef output conf
   template:
     src: arcsight-output.conf.j2
-    dest: /etc/logstash/cef/conf.d/arcsight-output.conf
+    dest: /etc/logstash/arcsight/conf.d/arcsight-output.conf
 
 
 
