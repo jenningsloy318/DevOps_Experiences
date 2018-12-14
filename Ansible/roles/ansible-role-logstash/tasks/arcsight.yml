@@ -53,3 +53,13 @@
   loop_control:
     loop_var: dashboard
   ignore_errors: yes
+
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 5000/tcp
+    permanent: true
+    state: enabled
+- name: reload firewalld
+  shell: firewall-cmd --reload    
+    

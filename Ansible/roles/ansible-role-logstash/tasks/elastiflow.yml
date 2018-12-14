@@ -114,3 +114,38 @@
         Content-Type: "application/json"
         kbn-xsrf: true
   ignore_errors: yes
+
+
+
+
+- name: add firewalld rules for ipfix udp
+  firewalld:
+    zone: public
+    port: 4739/udp
+    permanent: true
+    state: enabled   
+
+- name: add firewalld rules for ipfix tcp
+  firewalld:
+    zone: public
+    port: 4739/tcp
+    permanent: true
+    state: enabled   
+
+- name: add firewalld rules for netflow udp
+  firewalld:
+    zone: public
+    port: 2055/udp
+    permanent: true
+    state: enabled 
+  
+- name: add firewalld rules for sflow udp
+  firewalld:
+    zone: public
+    port: 6343/udp
+    permanent: true
+    state: enabled
+
+- name: reload firewalld
+  shell: firewall-cmd --reload    
+    

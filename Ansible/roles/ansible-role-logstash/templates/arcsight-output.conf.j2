@@ -1,9 +1,9 @@
 output {
   if[type] == "CEF" {
   elasticsearch {
-    id => "cef-elasticsearch_multi"
+    id => "arcsight-elasticsearch_multi"
     hosts => ["{{ES_CLUSTER_INSTANCE_1}}:9200","{{ES_CLUSTER_INSTANCE_2}}:9200","{{ES_CLUSTER_INSTANCE_3}}:9200" ]
-    index => "cef-%{+YYYY.MM.dd}"
+    index => "arcsight-%{+YYYY.MM.dd}"
     template => "/usr/share/logstash/x-pack/modules/arcsight/configuration/elasticsearch/arcsight.json"
     template_name => "arcsight-*"
   }
