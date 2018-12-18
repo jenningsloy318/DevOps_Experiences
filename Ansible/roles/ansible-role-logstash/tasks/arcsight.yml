@@ -29,7 +29,6 @@
     src: /usr/share/logstash/x-pack/modules/arcsight/configuration/elasticsearch/arcsight.json
     headers:
         Content-Type: "application/json"
-        kbn-xsrf: true
   ignore_errors: yes  
 
 - name: set up index for arcsight on kibana
@@ -65,7 +64,7 @@
 - name: add firewalld rules
   firewalld:
     zone: public
-    port: 5000/tcp
+    port: 514/tcp
     permanent: true
     state: enabled
 - name: reload firewalld
