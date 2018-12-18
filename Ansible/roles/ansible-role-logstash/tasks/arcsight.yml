@@ -22,7 +22,15 @@
     src: arcsight-output.conf.j2
     dest: /etc/logstash/arcsight/conf.d/arcsight-output.conf
 
-
+- name: set up template elasticsearch template
+  uri:
+    url: "http://{{ES_CLUSTER_INSTANCE_1}}:9200/_template/arcsight-*"
+    method: POST
+    src: /usr/share/logstash/x-pack/modules/arcsight/configuration/elasticsearch/arcsight.json
+    headers:
+        Content-Type: "application/json"
+        kbn-xsrf: true
+  ignore_errors: yes  
 
 - name: set up index for arcsight on kibana
   uri:
