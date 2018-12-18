@@ -11,21 +11,21 @@ groups:
       description: '{{$labels.instance}} of job {{$labels.job}} has been down for  more than 5 minutes.'
       summary: 'Instance down.'
   - alert: Netowrk interface is down
-    expr: (ifAdminStatus  offset 5m  == 1 and ifOperStatus offset 5m == 1)  and (ifAdminStatus == 2 or ifOperStatus == 2)
-    for: 5m
+    expr: ifAdminStatus offset 1m  == 1  and ifAdminStatus != 1 
+    for: 2m
     labels:
       severity: critical
     annotations:
-      description: 'Network interface {{$labels.ifDescr}} {{$labels.ifName}}  on instance {{$labels.instance}} of job {{$labels.job}} has been down for  more than 5 minutes.'
+      description: 'Network interface {{$labels.ifDescr}} {{$labels.ifName}}  on instance {{$labels.instance}} of job {{$labels.job}} has been down for  more than 1 minutes.'
       summary: 'Network Interface is down.'
-      #  - alert: Network connection is broken
-      #    expr:  increase(ifOutOctets[5m])== 0 and increase(ifOutOctets[5m])== 0  and ifAdminStatus == 1 and ifOperStatus == 1
-      #    for: 5m
-      #    labels:
-      #      severity: critical
-      #    annotations:
-      #      description: 'Connection on network interface {{$labels.ifDescr}} {{$labels.ifName}}  on instance {{$labels.instance}} of job {{$labels.job}} has been broken for 5 minutes '
-      #      summary: 'Network connection is broken'
+  - alert: Network connection is broken
+    expr:  ifOperStatus offset 1m  == 1 and ifOperStatus != 1
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      description: 'Connection on network interface {{$labels.ifDescr}} {{$labels.ifName}}  on instance {{$labels.instance}} of job {{$labels.job}} has been broken for 1 minutes '
+      summary: 'Network connection is broken'
 - name: Cisco switches
   rules:
   - alert: Switch Fan is not working properly
