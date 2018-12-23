@@ -1,0 +1,12 @@
+<network>
+  <name>ovs-vlan100</name>
+  <forward mode='bridge'/>
+  <bridge name='br-k8s'/>
+  <virtualport type='openvswitch'/>
+  <portgroup name='vlan100'>
+    <vlan>
+      <tag id='100'/>
+    </vlan>
+  </portgroup>
+
+</network>
