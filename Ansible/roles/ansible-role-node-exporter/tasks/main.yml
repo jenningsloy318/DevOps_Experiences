@@ -1,0 +1,47 @@
+
+
+- name: add prometheus repo
+  yum_repository:
+    name: prometheus
+    description: prometheus repo
+    baseurl: https://packagecloud.io/prometheus-rpm/release/el/7/$basearch
+    repo_gpgcheck: 1
+    enabled: 1
+    gpgkey: https://packagecloud.io/prometheus-rpm/release/gpgkey
+            https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm
+    gpgcheck: 1
+    sslverify: 1
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+- name: install node exporter package
+  package:
+    name: "{{item}}"
+    state: latest
+  with_items:
+  - node_exporter
+
+- name: create node_exporter service file
+  file:
+    src: node_exporter.service
+    dest: /lib/systemd/system/node_exporter.service
+  register: node_exporter_service
+
+- name: restart node_exporter service
+  systemd:
+    name: node_exporter
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+- name: add firewalld rules
+  firewalld:
+    zone: public
+    port: 9100/tcp
+    permanent: true
+    state: enabled
+
+- name: reload firewalld 
+  shell: firewall-cmd --reload
+
+
+

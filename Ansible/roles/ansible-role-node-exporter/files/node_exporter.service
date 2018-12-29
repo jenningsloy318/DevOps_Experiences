@@ -1,0 +1,12 @@
+[Unit]
+Description=node_exporter service
+
+[Service]
+User=prometheus
+ExecStart=/usr/bin/node_exporter   --collector.processes   --collector.tcpstat   --collector.systemd
+Restart=always
+RestartSec=2s
+StartLimitInterval=0
+KillMode=process
+[Install]
+WantedBy=multi-user.target
