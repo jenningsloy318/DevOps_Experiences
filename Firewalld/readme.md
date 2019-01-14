@@ -25,3 +25,18 @@ firewall-cmd --zone=public --add-port=9093/tcp --permanent
 ```
 firewall-cmd --reload
 ```
+
+
+
+5. configure Centos as a router
+```
+firewall-cmd --permanent --direct --passthrough ipv4 -t nat -I POSTROUTING -o ens224u2 -j MASQUERADE -s 192.168.2.0/24 
+firewall-cmd --permanent --direct --passthrough ipv4 -t nat -I POSTROUTING -o ens224u2 -j MASQUERADE -s 192.168.1.0/24 
+firewall-cmd --permanent --direct --passthrough ipv4 -t nat -I POSTROUTING -o ens224u2 -j MASQUERADE -s 10.36.0.0/16 
+
+firewall-cmd --change-interface=ens224u2 --zone=external --permanent
+
+firewall-cmd --set-default-zone=internal 
+
+firewall-cmd --complete-reload
+```
