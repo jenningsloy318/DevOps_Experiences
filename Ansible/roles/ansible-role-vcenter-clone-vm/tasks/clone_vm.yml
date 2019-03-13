@@ -1,0 +1,34 @@
+- name: encoding userdata
+  shell: echo  '{{ lookup("template","{{role_path}}/templates/cloudinit_userdata.j2") }}'|gzip -c9 | base64 -w0
+  register: cloudinit_userdata
+
+- name:  Create virtual machine from templates
+  vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    datacenter: "{{ vcenter_datacenter|default('DC1') }}"
+    state: present
+    folder: "{{vm.vm_folder}}"
+    resource_pool: "{{vm.vm_resource_pool}}"
+    template: "{{vm.template}}"
+    name: "{{ vm.vm_name }}"
+    cluster: "{{ vm.vm_cluster|default('Cluster01') }}"
+    cdrom:
+      type: client
+    disk: "{{vm.disks}}"
+    hardware:
+      memory_mb: "{{vm.vm_memory_size}}"
+      num_cpus:  "{{vm.vm_cpu_count}}"
+      hotadd_cpu: True
+      hotremove_cpu: True
+      hotadd_memory: true
+    networks: "{{vm.networks}}"
+    wait_for_ip_address: True
+    customvalues:
+    - key: guestinfo.userdata
+      value: "{{ cloudinit_userdata.stdout }}"
+    - key: guestinfo.userdata.encoding
+      value: "gzip+base64"
+  delegate_to: localhost

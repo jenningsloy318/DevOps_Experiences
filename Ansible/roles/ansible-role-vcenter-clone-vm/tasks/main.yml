@@ -1,0 +1,4 @@
+- include_tasks: clone_vm.yml
+  loop: "{{vm_list}}"
+  loop_control:
+    loop_var: vm

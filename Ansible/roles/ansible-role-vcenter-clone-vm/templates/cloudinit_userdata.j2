@@ -1,0 +1,64 @@
+#cloud-config
+users:
+ - name: vscloud
+   home: /home/vscloud
+   shell: /bin/bash
+   gecos: Centos vSphere
+   groups: [adm, root,wheel]
+   sudo:  ALL=(ALL) ALL
+   lock_passwd: false
+   password: {{ vscloud_password | password_hash('sha512','vscloudsecretsalt',rounds=10000) }}
+   ssh_authorized_keys: {{vscloud_ssh_authorized_keys}}
+
+chpasswd:
+    expire: false
+    list:
+    - vscloud:{{ vscloud_password | password_hash('sha512','vscloudsecretsalt',rounds=10000) }}
+ 
+growpart:
+  mode: growpart
+  devices: [ '/dev/sda2' ]
+
+resize_rootfs: true
+
+
+{% if vm.disks|length > 1 %}
+disk_setup:
+    /dev/sdb:
+         table_type: mbr
+         layout: True
+         overwrite: True
+
+runcmd:
+  - [ cloud-init-per, once, create_pv, pvcreate, /dev/sdb1 ]
+  - [ cloud-init-per, once, create_vg, vgcreate, datavg, /dev/sdb1 ]
+  - [ cloud-init-per, once, create_lv, lvcreate,-l, 100%VG,-n,datalv,datavg]
+  - [ cloud-init-per, once, create_fs, mkfs,-t, ext4,/dev/mapper/datavg-datalv]
+  - [ cloud-init-per, once, create_mount_point,mkdir,{{datavol_mount_point|default('/data')}}]
+  - [ cloud-init-per, once, mount_data, mount,/dev/mapper/datavg-datalv,{{datavol_mount_point|default('/data')}}]
+
+mounts:
+ - [ /dev/mapper/datavg-datalv, {{datavol_mount_point|default('/data')}}, "ext4", "defaults", "0", "0" ]
+
+{%endif%}
+
+ntp:
+  enabled: true
+  ntp_client: chrony
+  servers: 
+  - 120.25.115.20
+  - 203.107.6.88
+
+timezone: {{timezone}}
+
+
+manage_resolv_conf: true
+resolv_conf:
+    nameservers: 
+    - 114.114.114.114
+    - 223.5.5.5
+    - 119.29.29.29
+    domain: "{{vm.domain|default('sapcae.com')}}"
+
+preserve_hostname: false
+hostname: {{ vm.vm_name }}.{{vm.domain|default('sapcae.com')}}

@@ -1,0 +1,13 @@
+  vcenter_hostname:
+  vcenter_username:
+  vcenter_password: 
+  vcenter_datacenter:
+  datavol_mount_point: /data
+  vscloud_password: 
+  vscloud_ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDBJkrhbsq0e02D5SHl+veUsoQW5EVY5ROr3Wm+Uc4aFb4vCMUfT4koKau5j5wHCBe5gqDkx55uzbD/xvsHUSn4NY0hzspBMy4cHQw5SvpLb5brArKk2TP1C3HMJRv+K8N9we9Hk6dbf9VgSQmPcp6uHUKgfd42h4sAlQJVOVoS73wTcP4Gg8x4ePnYW2Nd8moUpS+eCMyj/pj0hnMyK9B14E17Hb+89f0NU7LrweqZlieoYuuZLgCMzq1mThW2ES2kTx1CGnyz0iicPbENdezNF7J4Po0bEWjjSS1cW1Lj3pREbEpIM/vsJJLdF8ZME7Zp1EWXLBhrJcqX1zTf0Jx vscloud
+
+  vm_list:
+  - {'vm_name': 'ipaserver1','domain': 'hqxywl.com','template': 'Centos7-template','vm_folder': '/DC1/vm/DevOps','vm_resource_pool': 'DevOps','vm_cluster': "OOB-APP-Cluster01", disks: [{'size_gb': 60, 'datastore': 'OOB_DATA'},{'size_gb': 100, 'datastore': 'OOB_DATA'}],'vm_memory_size': '8192','vm_cpu_count': '4',networks: [{'name': 'VLAN520','ip': '10.36.47.230','netmask': '255.255.255.192','gateway': '10.36.47.193'}]}
+
+  timezone: Asia/Chongqing
