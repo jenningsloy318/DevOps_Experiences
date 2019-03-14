@@ -1,10 +1,13 @@
 Install freeipa and integrated with freeradius
 ---
-#Prep:
-1. hostname: dc1-oob-vm-freeipa-prod01.hqxywl.com
-2. domain: hqxywl.com
-3. Realm: HQXYWL.COM
-4. IP: 10.36.47.230
+# Prepration: 
+| Type   | hostname                                | IP Address   |
+|--------|-----------------------------------------|--------------|
+| Server |  dc1-oob-vm-freeipa-prod01.hqxywl.com   | 10.36.47.230 |
+| Server |  dc1-oob-vm-freeipa-prod02.hqxywl.com   | 10.36.47.231 |
+| Client |  dc1-oob-vm-ipaclient-prod01.hqxywl.com | 10.36.47.232 
+| domain |  hqxywl.com |-|
+| Realm  |  HQXYWL.COM |-|
 
 # Configuration
 
@@ -19,11 +22,15 @@ Install freeipa and integrated with freeradius
 
 ## 1. Install package
 ```sh
-yum install ipa-server bind bind-dyndb-ldap
+yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 ```
 ## 2. Install freeipa
+**Make sure password don't contain special character**
+
+![](./images/concifgure-freeipa.gif)
+
 ```sh
-# ipa-server-install -a Devops2019  -p Devops2019 -r HQXYWL.COM 
+# ipa-server-install -a Devops2019  -p Devops2019 -r HQXYWL.COM  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --unattended
 
 The log file for this installation can be found in /var/log/ipaserver-install.log
 ==============================================================================
