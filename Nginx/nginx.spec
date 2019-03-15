@@ -54,7 +54,7 @@ BuildRequires: systemd
 
 %define bdir %{_builddir}/%{name}-%{main_version}
 
-%define WITH_CC_OPT $(echo %{optflags} $(pcre-config --cflags)) -fPIC  -I ./libmyradclient-master
+%define WITH_CC_OPT $(echo %{optflags} $(pcre-config --cflags)) -fPIC  -I ./libmyradclient
 %define WITH_LD_OPT -Wl,-z,relro -Wl,-z,now -pie
 
 %define BASE_CONFIGURE_ARGS $(echo "--prefix=%{_sysconfdir}/nginx --sbin-path=%{_sbindir}/nginx --modules-path=%{_libdir}/nginx/modules --conf-path=%{_sysconfdir}/nginx/nginx.conf --error-log-path=%{_localstatedir}/log/nginx/error.log  --with-debug  --http-log-path=%{_localstatedir}/log/nginx/access.log --pid-path=%{_localstatedir}/run/nginx.pid --lock-path=%{_localstatedir}/run/nginx.lock --http-client-body-temp-path=%{_localstatedir}/cache/nginx/client_temp --http-proxy-temp-path=%{_localstatedir}/cache/nginx/proxy_temp --http-fastcgi-temp-path=%{_localstatedir}/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=%{_localstatedir}/cache/nginx/uwsgi_temp --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp --user=%{nginx_user} --group=%{nginx_group} --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-openssl=./openssl-%{ngx_openssl_version} --add-module=./nginx-module-vts-%{ngx_module_vts_version}  --add-module=./nginx_upstream_check_module-master --add-module=./nginx-auth-ldap-master" --add-module=./nginx-http-radius-module-master)
@@ -114,8 +114,8 @@ sed -e 's|%%DEFAULTSTART%%|2 3 4 5|g' -e 's|%%DEFAULTSTOP%%|0 1 6|g' \
     -e 's|%%PROVIDES%%|nginx|g' < %{SOURCE2} > nginx.init
 sed -e 's|%%DEFAULTSTART%%||g' -e 's|%%DEFAULTSTOP%%|0 1 2 3 4 5 6|g' \
     -e 's|%%PROVIDES%%|nginx-debug|g' < %{SOURCE2} > nginx-debug.init
-#cp libmyradclient-master/libradius.h nginx-http-radius-module-master/
-ln -s libmyradclient-master libmyradclient && cd libmyradclient-master  && sed -i '/^CFLAGS=/s/$/ -fpic/g' Makefile&& make && cp libmyradclient.a ../nginx-http-radius-module-master
+mv libmyradclient-master libmyradclient && cd libmyradclient  && sed -i '/^CFLAGS=/s/$/ -fpic/g' Makefile && make && cp libmyradclient.a ../nginx-http-radius-module-master
+
 %build
 ./configure %{BASE_CONFIGURE_ARGS} \
     --with-cc-opt="%{WITH_CC_OPT}" \
@@ -146,6 +146,11 @@ make %{?_smp_mflags}
 %{__mkdir} -p $RPM_BUILD_ROOT%{_libdir}/nginx/modules
 cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
     %{__ln_s} ../..%{_libdir}/nginx/modules modules && cd -
+
+%{__mkdir} -p $RPM_BUILD_ROOT%{_libdir}/nginx/modules/nginx-http-radius-module/raddb/
+%{__install} -p  -m 0755 %{bdir}/nginx-http-radius-module-master/raddb/* \
+    $RPM_BUILD_ROOT%{_libdir}/rpm nginx/modules/nginx-http-radius-module/raddb
+     
 
 %{__mkdir} -p $RPM_BUILD_ROOT%{_datadir}/doc/%{name}-%{main_version}
 %{__install} -m 644 -p %{SOURCE12} \
@@ -236,7 +241,9 @@ cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
 %endif
 
 %attr(0755,root,root) %dir %{_libdir}/nginx
-%attr(0755,root,root) %dir %{_libdir}/nginx/modules
+%attr(0755,root,root) %dir %{_libdir}/nginx/modules/
+%attr(0755,root,root) %dir %{_libdir}/nginx/modules/nginx-http-radius-module/
+%attr(0755,root,root) %dir %{_libdir}/nginx/modules/nginx-http-radius-module/raddb/
 %dir %{_datadir}/nginx
 %dir %{_datadir}/nginx/html
 %{_datadir}/nginx/html/*
