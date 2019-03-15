@@ -149,7 +149,7 @@ cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
 
 %{__mkdir} -p $RPM_BUILD_ROOT%{_libdir}/nginx/modules/nginx-http-radius-module/raddb/
 %{__install} -p  -m 0755 %{bdir}/nginx-http-radius-module-master/raddb/* \
-    $RPM_BUILD_ROOT%{_libdir}/rpm nginx/modules/nginx-http-radius-module/raddb
+    $RPM_BUILD_ROOT%{_libdir}/nginx/modules/nginx-http-radius-module/raddb/
      
 
 %{__mkdir} -p $RPM_BUILD_ROOT%{_datadir}/doc/%{name}-%{main_version}
