@@ -33,7 +33,7 @@ yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 ## 2. Install FreeIPA
 **Make sure password don't contain special character**
 ```sh
-# ipa-server-install -a Devops2019  -p Devops2019 -r HQXYWL.COM  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --unattended
+# ipa-server-install -a Devops2019  -p Devops2019 -r HQXYWL.COM  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U
 ```
 ![](./images/concifgure-freeipa.gif)
 
