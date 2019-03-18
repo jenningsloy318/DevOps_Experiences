@@ -143,13 +143,15 @@ make %{?_smp_mflags}
 %{__mkdir} -p $RPM_BUILD_ROOT%{_localstatedir}/run/nginx
 %{__mkdir} -p $RPM_BUILD_ROOT%{_localstatedir}/cache/nginx
 
+
+
 %{__mkdir} -p $RPM_BUILD_ROOT%{_libdir}/nginx/modules
 cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
     %{__ln_s} ../..%{_libdir}/nginx/modules modules && cd -
 
-%{__mkdir} -p $RPM_BUILD_ROOT%{_libdir}/nginx/modules/nginx-http-radius-module/raddb/
+%{__mkdir} -p $RPM_BUILD_ROOT%{_sysconfdir}/nginx/raddb/
 %{__install} -p  -m 0755 %{bdir}/nginx-http-radius-module-master/raddb/* \
-    $RPM_BUILD_ROOT%{_libdir}/nginx/modules/nginx-http-radius-module/raddb/
+    $RPM_BUILD_ROOT%{_sysconfdir}/nginx/raddb/
      
 
 %{__mkdir} -p $RPM_BUILD_ROOT%{_datadir}/doc/%{name}-%{main_version}
@@ -217,6 +219,7 @@ cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
 %dir %{_sysconfdir}/nginx/conf.d
 %{_sysconfdir}/nginx/modules
 
+
 %config(noreplace) %{_sysconfdir}/nginx/nginx.conf
 %config(noreplace) %{_sysconfdir}/nginx/conf.d/default.conf
 %config(noreplace) %{_sysconfdir}/nginx/mime.types
@@ -230,6 +233,12 @@ cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
 %config(noreplace) %{_sysconfdir}/logrotate.d/nginx
 %config(noreplace) %{_sysconfdir}/sysconfig/nginx
 %config(noreplace) %{_sysconfdir}/sysconfig/nginx-debug
+
+%attr(0755,root,root) %dir %{_sysconfdir}/nginx/raddb/
+%{_sysconfdir}/nginx/raddb/*
+
+
+
 %if %{use_systemd}
 %{_unitdir}/nginx.service
 %{_unitdir}/nginx-debug.service
@@ -242,8 +251,7 @@ cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
 
 %attr(0755,root,root) %dir %{_libdir}/nginx
 %attr(0755,root,root) %dir %{_libdir}/nginx/modules/
-%attr(0755,root,root) %dir %{_libdir}/nginx/modules/nginx-http-radius-module/
-%attr(0755,root,root) %dir %{_libdir}/nginx/modules/nginx-http-radius-module/raddb/
+
 %dir %{_datadir}/nginx
 %dir %{_datadir}/nginx/html
 %{_datadir}/nginx/html/*
