@@ -357,10 +357,37 @@ Second Factor:
 [root@dc1-oob-vm-freeipa-client-prod01 ~]# 
 ```
 
+## 13. Integrated with PaloAlto Firewall
+PA info
+| Type   | hostname                                | IP Address   |
+|--------|-----------------------------------------|--------------|
+| Model |	PA-3020|
+| Software Version|	8.0.13|
+| GlobalProtect Agent	|0.0.0|
+| Application Version	|8134-5351 (03/14/19)|
+| Threat Version	|8134-5351 (03/14/19)|
+| Antivirus Version	|2924-3434 (03/21/19)|
+| WildFire Version	|333381-336058 (03/22/19)|
+| URL Filtering Version|	20190322.20092|
+
+
+### 13.1 Create `Radius Server Profile`   
+    
+  ![](./images/freeradius-pa-1.jpg)
 
 
 
 
+### 13.2 Create `Authentication Profile` which unitilize  newly created  `Radius Server Profile`   
+
+  ![](./images/freeradius-pa-2.jpg)
 
 
 
+### 13.3 Create Administrator mapping to newly created Ahtentication Profile 
+
+  ![](./images/freeradius-pa-3.jpg)
+
+
+
+then commit the changes to the firewall, now we can use the users defined in `FreeIPA` to logon PA.
