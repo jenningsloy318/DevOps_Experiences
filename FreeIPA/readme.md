@@ -4,7 +4,7 @@ Install freeipa and integrated with freeradius
 | Type   | hostname                                | IP Address   |
 |--------|-----------------------------------------|--------------|
 | Server |  dc1-oob-vm-freeipa-prod01.hqxywl.com   | 10.36.47.230 |
-| Server |  dc1-oob-vm-freeipa-prod02.hqxywl.com   | 10.36.47.231 |
+| Server |  dc1-oob-vm-freeipa-client-prod01.hqxywl.com   | 10.36.47.231 |
 | Client |  dc1-oob-vm-ipaclient-prod01.hqxywl.com | 10.36.47.232 
 | domain |  hqxywl.com |-|
 | Realm  |  HQXYWL.COM |-|
@@ -24,8 +24,9 @@ At this stage,
 - [7. Test with otp login to freeipa portal](#7-test-with-otp-login-to-freeipa-portal)
 - [8. Test user with radius](#7-test-user-with-radius)
 - [9. Create sudo rule and add user to this sudo rule](#9-create-sudo-rule-and-add-user-to-this-sudo-rule)
-- [10. Configure ipa-client on client server](#10-configure-ipa-client-on-client-server)
-- [11. Test user login and sudo switch to root on client server](#11-test-user-login-and-sudo-switch-to-root-on-client-server)
+- [10. Create hostenrolluser used for adding host into ipa servrer](#10-create-hostenrolluser-used-for-adding-host-into-ipa-servrer)
+- [11. Configure ipa-client on client server](#11-configure-ipa-client-on-client-server)
+- [12. Test user login and sudo switch to root on client server](#12-test-user-login-and-sudo-switch-to-root-on-client-server)
 ## 1. Install package
 ```sh
 yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
@@ -33,7 +34,7 @@ yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 ## 2. Install FreeIPA
 **Make sure password don't contain special character**
 ```sh
-# ipa-server-install -a Devops2019  -p Devops2019 -r HQXYWL.COM  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U
+# ipa-server-install -a Devops2019  -p Devops2019 -r INB.HQXYWL.COM -n inb.hqxywl.com  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U
 ```
 ![](./images/concifgure-freeipa.gif)
 
@@ -154,15 +155,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 
 ## 5 Configure firewalld 
   ```
-  firewall-cmd --add-service=http --permanent
-  firewall-cmd --add-service=https --permanent
-  firewall-cmd --add-service=ldap --permanent
-  firewall-cmd --add-service=ldaps --permanent
-  firewall-cmd --add-service=dns --permanent
-  firewall-cmd --add-servicekerberos --permanent
-  firewall-cmd --add-service=kerberos --permanent
-  firewall-cmd --add-service=ntp --permanent
-  firewall-cmd --permanent --zone=public --add-port=1812/udp --add-port=1813/udp
+  firewall-cmd --add-service=http   --add-service=https --add-service=ldap --add-service=ldaps --add-service=dns  --add-service=kerberos --add-service=ntp    --add-service=radius   --permanent 
   firewall-cmd --reload
   ```
 
@@ -231,12 +224,108 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
   # ipa sudorule-add --cmdcat=all --hostcat=all --runasusercat=all --runasgroupcat=all admin
   # ipa sudorule-add-user --users=jenningsl admin
   ```
+## 10. Create hostenrolluser used for adding host into ipa servrer 
+```
+# ipa user-add  --first=hostenrolluser --last=system  --homedir=/home/hostenrolluser  hostenrolluser
+---------------------------
+Added user "hostenrolluser"
+---------------------------
+  User login: hostenrolluser
+  First name: hostenrolluser
+  Last name: system
+  Full name: hostenrolluser system
+  Display name: hostenrolluser system
+  Initials: hs
+  Home directory: /home/hostenrolluser
+  GECOS: hostenrolluser system
+  Login shell: /bin/bash
+  Principal name: hostenrolluser@OOB.HQXYWL.COM
+  Principal alias: hostenrolluser@OOB.HQXYWL.COM
+  Email address: hostenrolluser@sap.com
+  UID: 352200011
+  GID: 352200011
+  Password: False
+  Member of groups: ipausers
+  Kerberos keys available: False
+# ipa passwd hostenrolluser
+New Password:
+Enter New Password again to verify:
+------------------------------------------------
+Changed password for "hostenrolluser@HQXYWL.COM"
+------------------------------------------------
 
-## 10. Configure ipa-client on client server 
+# ipa role-add --desc="HostEnrollRole" HostEnrollRole
+---------------------------
+Added role "HostEnrollRole"
+---------------------------
+  Role name: HostEnrollRole
+  Description: HostEnrollRole
+
+
+# ipa role-add-member --users=hostenrolluser HostEnrollRole
+  Role name: HostEnrollRole
+  Description: HostEnrollRole
+  Member users: hostenrolluser
+-------------------------
+Number of members added 1
+-------------------------
+#  ipa role-add-privilege  HostEnrollRole --privileges='Host Enrollment'
+  Role name: HostEnrollRole
+  Description: HostEnrollRole
+  Member users: hostenrolluser
+  Privileges: Host Enrollment
+----------------------------
+Number of privileges added 1
+----------------------------
+```
+
+## 11. Configure ipa-client on client server 
 
   ```sh
-  # yum install -y ipa-client
-  # ipa-client-install --domain=hqxywl.com --realm=HQXYWL.COM --server=dc1-oob-vm-freeipa-prod01.hqxywl.com  --mkhomedir -U
+  # yum install -y ipa-client nscd nss-pam-ldapd
+  # ipa-client-install --domain=hqxywl.com --realm=HQXYWL.COM --server=dc1-oob-vm-freeipa-prod01.hqxywl.com  --mkhomedir -p hostenrolluser -w password  -U
+  WARNING: ntpd time&date synchronization service will not be configured as
+  conflicting service (chronyd) is enabled
+  Use --force-ntpd option to disable it and force configuration of ntpd
+
+  Client hostname: dc1-oob-vm-freeipa-client-prod01.hqxywl.com
+  Realm: HQXYWL.COM
+  DNS Domain: hqxywl.com
+  IPA Server: dc1-oob-vm-freeipa-prod01.hqxywl.com
+  BaseDN: dc=hqxywl,dc=com
+
+  Skipping synchronizing time with NTP server.
+  Successfully retrieved CA cert
+      Subject:     CN=Certificate Authority,O=HQXYWL.COM
+      Issuer:      CN=Certificate Authority,O=HQXYWL.COM
+      Valid From:  2019-03-14 06:57:03
+      Valid Until: 2039-03-14 06:57:03
+
+  Enrolled in IPA realm HQXYWL.COM
+  Created /etc/ipa/default.conf
+  New SSSD config will be created
+  Configured sudoers in /etc/nsswitch.conf
+  Configured /etc/sssd/sssd.conf
+  Configured /etc/krb5.conf for IPA realm HQXYWL.COM
+  trying https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/json
+  [try 1]: Forwarding 'schema' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/json'
+  trying https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json
+  [try 1]: Forwarding 'ping' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json'
+  [try 1]: Forwarding 'ca_is_enabled' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json'
+  Systemwide CA database updated.
+  Hostname (dc1-oob-vm-freeipa-client-prod01.hqxywl.com) does not have A/AAAA record.
+  Missing reverse record(s) for address(es): 10.36.47.231.
+  Adding SSH public key from /etc/ssh/ssh_host_rsa_key.pub
+  Adding SSH public key from /etc/ssh/ssh_host_ecdsa_key.pub
+  Adding SSH public key from /etc/ssh/ssh_host_ed25519_key.pub
+  [try 1]: Forwarding 'host_mod' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json'
+  SSSD enabled
+  Configured /etc/openldap/ldap.conf
+  Configured /etc/ssh/ssh_config
+  Configured /etc/ssh/sshd_config
+  Configuring hqxywl.com as NIS domain.
+  Client configuration complete.
+  The ipa-client-install command was successful
   ```
   > shoud modiy /etc/resolv.conf to set `10.36.47.230` as the first dns server
   
@@ -244,9 +333,9 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
   ```sh
   # authconfig --update --enablemkhomedir
   ```
-## 11. Test user login and sudo switch to root on client server
+## 12. Test user login and sudo switch to root on client server
 ```sh
-[jenningsl@workstation Desktop]$ ssh 10.36.47.232
+[jenningsl@workstation ]$ ssh 10.36.47.232
 Creating home directory for jenningsl.
 Last failed login: Thu Mar 14 21:55:58 CST 2019 from 10.36.52.232 on ssh:notty
 There was 1 failed login attempt since the last successful login.
@@ -267,3 +356,11 @@ First Factor:
 Second Factor: 
 [root@dc1-oob-vm-freeipa-client-prod01 ~]# 
 ```
+
+
+
+
+
+
+
+
