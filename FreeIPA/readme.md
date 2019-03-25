@@ -27,6 +27,7 @@ At this stage,
 - [10. Create hostenrolluser used for adding host into ipa servrer](#10-create-hostenrolluser-used-for-adding-host-into-ipa-servrer)
 - [11. Configure ipa-client on client server](#11-configure-ipa-client-on-client-server)
 - [12. Test user login and sudo switch to root on client server](#12-test-user-login-and-sudo-switch-to-root-on-client-server)
+- [13. Integrated with PaloAlto Firewall](#13-integrated-with-paloalto-firewall)
 ## 1. Install package
 ```sh
 yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
@@ -59,11 +60,12 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 
   Full contenf of `/etc/raddb/clients.conf`
     ```conf
-    client localhost {
+    client localnet {
       ipaddr = 10.36.0.0/16
       proto = *
       secret = SapSecrts
       require_message_authenticator = no
+      nas_type         = other
       limit {
         max_connections = 16
         lifetime = 0
@@ -83,7 +85,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
     Full content of /etc/raddb/mods-enabled/ldap
     ```conf
     ldap {
-      server = '10.36.47.230'
+      server = 'localhost'
       identity = 'cn=Directory Manager'
       password = 'Devops2019'
       base_dn = 'cn=users,cn=accounts,dc=hqxywl,dc=com'
@@ -391,3 +393,78 @@ PA info
 
 
 then commit the changes to the firewall, now we can use the users defined in `FreeIPA` to logon PA.
+
+
+## 14. Integrated with nginx 
+
+### 14.1  Integrated nginx with FreeIPA via ldap 
+
+- Prequisites
+  1. nginx compiled with [nginx-auth-ldap](https://github.com/kvspb/nginx-auth-ldap)
+- add ldap bind user  
+```sh
+# cat nginx.update
+dn: uid=nginx,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com
+add:objectclass:account
+add:objectclass:simplesecurityobject
+add:uid:nginx
+add:userPassword:nginx
+add:passwordExpirationTime:20380119031407Z
+add:nsIdleTimeout:0
+
+# ipa-ldap-updater nginx.update
+Update complete
+The ipa-ldap-updater command was successful
+```
+- configure nginx , add configure 
+```conf
+   ldap_server 389_ds_1 {
+      # user search base.
+      url "ldap://10.36.52.172:389/DC=hqxywl,DC=com?uid?sub?(objectClass=*)";
+      # bind as
+      binddn "uid=nginx,cn=sysaccounts,cn=etc,dc=hqxywl,dc=com";
+      # bind pw
+      binddn_passwd "nginx";
+      # group attribute name which contains member object
+      group_attribute member;
+      #group_attribute memberuid;
+      # search for full DN in member object
+      group_attribute_is_dn on;
+      # matching algorithm (any / all)
+      #satisfy any;
+      # list of allowed groups
+      #require group "CN=Admins,OU=My Security Groups,DC=company,DC=com";
+      # list of allowed users
+      # require 'valid_user' cannot be used together with 'user' as valid user is a superset
+      require valid_user;
+      ssl_check_cert off;
+    }
+```
+- configure vhost 
+```conf
+....
+server {
+    listen       9090;
+    server_name  default;
+
+    auth_ldap "Forbidden";
+    auth_ldap_servers 389_ds_1;
+
+    location /  {
+      proxy_http_version   1.1;
+      proxy_hide_header    Vary;
+      proxy_hide_header    X-Powered-By;
+      proxy_set_header     Host             $host;
+      proxy_set_header     X-Real_IP        $remote_addr;
+      proxy_set_header     X-Forwarded-For  $proxy_add_x_forwarded_for;
+      proxy_next_upstream  http_502 http_504 http_404 error timeout invalid_header;
+      proxy_pass           http://prometheus_upstream;
+    }
+}
+
+....
+```
+
+### 14.2 Integrate nginx with FreeIPA via radius
+
+**to be tested.**
