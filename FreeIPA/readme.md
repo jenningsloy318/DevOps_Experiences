@@ -28,6 +28,10 @@ At this stage,
 - [11. Configure ipa-client on client server](#11-configure-ipa-client-on-client-server)
 - [12. Test user login and sudo switch to root on client server](#12-test-user-login-and-sudo-switch-to-root-on-client-server)
 - [13. Integrated with PaloAlto Firewall](#13-integrated-with-paloalto-firewall)
+- [14. Integrated with nginx ](#14-integrate-with-nginx)
+- [15. Integrate with Cisco Switch](#15-integrate-with-cisco-switch)
+- [16. Integrate with Cisco ASA VPN ](#16-integrate-with-cisco-asa-vpn)
+
 ## 1. Install package
 ```sh
 yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
@@ -395,7 +399,7 @@ PA info
 then commit the changes to the firewall, now we can use the users defined in `FreeIPA` to logon PA.
 
 
-## 14. Integrated with nginx 
+## 14. Integrate with nginx 
 
 ### 14.1  Integrated nginx with FreeIPA via ldap 
 
@@ -468,3 +472,10 @@ server {
 ### 14.2 Integrate nginx with FreeIPA via radius
 
 **to be tested.**
+
+
+## 15. Integrate with Cisco Switch
+
+
+
+## 16. Integrate with Cisco ASA VPN 
