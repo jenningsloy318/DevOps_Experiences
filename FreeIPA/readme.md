@@ -479,3 +479,61 @@ server {
 
 
 ## 16. Integrate with Cisco ASA VPN 
+### 16.1 configure groups in freeradius
+
+
+LDAP mapped users-To map LDAP attributes, see the ldap attribute-map command.
+    RADIUS users-Use the IETF RADIUS numeric service-type attribute, which maps to one of the following values:
+
+ -  Service-Type 5 (Outbound) denies management access. The user cannot use any services specified by the aaa authentication console commands (excluding the serial keyword; serial access is allowed). Remote access (IPsec and SSL) users can still authenticate and terminate their remote access sessions.
+
+-  Service-Type 6 (Administrative) allows full access to any services specified by the aaa authentication console commands.
+
+-  Service-Type 7 (NAS prompt) allows access to the CLI when you configure the aaa authentication { telnet | ssh} console command, but denies ASDM configuration access if you configure the aaa authentication http console command. ASDM monitoring access is allowed. If you configure enable authentication with the aaa authentication enable console command, the user cannot access privileged EXEC mode using the enable command.
+
+
+  so if we want login to ASA console,     set `Service-Type` to `Administrative-User`, if we want to login as VPN accesss, `Service-Type` to `Outbound-User`.
+- add client conf for vpn, add following lines to `/etc/raddb/clients.conf`
+  ```conf
+  client vpn {
+    ipaddr = 10.36.48.2
+    proto = *
+    secret = SapSecrets
+  }
+  ```
+- modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add following lines
+  ```conf
+  {
+  ...
+
+  post-auth {
+  
+  ....
+
+    ldap
+          if (LDAP-Group == "JM_VPN") {
+              update reply {
+                  Service-Type = "Outbound-User"
+                  }
+          }
+          if (LDAP-Group == "NET_ADMIN") {
+                  update reply {
+                          Service-Type = "Administrative-User",
+                          Cisco-AVPair = "shell:roles=network-admin",
+                          Cisco-AVPair += "shell:priv-lvl=15",
+                          CVPN3000-Privilege-Level = 15
+                          }
+          }
+  ....
+    }
+  
+  ...
+  }
+  ```
+  > [freeradius wiki page](http://wiki.freeradius.org/modules/Rlm_ldap) says  this should be configured in `raddb/mods-available/ldap`, but for freeradius-3.0.13-9.el7_5.x86_64 on centos7, it will display error 
+  > `/etc/raddb/mods-enabled/ldap[413]: Invalid location for 'if'`
+  > `Errors reading or parsing /etc/raddb/radiusd.conf`
+  > so we shoud configure it at /etc/raddb/sites-enabled/default
+
+- restart freeradius
+- login with `Cisco Anyconnect Secure Mobility Client` with different user to have test, now user in group `JM_VPN` can login with VPN access, but others don't have VPN access 
