@@ -479,9 +479,16 @@ server {
 
 
 ## 16. Integrate with Cisco ASA VPN 
-### 16.1 configure groups in freeradius
-
-
+### 16.1 configure clients in freeradius
+- add client conf for vpn, add following lines to `/etc/raddb/clients.conf`
+  ```conf
+  client vpn {
+    ipaddr = 10.36.48.2
+    proto = *
+    secret = SapSecrets
+  }
+  ```
+### 16.2 configure service type in freeradius
 LDAP mapped users-To map LDAP attributes, see the ldap attribute-map command.
     RADIUS users-Use the IETF RADIUS numeric service-type attribute, which maps to one of the following values:
 
@@ -493,14 +500,7 @@ LDAP mapped users-To map LDAP attributes, see the ldap attribute-map command.
 
 
   so if we want login to ASA console,     set `Service-Type` to `Administrative-User`, if we want to login as VPN accesss, `Service-Type` to `Outbound-User`.
-- add client conf for vpn, add following lines to `/etc/raddb/clients.conf`
-  ```conf
-  client vpn {
-    ipaddr = 10.36.48.2
-    proto = *
-    secret = SapSecrets
-  }
-  ```
+
 - modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add following lines
   ```conf
   {
@@ -535,5 +535,8 @@ LDAP mapped users-To map LDAP attributes, see the ldap attribute-map command.
   > `Errors reading or parsing /etc/raddb/radiusd.conf`
   > so we shoud configure it at /etc/raddb/sites-enabled/default
 
-- restart freeradius
+### 16.3 Restart FreeRadius
+
+### 16.4 Test VPN login
+
 - login with `Cisco Anyconnect Secure Mobility Client` with different user to have test, now user in group `JM_VPN` can login with VPN access, but others don't have VPN access 
