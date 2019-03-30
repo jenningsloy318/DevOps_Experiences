@@ -538,7 +538,7 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
    `/etc/raddb/mods-enabled/ldap[413]: Invalid location for 'if'`
    `Errors reading or parsing /etc/raddb/radiusd.conf`
     so we shoud configure it at /etc/raddb/sites-enabled/default
-  > 2. To restrict user to have specific permission, we need to map ASA group-policy, so we need to add attribute `ASA-Group-Policy` into it. we can get all attributes from `/usr/share/freeradius/dictionary.cisco.asa`     
+  > 2. To restrict user to have specific permission, we need to map  Group-Policy betwwen ASA and freeradius, so we need to add attribute `ASA-Group-Policy` in this section too. we can get all attributes from `/usr/share/freeradius/dictionary.cisco.asa`     
   >  ```sh
   >     grep -i policy /usr/share/freeradius/dictionary.cisco.asa
   >     ATTRIBUTE	ASA-Group-Policy			25	string
