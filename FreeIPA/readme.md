@@ -470,13 +470,96 @@ server {
 ```
 
 ### 14.2 Integrate nginx with FreeIPA via radius
+#### 14.2.1  Configure clients for nginx 
+- add client conf for vpn, add following lines to `/etc/raddb/clients.conf`
+```conf
+  client nginx {
+        ipaddr = 10.36.52.149
+        proto = *
+        secret = SapSecrets
+        appname = nginx
+        require_message_authenticator = no
+        nas_type         = other
+        limit {
+                max_connections = 16
+                lifetime = 0
+                idle_timeout = 30
+        }
+  }
+```
+> to distinguish each client, add a label `appname` to each client
+#### 14.2.2  Configure post auth for vpn  in freeradius.
 
-**to be tested.**
+modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add following lines
+```conf
+
+    if ("%{client:appname}" == "nginx") {
+        update reply {
+                Service-Type = "Authorize-Only"
+                }
+    }
+```
+> 1. nginx use [nginx-http-radius-module](https://github.com/qudreams/nginx-http-radius-module)
+> 2. Tried many times, still failed to login 
+> 3. Finally, I use tcpdump to capture the data between nginx and freeradius, from it, I get the  service type of the request is `Authorize-Only`, so here set `Service-Type` to `Authorize-Only` 
+
+![](./images/nginx-service-type.png)
+
+
+#### 14.2.3  Confiugre radius in nginx
+- Configure nginx , add configure 
+```conf
+        #set the directory of radius dictionary.
+        radius_dict_directory "/etc/nginx/raddb/";
+
+        #radius server configuration including
+
+        radius_server "radius_server1" {
+            #authentication timed-out
+            auth_timeout 5;
+
+            #limit to resend the request
+            resend_limit 3;
+
+            #radius authentication server url.
+            url "10.36.52.172:1812";
+
+            #share secret
+            share_secret "SapSecrets";
+        }
+
+
+```
+- configure vhost 
+```conf
+....
+server {
+    listen       9090;
+    server_name  default;
+
+    location /  {
+      proxy_http_version   1.1;
+      proxy_hide_header    Vary;
+      proxy_hide_header    X-Powered-By;
+      proxy_set_header     Host             $host;
+      proxy_set_header     X-Real_IP        $remote_addr;
+      proxy_set_header     X-Forwarded-For  $proxy_add_x_forwarded_for;
+      proxy_next_upstream  http_502 http_504 http_404 error timeout invalid_header;
+      proxy_pass           http://prometheus_upstream;
+      
+      auth_radius_server "radius_server1" "PAP";
+      auth_radius "Restricted";
+
+    }
+}
+
+....
+```
 
 
 ## 15. Integrate with Cisco Switch
 
-
+No special conf for switches on FreeIPA side, just defines the client in FreeRadius
 
 ## 16. Integrate with Cisco ASA VPN 
 ### 16.1 configure clients in freeradius
@@ -487,10 +570,15 @@ server {
     proto = *
     secret = SapSecrets
     nas_type = cisco
+    appname = vpn
+    require_message_authenticator = no
+
   }
+
   ```
-  > Cisco devices `nas_type` can be set to `cisco`
-### 16.2 configure service type in freeradius  
+  > Cisco devices `nas_type` can be set to `cisco`, 
+  > to distinguish each client, add a label `appname` to each client
+### 16.2 configure post auth for vpn  in freeradius  
   
 LDAP mapped users-To map LDAP attributes, see the ldap attribute-map command.
     RADIUS users-Use the IETF RADIUS numeric service-type attribute, which maps to one of the following values:
@@ -514,6 +602,7 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
   ....
 
     ldap
+      if ("%{client:appname}" == "vpn") {
         if (LDAP-Group == "jm_vpn" ) {
             update reply {
                 Service-Type = "Outbound-User",
@@ -526,6 +615,8 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
                 ASA-Group-Policy = "OU=DEV_VPN"
                 }
          }
+      }
+
       
   ....
     }
