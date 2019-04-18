@@ -39,7 +39,7 @@ yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 ## 2. Install FreeIPA
 **Make sure password don't contain special character**
 ```sh
-# ipa-server-install -a Devops2019  -p Devops2019 -r INB.HQXYWL.COM -n inb.hqxywl.com  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U
+# ipa-server-install -a Devops2019  -p Devops2019 -r HQXYWL.COM -n hqxywl.com  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U
 ```
 ![](./images/concifgure-freeipa.gif)
 
@@ -408,7 +408,7 @@ then commit the changes to the firewall, now we can use the users defined in `Fr
 - add ldap bind user  
 ```sh
 # cat nginx.update
-dn: uid=nginx,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com
+dn: uid=nginx,cn=sysaccounts,cn=etc,dc=hqxywl,dc=com
 add:objectclass:account
 add:objectclass:simplesecurityobject
 add:uid:nginx
