@@ -100,56 +100,86 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 
 - Edit /etc/raddb/sites-enabled/default, modify following items
   
-  - replace  
+  - in section `authorize`, replace   
     ```conf
-    -ldap
+    authorize {
+      ...
+      -ldap
+      ...
+    }
     ```
       
      with 
 
     ```conf
-    ldap
-          if ((ok || updated) && User-Password) {
-              update {
-                  control:Auth-Type := ldap
-              }
-          }
-    ```
-  - umcomment
-      ```conf
-      #  Auth-Type LDAP {
-      #    ldap
-      #  }
-      ```
-      to
-
-      ```conf
-        Auth-Type LDAP {
-          ldap
-        }    
-      ```
-
-
-- Edit /etc/raddb/sites-enabled/inner-tunnel, modify following items
-
-    - replace 
-      ```
-      -ldap
-      ```
-      with 
-      ```
+    authorize {
+      ...
       ldap
             if ((ok || updated) && User-Password) {
                 update {
                     control:Auth-Type := ldap
                 }
             }
+      ...
+    }
+    ```
+  - in section `authenticate`, umcomment
+      ```conf
+      authenticate {
+        ...
+        
+        #  Auth-Type LDAP {
+        #    ldap
+        #  }
+        ...
+      }
       ```
-    - umcomment
+      to
+
+      ```conf
+      authenticate {
+        ...
+        Auth-Type LDAP {
+          ldap
+        }    
+        ...
+
+      }
       ```
-      #Auth-Type LDAP {
-      #  ldap
-      #}
+
+
+- Edit /etc/raddb/sites-enabled/inner-tunnel, modify following items
+
+    - in section `authorize`, replace 
+      ```
+      authorize {
+        ...
+        -ldap
+        ...
+      }
+      ```
+      with 
+      ```
+      authorize {
+        ...
+        ldap
+              if ((ok || updated) && User-Password) {
+                  update {
+                      control:Auth-Type := ldap
+                  }
+              }
+        ...
+      }
+      ```
+    - in section `authenticate`, umcomment
+      ```
+      authenticate {
+        ...
+        #Auth-Type LDAP {
+        #  ldap
+        #}
+        ...
+      }
       ```
       to 
       ```
