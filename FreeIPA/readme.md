@@ -313,6 +313,17 @@ Number of members added 1
 ----------------------------
 Number of privileges added 1
 ----------------------------
+
+
+# ipa privilege-add-permission "Host Enrollment" --permissions="System: Add Hosts"
+  Privilege name: Host Enrollment
+  Description: Host Enrollment
+  Permissions: System: Add Hosts, System: Add krbPrincipalName to a Host, System: Enroll a Host, System: Manage Host Certificates, System: Manage Host Enrollment Password, System: Manage
+               Host Keytab, System: Manage Host Principals
+  Granting privilege to roles: Enrollment Administrator, HostEnrollRole
+-----------------------------
+Number of permissions added 1
+-----------------------------
 ```
 
 ## 11. Configure ipa-client on client server 
