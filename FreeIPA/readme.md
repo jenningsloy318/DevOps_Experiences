@@ -3,11 +3,10 @@ Install freeipa and integrated with freeradius
 # Prepration: 
 | Type   | hostname                                | IP Address   |
 |--------|-----------------------------------------|--------------|
-| Server |  dc1-oob-vm-freeipa-prod01.hqxywl.com   | 10.36.47.230 |
-| Server |  dc1-oob-vm-freeipa-client-prod01.hqxywl.com   | 10.36.47.231 |
-| Client |  dc1-oob-vm-ipaclient-prod01.hqxywl.com | 10.36.47.232 
-| domain |  hqxywl.com |-|
-| Realm  |  HQXYWL.COM |-|
+| Server | dc1-vm-freeipa-prod01.inb.hqxywl.com  |10.36.52.172 |
+| Server |   dc1-vm-freeipa-prod02.inb.hqxywl.com  | 10.36.52.173|
+| domain |  inb.hqxywl.com |-|
+| Realm  |  INB.HQXYWL.COM |-|
 | OS     | CentOS Linux release 7.6.1810 (Core) |-|
 | FreeIPA|ipa-server-4.6.4-10.el7.centos.2.x86_64|-|
 
@@ -39,18 +38,22 @@ yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 ## 2. Install FreeIPA
 **Make sure password don't contain special character**
 ```sh
-# ipa-server-install -a Devops2019  -p Devops2019 -r HQXYWL.COM -n hqxywl.com  --setup-dns --allow-zone-overlap  --no-reverse  --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U
+#ipa-server-install -a Devops2019  -p Devops2019 -r INB.HQXYWL.COM -n inb.hqxywl.com  --setup-dns --allow-zone-overlap  --reverse-zone=36.10.in-addr.arpa. --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U 
+
 ```
-![](./images/concifgure-freeipa.gif)
 
-
+Enable DNS PTR update 
+```
+# ipa dnszone-mod inb.hqxywl.com. --allow-sync-ptr=TRUE
+```
+link： https://docs.pagure.org/bind-dyndb-ldap/BIND9/SyncPTR.html
 ## 3. Check LDAP Users
 
-to find out the the default base_dn used in `radius`, which is `cn=users,cn=accounts,dc=hqxywl,dc=com`
+to find out the the default base_dn used in `radius`, which is `cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com`
 ```sh
 ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 ```
-![](./images/ldap-users.gif)
+
 
 
 ## 4. Configure FreeRadius
@@ -92,7 +95,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
       server = 'localhost'
       identity = 'cn=Directory Manager'
       password = 'Devops2019'
-      base_dn = 'cn=users,cn=accounts,dc=hqxywl,dc=com'
+      base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
       sasl {
       }
     ...
@@ -191,7 +194,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 
 ## 5 Configure firewalld 
   ```
-  firewall-cmd --add-service=http   --add-service=https --add-service=ldap --add-service=ldaps --add-service=dns  --add-service=kerberos --add-service=ntp    --add-service=radius   --permanent 
+  firewall-cmd --add-service=http   --add-service=https --add-service=ldap --add-service=ldaps --add-service=dns  --add-service=kerberos --add-service=kpasswd --add-service=ntp    --add-service=radius   --permanent 
   firewall-cmd --reload
   ```
 
@@ -211,8 +214,8 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
     Last name: liu
     Home directory: /home/jenningsl
     Login shell: /bin/bash
-    Principal name: jenningsl@HQXYWL.COM
-    Principal alias: jenningsl@HQXYWL.COM
+    Principal name: jenningsl@INB.HQXYWL.COM
+    Principal alias: jenningsl@INB.HQXYWL.COM
     Email address: jennings.liu@sap.com
     UID: 352200001
     GID: 352200001
@@ -275,8 +278,8 @@ Added user "hostenrolluser"
   Home directory: /home/hostenrolluser
   GECOS: hostenrolluser system
   Login shell: /bin/bash
-  Principal name: hostenrolluser@OOB.HQXYWL.COM
-  Principal alias: hostenrolluser@OOB.HQXYWL.COM
+  Principal name: hostenrolluser@INB.HQXYWL.COM
+  Principal alias: hostenrolluser@INB.HQXYWL.COM
   Email address: hostenrolluser@sap.com
   UID: 352200011
   GID: 352200011
@@ -330,51 +333,10 @@ Number of permissions added 1
 
   ```sh
   # yum install -y ipa-client nscd nss-pam-ldapd
-  # ipa-client-install --domain=hqxywl.com --realm=HQXYWL.COM --server=dc1-oob-vm-freeipa-prod01.hqxywl.com  --mkhomedir -p hostenrolluser -w password  -U
-  WARNING: ntpd time&date synchronization service will not be configured as
-  conflicting service (chronyd) is enabled
-  Use --force-ntpd option to disable it and force configuration of ntpd
+  # ipa-client-install --domain=inb.hqxywl.com --realm=INB.HQXYWL.COM --server=dc1-vm-freeipa-prod01.inb.hqxywl.com  --mkhomedir -p hostenrolluser -w password  -U
 
-  Client hostname: dc1-oob-vm-freeipa-client-prod01.hqxywl.com
-  Realm: HQXYWL.COM
-  DNS Domain: hqxywl.com
-  IPA Server: dc1-oob-vm-freeipa-prod01.hqxywl.com
-  BaseDN: dc=hqxywl,dc=com
-
-  Skipping synchronizing time with NTP server.
-  Successfully retrieved CA cert
-      Subject:     CN=Certificate Authority,O=HQXYWL.COM
-      Issuer:      CN=Certificate Authority,O=HQXYWL.COM
-      Valid From:  2019-03-14 06:57:03
-      Valid Until: 2039-03-14 06:57:03
-
-  Enrolled in IPA realm HQXYWL.COM
-  Created /etc/ipa/default.conf
-  New SSSD config will be created
-  Configured sudoers in /etc/nsswitch.conf
-  Configured /etc/sssd/sssd.conf
-  Configured /etc/krb5.conf for IPA realm HQXYWL.COM
-  trying https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/json
-  [try 1]: Forwarding 'schema' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/json'
-  trying https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json
-  [try 1]: Forwarding 'ping' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json'
-  [try 1]: Forwarding 'ca_is_enabled' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json'
-  Systemwide CA database updated.
-  Hostname (dc1-oob-vm-freeipa-client-prod01.hqxywl.com) does not have A/AAAA record.
-  Missing reverse record(s) for address(es): 10.36.47.231.
-  Adding SSH public key from /etc/ssh/ssh_host_rsa_key.pub
-  Adding SSH public key from /etc/ssh/ssh_host_ecdsa_key.pub
-  Adding SSH public key from /etc/ssh/ssh_host_ed25519_key.pub
-  [try 1]: Forwarding 'host_mod' to json server 'https://dc1-oob-vm-freeipa-prod01.hqxywl.com/ipa/session/json'
-  SSSD enabled
-  Configured /etc/openldap/ldap.conf
-  Configured /etc/ssh/ssh_config
-  Configured /etc/ssh/sshd_config
-  Configuring hqxywl.com as NIS domain.
-  Client configuration complete.
-  The ipa-client-install command was successful
   ```
-  > shoud modiy /etc/resolv.conf to set `10.36.47.230` as the first dns server
+  > shoud modiy /etc/resolv.conf to set `10.36.52.172` as the first dns server
   
    if user home is not automatically created, excute following command to update 
   ```sh
@@ -465,9 +427,9 @@ The ipa-ldap-updater command was successful
 ```conf
    ldap_server 389_ds_1 {
       # user search base.
-      url "ldap://10.36.52.172:389/DC=hqxywl,DC=com?uid?sub?(objectClass=*)";
+      url "ldap://10.36.52.172:389/DC=inb,DC=hqxywl,DC=com?uid?sub?(objectClass=*)";
       # bind as
-      binddn "uid=nginx,cn=sysaccounts,cn=etc,dc=hqxywl,dc=com";
+      binddn "uid=nginx,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com";
       # bind pw
       binddn_passwd "nginx";
       # group attribute name which contains member object
@@ -694,3 +656,25 @@ Login with `Cisco Anyconnect Secure Mobility Client` with different user to have
 > JM_VPN can only access jumpserver address 10.36.48.130, others don't
 > users in group `dev_vpn` can only login vpn vith VPN group `DEV_VPN`
 > users in group `jm_vpn` can only login vpn vith VPN group `JM_VPN`
+
+
+## 17  Install replica
+Update /etc/resolv.conf, add 10.36.52.172 as the first DNS server. 
+
+
+### 17.1 Configure firewalld 
+```
+#firewall-cmd --add-service=http   --add-service=https --add-service=ldap --add-service=ldaps --add-service=dns  --add-service=kerberos --add-service=kpasswd --add-service=ntp    --add-service=radius   --permanent 
+# firewall-cmd --reload
+```
+### 17.2 install packages
+```
+# yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
+```
+### 17.3 Configure replica and ca on this slave 
+```
+
+# ipa-replica-install  -w Devops2019 -U --force-join
+# ipa-ca-install  -w Devops2019 -p Devops2019 -U
+```
+
