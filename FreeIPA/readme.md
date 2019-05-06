@@ -193,6 +193,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 
 - Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/preprocess/huntgroups` to preprocess the request from clients, which will be process within   directive `preprocess` of section `authorize` in each site files
 
+
 ## 5 Configure firewalld 
   ```
   firewall-cmd --add-service=http   --add-service=https --add-service=ldap --add-service=ldaps --add-service=dns  --add-service=kerberos --add-service=kpasswd --add-service=ntp    --add-service=radius   --permanent 
@@ -506,15 +507,7 @@ modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add followin
 > 1. nginx use [nginx-http-radius-module](https://github.com/qudreams/nginx-http-radius-module)
 > 2. Tried many times, still failed to login 
 > 3. Finally, I use tcpdump to capture the data between nginx and freeradius, from it, I get the  service type of the request is `Authorize-Only`, so here set `Service-Type` to `Authorize-Only` 
-> 4. also we can here add reply based on some runtime attributes and vaules
->  ```
->  %{Attribute-Name}               The value of the given Attribute-Name in the request packet                                  
->  %{request:Attribute-Name}       The value of value the given Attribute-Name in the request packet                                  
->  %{reply:Attribute-Name}         The value of the given Attribute-Name in the reply packet                                  
->  %{proxy-request:Attribute-Name} The value of the given Attribute-Name in the proxy request packet (if it exists)
->  %{proxy-reply:Attribute-Name}   The value of the given Attribute-Name in the proxy reply packet (if it exists)
->                                  
->  ```                                
+           
 
 ![](./images/nginx-service-type.png)
 
@@ -643,11 +636,56 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
    `Errors reading or parsing /etc/raddb/radiusd.conf`
     so we shoud configure it at /etc/raddb/sites-enabled/default
   > 2. To restrict user to have specific permission, we need to map  Group-Policy betwwen ASA and freeradius, so we need to add attribute `ASA-Group-Policy` in this section too. we can get all attributes from `/usr/share/freeradius/dictionary.cisco.asa`     
-  >  ```sh
-  >     grep -i policy /usr/share/freeradius/dictionary.cisco.asa
-  >     ATTRIBUTE	ASA-Group-Policy			25	string
-  >  ```
+    ```sh
+       grep -i policy /usr/share/freeradius/dictionary.cisco.asa
+       ATTRIBUTE	ASA-Group-Policy			25	string
+    ```
   > 3. Configuration for ` Group-Policy` and other attributes are  listed  https://www.cisco.com/c/en/us/td/docs/security/asa/asa912/configuration/general/asa-912-general-config/aaa-radius.html
+
+  > 4. also we can here add reply based on some runtime attributes and vaules
+    ```
+    %{Attribute-Name}               The value of the given Attribute-Name in the request packet                                  
+    %{request:Attribute-Name}       The value of value the given Attribute-Name in the request packet                                  
+    %{reply:Attribute-Name}         The value of the given Attribute-Name in the reply packet                                  
+    %{proxy-request:Attribute-Name} The value of the given Attribute-Name in the proxy request packet (if it exists)
+    %{proxy-reply:Attribute-Name}   The value of the given Attribute-Name in the proxy reply packet (if it exists)
+                                    
+    ```     
+    e.g , we can use `%{request:ASA_ClientType}` at `post-auth` to reply based on request of vpn autentication request, since only VPN authentication request have ASA_ prefix attribitutes in the requests or  
+
+  ```
+   if ("%{request:ASA_ClientType}" == 2) {
+        if (LDAP-Group == "jm_vpn" ) {
+            update reply {
+                Service-Type = "Outbound-User",
+                ASA-Group-Policy = "OU=JM_VPN"
+                }
+         }
+        elsif ( LDAP-Group == "dev_vpn") {
+            update reply {
+                Service-Type = "Outbound-User",
+                ASA-Group-Policy = "OU=DEV_VPN"
+                }
+         }
+      }
+  ```
+  or simply evaluate if the attribute exist
+  ```
+     if (ASA_ClientType) {
+        if (LDAP-Group == "jm_vpn" ) {
+            update reply {
+                Service-Type = "Outbound-User",
+                ASA-Group-Policy = "OU=JM_VPN"
+                }
+         }
+        elsif ( LDAP-Group == "dev_vpn") {
+            update reply {
+                Service-Type = "Outbound-User",
+                ASA-Group-Policy = "OU=DEV_VPN"
+                }
+         }
+      }
+  ```
 ### 16.3 Restart FreeRadius
 ```sh
 systemctl restart radiusd
