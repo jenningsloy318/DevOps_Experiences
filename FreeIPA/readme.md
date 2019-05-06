@@ -651,7 +651,7 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
     %{proxy-reply:Attribute-Name}   The value of the given Attribute-Name in the proxy reply packet (if it exists)
                                     
     ```     
-    e.g , we can use `%{request:ASA_ClientType}` at `post-auth` to reply based on request of vpn autentication request, since only VPN authentication request have ASA_ prefix attribitutes in the requests or  
+    e.g , we can use `%{request:ASA_ClientType}` at `post-auth` to reply based on request of vpn autentication request, since only VPN authentication request have `ASA_` prefix attribitutes in the requests   
 
   ```
    if ("%{request:ASA_ClientType}" == 2) {
