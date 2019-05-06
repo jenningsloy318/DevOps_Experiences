@@ -506,6 +506,15 @@ modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add followin
 > 1. nginx use [nginx-http-radius-module](https://github.com/qudreams/nginx-http-radius-module)
 > 2. Tried many times, still failed to login 
 > 3. Finally, I use tcpdump to capture the data between nginx and freeradius, from it, I get the  service type of the request is `Authorize-Only`, so here set `Service-Type` to `Authorize-Only` 
+> 4. also we can here add reply based on some runtime attributes and vaules
+>  ```
+>  %{Attribute-Name}               The value of the given Attribute-Name in the request packet                                  
+>  %{request:Attribute-Name}       The value of value the given Attribute-Name in the request packet                                  
+>  %{reply:Attribute-Name}         The value of the given Attribute-Name in the reply packet                                  
+>  %{proxy-request:Attribute-Name} The value of the given Attribute-Name in the proxy request packet (if it exists)
+>  %{proxy-reply:Attribute-Name}   The value of the given Attribute-Name in the proxy reply packet (if it exists)
+>                                  
+>  ```                                
 
 ![](./images/nginx-service-type.png)
 
