@@ -191,6 +191,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
       }
      ```     
 
+- Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/preprocess/huntgroups` to preprocess the request from clients, which will be process within   directive `preprocess` of section `authorize` in each site files
 
 ## 5 Configure firewalld 
   ```
