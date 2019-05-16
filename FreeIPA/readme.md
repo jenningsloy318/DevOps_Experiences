@@ -45,6 +45,7 @@ yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 Enable DNS PTR update 
 ```
 # ipa dnszone-mod inb.hqxywl.com. --allow-sync-ptr=TRUE
+# ipa dnsconfig-mod --allow-sync-ptr=TRUE
 ```
 link： https://docs.pagure.org/bind-dyndb-ldap/BIND9/SyncPTR.html
 ## 3. Check LDAP Users
@@ -722,8 +723,20 @@ Update /etc/resolv.conf, add 10.36.52.172 as the first DNS server.
 ### 17.3 Configure replica and ca on this slave 
 ```
 
-# ipa-replica-install  -w Devops2019 -U --mkhomedir --force-join 
-
-# ipa-ca-install  -w Devops2019 -p Devops2019 -U
+# ipa-replica-install  -w Devops2019 -U --mkhomedir   --setup-ca   --setup-dns --allow-zone-overlap  --reverse-zone=36.10.in-addr.arpa.  --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --force-join
 ```
 
+if install failed, we need to remove this repica on the master node via 
+```
+ipa-replica-manage del dc1-vm-freeipa-prod02.inb.hqxywl.com --force
+```
+### 18 DNS records managements
+18.1 add record 
+```
+ipa dnsrecord-add  inb.hqxywl.com www --a-rec 10.1.1.1  --a-create-reverse
+```
+
+18.2 modify record
+```
+ipa dnsrecord-mod inb.hqxywl.com www --a-rec 10.1.1.1 
+```
