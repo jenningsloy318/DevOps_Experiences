@@ -30,7 +30,7 @@ At this stage,
 - [14. Integrated with nginx ](#14-integrate-with-nginx)
 - [15. Integrate with Cisco Switch](#15-integrate-with-cisco-switch)
 - [16. Integrate with Cisco ASA VPN ](#16-integrate-with-cisco-asa-vpn)
-
+- [17. Install replica](#17-Install-replica)
 ## 1. Install package
 ```sh
 yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
@@ -722,7 +722,8 @@ Update /etc/resolv.conf, add 10.36.52.172 as the first DNS server.
 ### 17.3 Configure replica and ca on this slave 
 ```
 
-# ipa-replica-install  -w Devops2019 -U --force-join
+# ipa-replica-install  -w Devops2019 -U --mkhomedir --force-join 
+
 # ipa-ca-install  -w Devops2019 -p Devops2019 -U
 ```
 
