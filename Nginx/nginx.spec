@@ -51,7 +51,7 @@ BuildRequires: systemd
 
 # end of distribution specific definitions
 
-%define main_version 1.14.2
+%define main_version 1.16.0
 %define main_release 1%{?dist}
 
 %define bdir %{_builddir}/%{name}-%{main_version}
@@ -59,7 +59,7 @@ BuildRequires: systemd
 %define WITH_CC_OPT $(echo %{optflags} $(pcre-config --cflags)) -fPIC  -I ./libmyradclient
 %define WITH_LD_OPT -Wl,-z,relro -Wl,-z,now -pie
 
-%define BASE_CONFIGURE_ARGS $(echo "--prefix=%{_sysconfdir}/nginx --sbin-path=%{_sbindir}/nginx --modules-path=%{_libdir}/nginx/modules --conf-path=%{_sysconfdir}/nginx/nginx.conf --error-log-path=%{_localstatedir}/log/nginx/error.log  --with-debug  --http-log-path=%{_localstatedir}/log/nginx/access.log --pid-path=%{_localstatedir}/run/nginx.pid --lock-path=%{_localstatedir}/run/nginx.lock --http-client-body-temp-path=%{_localstatedir}/cache/nginx/client_temp --http-proxy-temp-path=%{_localstatedir}/cache/nginx/proxy_temp --http-fastcgi-temp-path=%{_localstatedir}/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=%{_localstatedir}/cache/nginx/uwsgi_temp --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp --user=%{nginx_user} --group=%{nginx_group} --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-openssl=./openssl-%{ngx_openssl_version}  --add-module=./nginx-module-vts-%{ngx_module_vts_version}  --add-module=./nginx_upstream_check_module-master --add-module=./nginx-auth-ldap-master" --add-module=./nginx-http-radius-module-master)
+%define BASE_CONFIGURE_ARGS $(echo "--prefix=%{_sysconfdir}/nginx --sbin-path=%{_sbindir}/nginx --modules-path=%{_libdir}/nginx/modules --conf-path=%{_sysconfdir}/nginx/nginx.conf --error-log-path=%{_localstatedir}/log/nginx/error.log  --with-debug  --http-log-path=%{_localstatedir}/log/nginx/access.log --pid-path=%{_localstatedir}/run/nginx.pid --lock-path=%{_localstatedir}/run/nginx.lock --http-client-body-temp-path=%{_localstatedir}/cache/nginx/client_temp --http-proxy-temp-path=%{_localstatedir}/cache/nginx/proxy_temp --http-fastcgi-temp-path=%{_localstatedir}/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=%{_localstatedir}/cache/nginx/uwsgi_temp --http-scgi-temp-path=%{_localstatedir}/cache/nginx/scgi_temp --user=%{nginx_user} --group=%{nginx_group} --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-openssl=./openssl-%{ngx_openssl_version}  --add-module=./nginx-module-vts-%{ngx_module_vts_version}  --add-module=./nginx_upstream_check_module-master --add-module=./nginx-auth-ldap-master")
 
 Summary: High performance web server
 Name: nginx
@@ -86,10 +86,8 @@ Source14: https://github.com/vozlt/nginx-module-vts/archive/v%{ngx_module_vts_ve
 Source15: https://openssl.org/source/openssl-%{ngx_openssl_version}.tar.gz#/openssl-%{ngx_openssl_version}.tar.gz
 Source16: https://github.com/yaoweibin/nginx_upstream_check_module/archive/master.zip#/nginx_upstream_check_module-master.zip
 source17: https://github.com/kvspb/nginx-auth-ldap/archive/master.zip#/nginx-auth-ldap-master.zip
-source18: https://github.com/qudreams/libmyradclient/archive/master.zip#/libmyradclient-master.zip
-source19: https://github.com/qudreams/nginx-http-radius-module/archive/master.zip#/nginx-http-radius-module-master.zip
-source20:https://github.com/opentracing-contrib/nginx-opentracing/releases/download/v%{ngx_opentracing_version}/linux-amd64-nginx-1.14.0-ngx_http_module.so.tgz
-source21: https://github.com/jaegertracing/jaeger-client-cpp/releases/download/v%{ngx_libjaegertracing_version}/libjaegertracing_plugin.linux_amd64.so#/libjaegertracing_plugin.so
+source18:https://github.com/opentracing-contrib/nginx-opentracing/releases/download/v%{ngx_opentracing_version}/linux-amd64-nginx-1.14.0-ngx_http_module.so.tgz
+source19: https://github.com/jaegertracing/jaeger-client-cpp/releases/download/v%{ngx_libjaegertracing_version}/libjaegertracing_plugin.linux_amd64.so#/libjaegertracing_plugin.so
 
 
 
@@ -112,7 +110,7 @@ a mail proxy server.
 
 %prep
 
-%setup -q -a 14 -a 15  -a 16 -a 17 -a 18 -a 19 -a 20
+%setup -q -a 14 -a 15  -a 16 -a 17 -a 18 
 cp %{_sourcedir}/libjaegertracing_plugin.so   .
 patch  -p1 < nginx_upstream_check_module-master/check_1.14.0+.patch
 cp %{SOURCE2} .
@@ -120,7 +118,6 @@ sed -e 's|%%DEFAULTSTART%%|2 3 4 5|g' -e 's|%%DEFAULTSTOP%%|0 1 6|g' \
     -e 's|%%PROVIDES%%|nginx|g' < %{SOURCE2} > nginx.init
 sed -e 's|%%DEFAULTSTART%%||g' -e 's|%%DEFAULTSTOP%%|0 1 2 3 4 5 6|g' \
     -e 's|%%PROVIDES%%|nginx-debug|g' < %{SOURCE2} > nginx-debug.init
-mv libmyradclient-master libmyradclient && cd libmyradclient  && sed -i '/^CFLAGS=/s/$/ -fpic/g' Makefile && make && cp libmyradclient.a ../nginx-http-radius-module-master
 
 %build
 ./configure %{BASE_CONFIGURE_ARGS} \
@@ -150,17 +147,11 @@ make %{?_smp_mflags}
 %{__mkdir} -p $RPM_BUILD_ROOT%{_localstatedir}/cache/nginx
 
 
-
 %{__mkdir} -p $RPM_BUILD_ROOT%{_libdir}/nginx/modules
 cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
     %{__ln_s} ../..%{_libdir}/nginx/modules modules && cd -
 %{__install} -p  -m 0755 %{bdir}/ngx_http_opentracing_module.so \
     $RPM_BUILD_ROOT%{_libdir}/nginx/modules
-
-
-%{__mkdir} -p $RPM_BUILD_ROOT%{_sysconfdir}/nginx/raddb/
-%{__install} -p  -m 0755 %{bdir}/nginx-http-radius-module-master/raddb/* \
-    $RPM_BUILD_ROOT%{_sysconfdir}/nginx/raddb/
      
 %{__mkdir} -p $RPM_BUILD_ROOT/lib64/
 %{__install} -p  -m 0755 %{bdir}/libjaegertracing_plugin.so  \
@@ -246,9 +237,6 @@ cd $RPM_BUILD_ROOT%{_sysconfdir}/nginx && \
 %config(noreplace) %{_sysconfdir}/logrotate.d/nginx
 %config(noreplace) %{_sysconfdir}/sysconfig/nginx
 %config(noreplace) %{_sysconfdir}/sysconfig/nginx-debug
-
-%attr(0755,root,root) %dir %{_sysconfdir}/nginx/raddb/
-%{_sysconfdir}/nginx/raddb/*
 
 
 %if %{use_systemd}
@@ -356,6 +344,18 @@ if [ $1 -ge 1 ]; then
 fi
 
 %changelog
+* Tue Apr 23 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.16.0
+
+* Tue Apr 16 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.12
+
+* Tue Apr 09 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.11
+
+* Tue Mar 26 2019 Konstantin Pavlov <thresh@nginx.com>
+- 1.15.10
+
 * Tue Feb 26 2019 Konstantin Pavlov <thresh@nginx.com>
 - 1.15.9
 
