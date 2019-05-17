@@ -58,101 +58,150 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 
 
 ## 4. Configure FreeRadius
-- install radius 
+### 4.1  install radius 
 ```sh
-# yum install freeradius freeradius-utils freeradius-ldap freeradius-krb5
+# yum install -y freeradius freeradius-utils freeradius-ldap freeradius-krb5
 ```
-- Edit /etc/raddb/clients.conf,modified following items:
-    - ipaddr 
-    - secret
 
-  Full contenf of `/etc/raddb/clients.conf`
-    ```conf
-    client localnet {
-      ipaddr = 10.36.0.0/16
-      proto = *
-      secret = SapSecrts
-      require_message_authenticator = no
-      nas_type         = other
-      limit {
-        max_connections = 16
-        lifetime = 0
-        idle_timeout = 30
-      }
+### 4.2  add radius service into freeipa
+```
+ipa service-add radius/dc1-vm-freeipa-prod01.inb.hqxywl.com
+```
+### 4.3  retrieve keytab for radius service from freeipa 
+  ```
+  ipa-getkeytab -p radius/dc1-vm-freeipa-prod01.inb.hqxywl.com@INB.HQXYWL.COM -k /etc/raddb/radiusd.keytab
+  chown -R radiusd.radiusd /etc/raddb/radiusd.keytab
+  ```
+
+### 4.4 create certificates  for radius into freeipa
+  ```
+  # mv /etc/raddb/certs /etc/raddb/certs.bak
+  # mkdir /etc/raddb/certs
+  # ipa-getcert request -w -k /etc/raddb/certs/server.key -f /etc/raddb/certs/server.pem -T caIPAserviceCert -C 'systemctl restart radiusd.service' -N dc1-vm-freeipa-prod01.inb.hqxywl.com -D dc1-vm-freeipa-prod01.inb.hqxywl.com -K radius/dc1-vm-freeipa-prod01.inb.hqxywl.com
+  # cp /etc/ipa/ca.crt /etc/raddb/certs/cacert.pem
+  # cp /etc/ipa/ca.crt /etc/raddb/certs/ca.pem
+  # chown -R radiusd.radiusd  /etc/raddb/certs/
+  # openssl dhparam 2048 -out /etc/raddb/certs/dh
+  # chmod +r  /etc/raddb/certs/*
+  ```
+
+### 4.5 configure radius clients, edit /etc/raddb/clients.conf,modified following items:
+  - ipaddr 
+  - secret
+
+  Full contenf of `/etc/raddb/clients.conf`   
+  ```conf
+  client localnet {
+    ipaddr = 10.36.0.0/16
+    proto = *
+    secret = SapSecrets2019
+    require_message_authenticator = no
+    nas_type         = other
+    limit {
+      max_connections = 16
+      lifetime = 0
+      idle_timeout = 30
     }
-    ...
-    ```
-
-    Edit  /etc/raddb/mods-enabled/ldap
-    only modified 
-    - server
-    - identity
-    - password
-    - base_dn
+  }
+  ...
+  ```
+### 4.6 configure  `ldap` module, edit `/etc/raddb/mods-enabled/ldap`, only modified 
+  - server
+  - identity
+  - base_dn
+  - sasl
+  - tls
 
     Full content of /etc/raddb/mods-enabled/ldap
     ```conf
     ldap {
-      server = 'localhost'
-      identity = 'cn=Directory Manager'
-      password = 'Devops2019'
+      server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
+      server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
       base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
       sasl {
+                mech = 'GSSAPI'
+                realm = 'INB.HQXYWL.COM'
       }
+      tls {
+
+        ca_file = /etc/raddb/certs/ca.pem
+        certificate_file = /etc/raddb/certs/server.pem
+        private_key_file = /etc/raddb/certs/server.key
+      }      
     ...
     ```
 
-- Edit /etc/raddb/sites-enabled/default, modify following items
-  
-  - in section `authorize`, replace   
-    ```conf
-    authorize {
-      ...
-      -ldap
-      ...
+ 
+### 4.7 configure module `eap`, edit `/etc/raddb/mods-enabled/eap`, setting following certificates and keys 
+```
+....
+    tls-config tls-common {
+    ....
+    private_key_file = ${certdir}/server.key
+    certificate_file = ${certdir}/server.pem
+    ca_file = ${cadir}/ca.pem
+    ....
     }
-    ```
-      
-     with 
+...
+```
+### 4.8 Configure site, edit `/etc/raddb/sites-enabled/default`, modify following items
+  - authorize
+  - authenticate
+  - post-auth
 
-    ```conf
-    authorize {
-      ...
-      ldap
-            if ((ok || updated) && User-Password) {
-                update {
-                    control:Auth-Type := ldap
-                }
-            }
-      ...
-    }
-    ```
-  - in section `authenticate`, umcomment
+    - in section `authorize`, replace   
       ```conf
-      authenticate {
+      authorize {
         ...
+        -ldap
+        ...
+      }
+      ```
         
-        #  Auth-Type LDAP {
-        #    ldap
-        #  }
-        ...
-      }
-      ```
-      to
+      with 
 
       ```conf
-      authenticate {
+      authorize {
         ...
-        Auth-Type LDAP {
-          ldap
-        }    
+        ldap
+              if ((ok || updated) && User-Password) {
+                  update {
+                      control:Auth-Type := ldap
+                  }
+              }
         ...
-
       }
       ```
+    - in section `authenticate`, umcomment
+        ```conf
+        authenticate {
+          ...
+          
+          #  Auth-Type LDAP {
+          #    ldap
+          #  }
+          ...
+        }
+        ```
+        to
+
+        ```conf
+        authenticate {
+          ...
+          Auth-Type LDAP {
+            ldap
+          }    
+          ...
+
+        }
+        ```
 
 
-- Edit /etc/raddb/sites-enabled/inner-tunnel, modify following items
+### 4.9 Configure site, edit /etc/raddb/sites-enabled/inner-tunnel, modify following items
+  - authorize
+  - authenticate
+  - post-auth
+
 
     - in section `authorize`, replace 
       ```
@@ -175,7 +224,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
         ...
       }
       ```
-    - in section `authenticate`, umcomment
+    - in section `authenticate`, uncomment
       ```
       authenticate {
         ...
@@ -191,8 +240,30 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
         ldap
       }
      ```     
+  > `post-auth` configure will be detailed described in [14.2.2](#14.2.2-configure-post-auth-for-vpn-in-freeradius) and [16.2](#16.2-configure-post-auth-for-vpn-in-freeradius) 
 
-- Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/preprocess/huntgroups` to preprocess the request from clients, which will be process within   directive `preprocess` of section `authorize` in each site files
+### 4.11 modify `radiusd.service` file, add env`KRB5_CLIENT_KTNAME` to point to  `/etc/raddb/radiusd.keytab` 
+```conf
+[Unit]
+Description=FreeRADIUS high performance RADIUS server.
+After=syslog.target network.target ipa.service dirsrv.target krb5kdc.service
+
+[Service]
+Environment=KRB5_CLIENT_KTNAME=/etc/raddb/radiusd.keytab
+Type=forking
+PIDFile=/var/run/radiusd/radiusd.pid
+ExecStartPre=-/bin/chown -R radiusd.radiusd /var/run/radiusd
+ExecStartPre=/usr/sbin/radiusd -C
+ExecStart=/usr/sbin/radiusd -d /etc/raddb
+ExecReload=/usr/sbin/radiusd -C
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### 4.10 configure preprocess (optional)
+Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/preprocess/huntgroups` to preprocess the request from clients, which will be process within   directive `preprocess` of section `authorize` in each site files
 
 
 ## 5 Configure firewalld 
@@ -202,8 +273,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
   ```
 
 ## 6. Add test user in FreeIPA 
-  We can add user in ipa web portal or add it via command line
-  also we can add OTP(2FA) to this user
+  We can add user in ipa web portal or add it via command line, also we can add OTP(2FA) to this user
 
   ```sh
   ipa user-add --first=Jennings --last=Liu --shell=/bin/bash   --sshpubkey=<Public key string> --password jenningsl
@@ -655,7 +725,7 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
     e.g , we can use `%{request:ASA_ClientType}` at `post-auth` to reply based on request of vpn autentication request, since only VPN authentication request have `ASA_` prefix attribitutes in the requests   
 
   ```
-   if ("%{request:ASA_ClientType}" == 2) {
+   if (%{request:ASA_ClientType} == "2") {
         if (LDAP-Group == "jm_vpn" ) {
             update reply {
                 Service-Type = "Outbound-User",
@@ -670,23 +740,7 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
          }
       }
   ```
-  or simply evaluate if the attribute exist
-  ```
-     if (ASA_ClientType) {
-        if (LDAP-Group == "jm_vpn" ) {
-            update reply {
-                Service-Type = "Outbound-User",
-                ASA-Group-Policy = "OU=JM_VPN"
-                }
-         }
-        elsif ( LDAP-Group == "dev_vpn") {
-            update reply {
-                Service-Type = "Outbound-User",
-                ASA-Group-Policy = "OU=DEV_VPN"
-                }
-         }
-      }
-  ```
+
 ### 16.3 Restart FreeRadius
 ```sh
 systemctl restart radiusd
