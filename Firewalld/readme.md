@@ -40,3 +40,13 @@ firewall-cmd --set-default-zone=internal
 
 firewall-cmd --complete-reload
 ```
+
+
+5. add forward port 
+```
+firewall-cmd  --add-masquerade --permanent
+firewall-cmd --permanent --add-forward-port=port=41443:proto=tcp:toaddr=10.36.51.141:toport=443
+firewall-cmd --permanent --add-forward-port=port=42443:proto=tcp:toaddr=10.36.51.142:toport=443
+firewall-cmd --permanent --add-forward-port=port=11443:proto=tcp:toaddr=10.36.51.11:toport=443
+firewall-cmd --add-port={41443/tcp,42443/tcp,11443/tcp} --permanent
+```
