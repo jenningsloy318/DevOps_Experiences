@@ -766,14 +766,7 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
   > 3. Configuration for ` Group-Policy` and other attributes are  listed  https://www.cisco.com/c/en/us/td/docs/security/asa/asa912/configuration/general/asa-912-general-config/aaa-radius.html
 
   > 4. also we can here add reply based on some runtime attributes and vaules
-    ```
-    %{Attribute-Name}               The value of the given Attribute-Name in the request packet                                  
-    %{request:Attribute-Name}       The value of value the given Attribute-Name in the request packet                                  
-    %{reply:Attribute-Name}         The value of the given Attribute-Name in the reply packet                                  
-    %{proxy-request:Attribute-Name} The value of the given Attribute-Name in the proxy request packet (if it exists)
-    %{proxy-reply:Attribute-Name}   The value of the given Attribute-Name in the proxy reply packet (if it exists)
-                                    
-    ```     
+ 
     e.g , we can use `ASA_ClientType` at `post-auth` to reply based on request of vpn autentication request, since only VPN authentication request have `ASA_` prefix attribitutes in the requests   
 
   ```
