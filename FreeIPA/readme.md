@@ -82,10 +82,11 @@ ipa service-add radius/dc1-vm-freeipa-prod01.inb.hqxywl.com
   # cp /etc/ipa/ca.crt /etc/raddb/certs/ca.pem
   # chown -R radiusd.radiusd  /etc/raddb/certs/
   # openssl dhparam 2048 -out /etc/raddb/certs/dh
-  # chmod +r  /etc/raddb/certs/*
+  # chmod -R  /etc/raddb/certs/*
   ```
 
 ### 4.5 configure radius clients, edit /etc/raddb/clients.conf,modified following items:
+
   - ipaddr 
   - secret
 
@@ -112,15 +113,48 @@ ipa service-add radius/dc1-vm-freeipa-prod01.inb.hqxywl.com
   - sasl
   - tls
 
-    Full content of /etc/raddb/mods-enabled/ldap
+But first create user and permissions
+
+  - Create ralative permision and roles 
+    ```sh
+    ipa permission-add 'Modify User Description'  --attrs=description  --right=write --subtree="cn=users,cn=accounts,dc=oob,dc=hqxywl,dc=com"
+    ipa permission-add 'Read User Password'  --attrs=userPassword  --right=read --subtree="cn=users,cn=accounts,dc=oob,dc=hqxywl,dc=com"
+    ipa privilege-add 'Radius services' --desc='Privileges needed to allow radiusd servers to operate'
+    ipa privilege-add-permission 'Radius services' --permissions='Modify User Description'
+    ipa privilege-add-permission 'Radius services' --permissions='Read User Password'
+    ipa role-add 'Radius server' --desc="Radius server role"
+    ipa role-add-privilege --privileges="Radius services" 'Radius server'
+    ```
+  - create radius user 
+    ```sh
+    #cat radius.update
+    dn: uid=radius,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com
+    add:objectclass:account
+    add:objectclass:simplesecurityobject
+    add:uid:nginx
+    add:userPassword:RadiusPass
+    add:passwordExpirationTime:20380119031407Z
+    add:nsIdleTimeout:0
+    # ipa-ldap-updater radius.update
+    ```
+  - update role to include this user 
+    ```
+    # cat  radius-server-role.update
+    dn: cn=Radius server,cn=roles,cn=accounts,dc=oob,dc=hqxywl,dc=com
+    add:member: uid=radius,cn=sysaccounts,cn=etc,dc=oob,dc=hqxywl,dc=com
+    # ipa-ldap-updater radius-server-role.update
+    ``` 
+  - Full content of /etc/raddb/mods-enabled/ldap
     ```conf
     ldap {
       server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
       server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
       base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
-      sasl {
-                mech = 'GSSAPI'
-                realm = 'INB.HQXYWL.COM'
+      identity = 'uid=radius,cn=sysaccounts,cn=etc,dc=oob,dc=hqxywl,dc=com'
+      password = 'RadiusPass'
+     sasl {
+    #            mech = 'GSSAPI'
+    #           realm = 'INB.HQXYWL.COM'
       }
       tls {
 
@@ -647,7 +681,6 @@ No special conf for switches on FreeIPA side, just defines the client in FreeRad
     proto = *
     secret = SapSecrets
     nas_type = cisco
-    appname = vpn
     require_message_authenticator = no
 
   }
@@ -679,20 +712,39 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
   ....
 
     ldap
-      if ("%{client:appname}" == "vpn") {
-        if (LDAP-Group == "jm_vpn" ) {
-            update reply {
-                Service-Type = "Outbound-User",
-                ASA-Group-Policy = "OU=JM_VPN"
-                }
-         }
-        elsif ( LDAP-Group == "dev_vpn") {
-            update reply {
-                Service-Type = "Outbound-User",
-                ASA-Group-Policy = "OU=DEV_VPN"
-                }
-         }
-      }
+    if (ASA-ClientType) {
+
+              if (LDAP-Group == "jm_vpn" &&  ASA-TunnelGroupName =="JM_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=JM_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "oob_admin_vpn" &&  ASA-TunnelGroupName =="OOB_ADMIN_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=OOB_ADMIN_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "inb_admin_vpn" &&  ASA-TunnelGroupName =="INB_ADMIN_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=INB_ADMIN_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "inb_s1_dev_vpn" &&  ASA-TunnelGroupName =="INB_S1_DEV_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=INB_S1_DEV_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "inb_s1_qa_vpn" &&  ASA-TunnelGroupName =="INB_S1_QA_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=INB_S1_QA_VPN"
+                      }
+              }                                                                                                         
+            }
 
       
   ....
@@ -722,23 +774,45 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
     %{proxy-reply:Attribute-Name}   The value of the given Attribute-Name in the proxy reply packet (if it exists)
                                     
     ```     
-    e.g , we can use `%{request:ASA_ClientType}` at `post-auth` to reply based on request of vpn autentication request, since only VPN authentication request have `ASA_` prefix attribitutes in the requests   
+    e.g , we can use `ASA_ClientType` at `post-auth` to reply based on request of vpn autentication request, since only VPN authentication request have `ASA_` prefix attribitutes in the requests   
 
   ```
-   if (%{request:ASA_ClientType} == "2") {
-        if (LDAP-Group == "jm_vpn" ) {
-            update reply {
-                Service-Type = "Outbound-User",
-                ASA-Group-Policy = "OU=JM_VPN"
-                }
-         }
-        elsif ( LDAP-Group == "dev_vpn") {
-            update reply {
-                Service-Type = "Outbound-User",
-                ASA-Group-Policy = "OU=DEV_VPN"
-                }
-         }
-      }
+    if (ASA-ClientType) {
+
+              if (LDAP-Group == "jm_vpn" &&  ASA-TunnelGroupName =="JM_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=JM_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "oob_admin_vpn" &&  ASA-TunnelGroupName =="OOB_ADMIN_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=OOB_ADMIN_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "inb_admin_vpn" &&  ASA-TunnelGroupName =="INB_ADMIN_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=INB_ADMIN_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "inb_s1_dev_vpn" &&  ASA-TunnelGroupName =="INB_S1_DEV_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=INB_S1_DEV_VPN"
+                      }
+              }
+              elsif ( LDAP-Group == "inb_s1_qa_vpn" &&  ASA-TunnelGroupName =="INB_S1_QA_VPN" ) {
+                  update reply {
+                      Service-Type = "Outbound-User",
+                      ASA-Group-Policy = "OU=INB_S1_QA_VPN"
+                      }
+              }
+              else{
+                reject
+              }                                                                                                         
+            }
   ```
 
 ### 16.3 Restart FreeRadius
