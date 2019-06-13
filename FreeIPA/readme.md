@@ -30,6 +30,9 @@ At this stage,
 - [14. Integrated with F5 via freeradius ](#14-integrate-with-f5-via-freeradius)
 - [15. Integrate with Cisco Switch via freeradius ](#15-integrate-with-cisco-switch-via-freeradius)
 - [16. Integrate with Cisco ASA VPN via freeradius ](#16-integrate-with-cisco-asa-vpn-via-freeradius)
+- [17. Integrate with grafana via ldap ](#17-integrate-with-grafana-via-ldap)
+- [18. Integrate with kibana via ldap ](#18-integrate-with-kibana-via-ldap)
+
 ## 1. Install package
 install packages on both master and replica nodes
 ```sh
@@ -717,6 +720,157 @@ No special conf for switches on FreeIPA side, just defines the client in FreeRad
               }                                                                                                         
             }
   ```
+## 17. Integrate with grafana via ldap
 
+### 17.1 Create ldap user for binding 
+```sh
+# cat grafana.updater
+dn: uid=grafana,cn=sysaccounts,cn=etc,dc=inb,dc=cnsgas,dc=com
+add:objectclass:account
+add:objectclass:simplesecurityobject
+add:uid:grafana
+add:userPassword:GrafanaPass
+add:passwordExpirationTime:20380119031407Z
+add:nsIdleTimeout:0
+# ipa-ldap-updater grafana.update
+```
+### 17.2 Configure grafana to enable ldap auth 
+- enable ldap module in /etc/grafana/grafana.ini
+  ```conf
+  [auth.ldap]
+  enabled = true
+  config_file = /etc/grafana/ldap.toml
+  allow_sign_up = true
+  ```
+- Donwload freeipa ca.crt, save it to /etc/grafana/ipa-ca.crt
+- Configure /etc/grafana/ldap.toml
+  ```
+  # To troubleshoot and get more log info enable ldap debug logging in grafana.ini
+  #[log]
+  #filters = "ldap:debug"
 
+  [[servers]]
+  # Ldap server host (specify multiple hosts space separated)
+  host = "10.36.52.172 10.36.52.173"
+  # Default port is 389 or 636 if use_ssl = true
+  port = 636
+  # Set to true if ldap server supports TLS
+  use_ssl = true
+  # Set to true if connect ldap server with STARTTLS pattern (create connection in insecure, then upgrade to secure connection with TLS)
+  start_tls = false
+  # set to true if you want to skip ssl cert validation
+  ssl_skip_verify = false
+  # set to the path to your root CA certificate or leave unset to use system defaults
+  root_ca_cert = "/etc/grafana/ipa-ca.crt"
+  # Authentication against LDAP servers requiring client certificates
+  # client_cert = "/path/to/client.crt"
+  # client_key = "/path/to/client.key"
 
+  # Search user bind dn
+  bind_dn = "uid=kibana,cn=sysaccounts,cn=etc,dc=inb,dc=cnsgas,dc=com"
+  # Search user bind password
+  # If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
+  bind_password = 'kibanaPass'
+
+  # User search filter, for example "(cn=%s)" or "(sAMAccountName=%s)" or "(uid=%s)"
+  search_filter = "(uid=%s)"
+
+  # An array of base dns to search through
+  search_base_dns = ["cn=users,cn=accounts,dc=inb,dc=cnsgas,dc=com"]
+
+  ## For Posix or LDAP setups that does not support member_of attribute you can define the below settings
+  ## Please check grafana LDAP docs for examples
+  # group_search_filter = "(&(objectClass=posixGroup)(memberUid=%s))"
+  # group_search_base_dns = ["ou=groups,dc=grafana,dc=org"]
+  # group_search_filter_user_attribute = "uid"
+
+  # Specify names of the ldap attributes your ldap uses
+  [servers.attributes]
+  name = "cn"
+  surname = "sn"
+  username = "uid"
+  member_of = "memberOf"
+  email =  "mail"
+
+  # Map ldap groups to grafana org roles
+  [[servers.group_mappings]]
+  group_dn = "cn=grafanaadmins,cn=groups,cn=accounts,dc=inb,dc=cnsgas,dc=com"
+  org_role = "Admin"
+  # To make user an instance admin  (Grafana Admin) uncomment line below
+  # grafana_admin = true
+  # The Grafana organization database id, optional, if left out the default org (id 1) will be used
+  # org_id = 1
+
+  [[servers.group_mappings]]
+  group_dn = "cn=grafanaeditors,cn=groups,cn=accounts,dc=inb,dc=cnsgas,dc=com"
+  org_role = "Editor"
+
+  [[servers.group_mappings]]
+  # If you want to match all (or no ldap groups) then you can use wildcard
+  group_dn = "cn=grafanausers,cn=groups,cn=accounts,dc=inb,dc=cnsgas,dc=com"
+  org_role = "Viewer"
+  ```
+
+## 18. Integrate with kibana via ldap
+- install [kibana-mithril](https://github.com/codingchili/kibana-mithril) plugin into kibana
+  > if no binary plugin provided, we need to compile it from source
+- add kibana user for binding 
+```sh
+# cat kibana.updater
+dn: uid=grafana,cn=sysaccounts,cn=etc,dc=inb,dc=cnsgas,dc=com
+add:objectclass:account
+add:objectclass:simplesecurityobject
+add:uid:grafana
+add:userPassword:kibanaPass
+add:passwordExpirationTime:20380119031407Z
+add:nsIdleTimeout:0
+# ipa-ldap-updater kibana.update
+```
+- configure kibana-mithril plugin 
+  ```sh
+  # cat /usr/share/kibana/plugins/kibana-mithril/config.json
+  {
+      "storage": "ldap",
+      "two-factor": {
+          "enabled": false,
+          "length": 16
+      },
+      "proxy": {
+          "enabled": false,
+          "port": 7575,
+          "remote": "localhost:5601"
+      },
+      "authentication": {
+          "kbnVersion": "6.6.2",
+          "cookieName": "mithril",
+          "cookie": {
+              "ttl": 1209600,
+              "path": "/",
+              "encoding": "none",
+              "isSecure": false,
+              "isHttpOnly": true,
+              "clearInvalid": true,
+              "strictHeader": true
+          },
+          "secret": "SBPyEIwubNvOsY2hgLa+gtwty5Q7c5cbdH2ATvvfQSkKi5/so2i442aM5j3bsCfl5hogN1vsnIveKlZt9X9ffg=="
+      },
+      "file": {
+          "filename": "users.json"
+      },
+      "ldap": {
+          "url": "ldap://10.36.52.172:389,ldap://10.36.52.173:389",
+          "admin": {
+              "dn": "uid=kibana,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com",
+              "password": "kibanaPass"
+          },
+          "search": {
+              "scope": "sub",
+              "user-dn": "cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com",
+              "group-dn": "cn=groups,cn=accounts,dc=inb,dc=hqxywl,dc=com"
+          }
+      },
+      "mongodb": {
+          "remote": "mongodb://localhost/plugin"
+      }
+  }
+  ```
