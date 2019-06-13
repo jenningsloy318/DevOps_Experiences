@@ -812,21 +812,21 @@ add:nsIdleTimeout:0
   ```
 
 ## 18. Integrate with kibana via ldap
-- install [kibana-mithril](https://github.com/codingchili/kibana-mithril) plugin into kibana
+### 18.1 install [kibana-mithril](https://github.com/codingchili/kibana-mithril) plugin into kibana
   > if no binary plugin provided, we need to compile it from source
-- add kibana user for binding 
-```sh
-# cat kibana.updater
-dn: uid=grafana,cn=sysaccounts,cn=etc,dc=inb,dc=cnsgas,dc=com
-add:objectclass:account
-add:objectclass:simplesecurityobject
-add:uid:grafana
-add:userPassword:kibanaPass
-add:passwordExpirationTime:20380119031407Z
-add:nsIdleTimeout:0
-# ipa-ldap-updater kibana.update
-```
-- configure kibana-mithril plugin 
+### 18.2 add kibana user for binding 
+  ```sh
+  # cat kibana.updater
+  dn: uid=grafana,cn=sysaccounts,cn=etc,dc=inb,dc=cnsgas,dc=com
+  add:objectclass:account
+  add:objectclass:simplesecurityobject
+  add:uid:grafana
+  add:userPassword:kibanaPass
+  add:passwordExpirationTime:20380119031407Z
+  add:nsIdleTimeout:0
+  # ipa-ldap-updater kibana.update
+  ```
+### 18.3 configure kibana-mithril plugin 
   ```sh
   # cat /usr/share/kibana/plugins/kibana-mithril/config.json
   {
