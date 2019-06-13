@@ -15,7 +15,7 @@ At this stage,
 # Configuration
 
 - [1. Install package](#1-install-package)
-- [2. Install freeipa](#2-install-freeipa)
+- [2. Configure freeipa](#2-configure-freeipa)
 - [3. Check ldap users](#3-check-ldap-users)
 - [4. Configure freeradius](#4-configure-freeradius)
 - [5. Configure firewalld](#5-configure-firewalld)
@@ -30,24 +30,54 @@ At this stage,
 - [14. Integrated with F5 via freeradius ](#14-integrate-with-f5-via-freeradius)
 - [15. Integrate with Cisco Switch via freeradius ](#15-integrate-with-cisco-switch-via-freeradius)
 - [16. Integrate with Cisco ASA VPN via freeradius ](#16-integrate-with-cisco-asa-vpn-via-freeradius)
-- [17. Install replica](#17-Install-replica)
 ## 1. Install package
+install packages on both master and replica nodes
 ```sh
 yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
 ```
-## 2. Install FreeIPA
-**Make sure password don't contain special character**
-```sh
-#ipa-server-install -a Devops2019  -p Devops2019 -r INB.HQXYWL.COM -n inb.hqxywl.com  --setup-dns --allow-zone-overlap  --reverse-zone=36.10.in-addr.arpa. --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U 
+## 2. Configure FreeIPA
+- install Master node 
+  
+  **Make sure password don't contain special character**
+  ```sh
+  #ipa-server-install -a Devops2019  -p Devops2019 -r INB.HQXYWL.COM -n inb.hqxywl.com  --setup-dns --allow-zone-overlap  --reverse-zone=36.10.in-addr.arpa. --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U 
 
-```
+  ```
+- install replica
+  - Update /etc/resolv.conf, add 10.36.52.172 as the first DNS server. 
+  - configure firewalld rules
+    ```
+    #firewall-cmd --add-service=http   --add-service=https --add-service=ldap --add-service=ldaps --add-service=dns  --add-service=kerberos --add-service=kpasswd --add-service=ntp    --add-service=radius   --permanent 
+    # firewall-cmd --reload
+    ```
+  - Configure replica and ca on this slave 
+    ```
 
-Enable DNS PTR update 
+    # ipa-replica-install  -w Devops2019 -U --mkhomedir   --setup-ca   --setup-dns --allow-zone-overlap  --reverse-zone=36.10.in-addr.arpa.  --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --force-join
+    ```
+
+    if install failed, we need to remove this repica on the master node via 
+    ```
+    ipa-replica-manage del dc1-vm-freeipa-prod02.inb.hqxywl.com --force
+    ```
+
+
+- Enable DNS PTR update 
 ```
 # ipa dnszone-mod inb.hqxywl.com. --allow-sync-ptr=TRUE
 # ipa dnsconfig-mod --allow-sync-ptr=TRUE
 ```
-link： https://docs.pagure.org/bind-dyndb-ldap/BIND9/SyncPTR.html
+  > link： https://docs.pagure.org/bind-dyndb-ldap/BIND9/SyncPTR.html
+
+- Add/Modify DNS records 
+  - add record 
+  ```
+  ipa dnsrecord-add  inb.hqxywl.com www --a-rec 10.1.1.1  --a-create-reverse
+  ```
+  - modify record
+  ```
+  ipa dnsrecord-mod inb.hqxywl.com www --a-rec 10.1.1.1 
+  ```
 ## 3. Check LDAP Users
 
 to find out the the default base_dn used in `radius`, which is `cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com`
@@ -58,7 +88,7 @@ ldapsearch -x -v -W -D 'cn=Directory Manager'  uid=admin
 
 
 ## 4. Configure FreeRadius
-### 4.1  install radius 
+### 4.1  install radius packages
 ```sh
 # yum install -y freeradius freeradius-utils freeradius-ldap freeradius-krb5
 ```
@@ -688,36 +718,5 @@ No special conf for switches on FreeIPA side, just defines the client in FreeRad
             }
   ```
 
-## 17  Install replica
-Update /etc/resolv.conf, add 10.36.52.172 as the first DNS server. 
 
 
-### 17.1 Configure firewalld 
-```
-#firewall-cmd --add-service=http   --add-service=https --add-service=ldap --add-service=ldaps --add-service=dns  --add-service=kerberos --add-service=kpasswd --add-service=ntp    --add-service=radius   --permanent 
-# firewall-cmd --reload
-```
-### 17.2 install packages
-```
-# yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
-```
-### 17.3 Configure replica and ca on this slave 
-```
-
-# ipa-replica-install  -w Devops2019 -U --mkhomedir   --setup-ca   --setup-dns --allow-zone-overlap  --reverse-zone=36.10.in-addr.arpa.  --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --force-join
-```
-
-if install failed, we need to remove this repica on the master node via 
-```
-ipa-replica-manage del dc1-vm-freeipa-prod02.inb.hqxywl.com --force
-```
-### 18 DNS records managements
-18.1 add record 
-```
-ipa dnsrecord-add  inb.hqxywl.com www --a-rec 10.1.1.1  --a-create-reverse
-```
-
-18.2 modify record
-```
-ipa dnsrecord-mod inb.hqxywl.com www --a-rec 10.1.1.1 
-```
