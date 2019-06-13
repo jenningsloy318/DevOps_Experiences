@@ -26,10 +26,10 @@ At this stage,
 - [10. Create hostenrolluser used for adding host into ipa servrer](#10-create-hostenrolluser-used-for-adding-host-into-ipa-servrer)
 - [11. Configure ipa-client on client server](#11-configure-ipa-client-on-client-server)
 - [12. Test user login and sudo switch to root on client server](#12-test-user-login-and-sudo-switch-to-root-on-client-server)
-- [13. Integrated with PaloAlto Firewall](#13-integrated-with-paloalto-firewall)
-- [14. Integrated with nginx ](#14-integrate-with-nginx)
-- [15. Integrate with Cisco Switch](#15-integrate-with-cisco-switch)
-- [16. Integrate with Cisco ASA VPN ](#16-integrate-with-cisco-asa-vpn)
+- [13. Integrated with PaloAlto Firewall via freeradius ](#13-integrated-with-paloalto-firewall-via-freeradius)
+- [14. Integrated with F5 via freeradius ](#14-integrate-with-f5-via-freeradius)
+- [15. Integrate with Cisco Switch via freeradius ](#15-integrate-with-cisco-switch-via-freeradius)
+- [16. Integrate with Cisco ASA VPN via freeradius ](#16-integrate-with-cisco-asa-vpn-via-freeradius)
 - [17. Install replica](#17-Install-replica)
 ## 1. Install package
 ```sh
@@ -82,7 +82,7 @@ ipa service-add radius/dc1-vm-freeipa-prod01.inb.hqxywl.com
   # cp /etc/ipa/ca.crt /etc/raddb/certs/ca.pem
   # chown -R radiusd.radiusd  /etc/raddb/certs/
   # openssl dhparam 2048 -out /etc/raddb/certs/dh
-  # chmod -R  /etc/raddb/certs/*
+  # chmod -R radiusd:radiusd /etc/raddb/certs/*
   ```
 
 ### 4.5 configure radius clients, edit /etc/raddb/clients.conf,modified following items:
@@ -473,7 +473,7 @@ Second Factor:
 [root@dc1-oob-vm-freeipa-client-prod01 ~]# 
 ```
 
-## 13. Integrated with PaloAlto Firewall
+## 13. Integrated with PaloAlto Firewall via freeradius
 PA info
 | Type   | hostname                                | IP Address   |
 |--------|-----------------------------------------|--------------|
@@ -509,170 +509,45 @@ PA info
 then commit the changes to the firewall, now we can use the users defined in `FreeIPA` to logon PA.
 
 
-## 14. Integrate with nginx 
+## 14. Integrated with F5 via freeradius
 
-### 14.1  Integrated nginx with FreeIPA via ldap 
-
-- Prequisites
-  1. nginx compiled with [nginx-auth-ldap](https://github.com/kvspb/nginx-auth-ldap)
-- add ldap bind user  
-```sh
-# cat nginx.update
-dn: uid=nginx,cn=sysaccounts,cn=etc,dc=hqxywl,dc=com
-add:objectclass:account
-add:objectclass:simplesecurityobject
-add:uid:nginx
-add:userPassword:nginx
-add:passwordExpirationTime:20380119031407Z
-add:nsIdleTimeout:0
-
-# ipa-ldap-updater nginx.update
-Update complete
-The ipa-ldap-updater command was successful
+### 14.1 To restrict the users that can administrate F5 devices, create groups in freeipa
 ```
-- configure nginx , add configure 
-```conf
-   ldap_server 389_ds_1 {
-      # user search base.
-      url "ldap://10.36.52.172:389/DC=inb,DC=hqxywl,DC=com?uid?sub?(objectClass=*)";
-      # bind as
-      binddn "uid=nginx,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com";
-      # bind pw
-      binddn_passwd "nginx";
-      # group attribute name which contains member object
-      group_attribute member;
-      #group_attribute memberuid;
-      # search for full DN in member object
-      group_attribute_is_dn on;
-      # matching algorithm (any / all)
-      #satisfy any;
-      # list of allowed groups
-      #require group "CN=Admins,OU=My Security Groups,DC=company,DC=com";
-      # list of allowed users
-      # require 'valid_user' cannot be used together with 'user' as valid user is a superset
-      require valid_user;
-      ssl_check_cert off;
-    }
+# ipa group-add f5_admin   --nonposix
+# ipa group-add ltm_admin   --nonposix
+# ipa group-add waf_admin   --nonposix
+# ipa group-add-member f5_admin --users=i336589
+
 ```
-- configure vhost 
-```conf
-....
-server {
-    listen       9090;
-    server_name  default;
-
-    auth_ldap "Forbidden";
-    auth_ldap_servers 389_ds_1;
-
-    location /  {
-      proxy_http_version   1.1;
-      proxy_hide_header    Vary;
-      proxy_hide_header    X-Powered-By;
-      proxy_set_header     Host             $host;
-      proxy_set_header     X-Real_IP        $remote_addr;
-      proxy_set_header     X-Forwarded-For  $proxy_add_x_forwarded_for;
-      proxy_next_upstream  http_502 http_504 http_404 error timeout invalid_header;
-      proxy_pass           http://prometheus_upstream;
-    }
-}
-
-....
+###  14.2 Configure post auth for F5 in freeradius
+- modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add following lines
 ```
+  {
+  ...
 
-### 14.2 Integrate nginx with FreeIPA via radius
-#### 14.2.1  Configure clients for nginx 
-- add client conf for vpn, add following lines to `/etc/raddb/clients.conf`
-```conf
-  client nginx {
-        ipaddr = 10.36.52.149
-        proto = *
-        secret = SapSecrets
-        appname = nginx
-        require_message_authenticator = no
-        nas_type         = other
-        limit {
-                max_connections = 16
-                lifetime = 0
-                idle_timeout = 30
-        }
+  post-auth {
+  
+  ....
+        ldap
+        if (( NAS-IP-Address == "10.36.48.13" ) || ( NAS-IP-Address == "10.36.48.14" ) || ( NAS-IP-Address == "10.36.48.21" ) || ( NAS-IP-Address == "10.36.48.22" ) ) {
+              if ( !(LDAP-Group == "f5_admin") &&  !(LDAP-Group == "ltm_admin") && !(LDAP-Group == "waf_admin") ) {
+                  reject
+              }
+           }
+  ...
+  }
+
+  ...
   }
 ```
-> to distinguish each client, add a label `appname` to each client
-#### 14.2.2  Configure post auth for vpn  in freeradius.
-
-modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add following lines
-```conf
-
-    if ("%{client:appname}" == "nginx") {
-        update reply {
-                Service-Type = "Authorize-Only"
-                }
-    }
-```
-> 1. nginx use [nginx-http-radius-module](https://github.com/qudreams/nginx-http-radius-module)
-> 2. Tried many times, still failed to login 
-> 3. Finally, I use tcpdump to capture the data between nginx and freeradius, from it, I get the  service type of the request is `Authorize-Only`, so here set `Service-Type` to `Authorize-Only` 
-           
-
-![](./images/nginx-service-type.png)
 
 
-#### 14.2.3  Confiugre radius in nginx
-- Configure nginx , add configure 
-```conf
-        #set the directory of radius dictionary.
-        radius_dict_directory "/etc/nginx/raddb/";
 
-        #radius server configuration including
-
-        radius_server "radius_server1" {
-            #authentication timed-out
-            auth_timeout 5;
-
-            #limit to resend the request
-            resend_limit 3;
-
-            #radius authentication server url.
-            url "10.36.52.172:1812";
-
-            #share secret
-            share_secret "SapSecrets";
-        }
-
-
-```
-- configure vhost 
-```conf
-....
-server {
-    listen       9090;
-    server_name  default;
-
-    location /  {
-      proxy_http_version   1.1;
-      proxy_hide_header    Vary;
-      proxy_hide_header    X-Powered-By;
-      proxy_set_header     Host             $host;
-      proxy_set_header     X-Real_IP        $remote_addr;
-      proxy_set_header     X-Forwarded-For  $proxy_add_x_forwarded_for;
-      proxy_next_upstream  http_502 http_504 http_404 error timeout invalid_header;
-      proxy_pass           http://prometheus_upstream;
-      
-      auth_radius_server "radius_server1" "PAP";
-      auth_radius "Restricted";
-
-    }
-}
-
-....
-```
-
-
-## 15. Integrate with Cisco Switch
+## 15. Integrate with Cisco Switch via freeradius
 
 No special conf for switches on FreeIPA side, just defines the client in FreeRadius
 
-## 16. Integrate with Cisco ASA VPN 
+## 16. Integrate with Cisco ASA VPN via freeradius
 ### 16.1 configure clients in freeradius
 - add client conf for vpn, add following lines to `/etc/raddb/clients.conf`
   ```conf
@@ -807,26 +682,6 @@ So if we want login to ASA console,     set `Service-Type` to `Administrative-Us
               }                                                                                                         
             }
   ```
-
-### 16.3 Restart FreeRadius
-```sh
-systemctl restart radiusd
-```
-
-### 16.4 Create group `JM_VPN` and `DEV_VPN` , add user into two groups
-![](./images/user_groups1.png)
-### 16.4 Test VPN login
-
-Login with `Cisco Anyconnect Secure Mobility Client` with different user to have test, now user in group `JM_VPN` or `DEV_VPN` can login with VPN access with different privileges, but others don't have VPN access 
-
-![](./images/vpn_login.png)
-
-
-> DEV_VPN can only access dev vlan(10.36.54.0/25), others don't
-> JM_VPN can only access jumpserver address 10.36.48.130, others don't
-> users in group `dev_vpn` can only login vpn vith VPN group `DEV_VPN`
-> users in group `jm_vpn` can only login vpn vith VPN group `JM_VPN`
-
 
 ## 17  Install replica
 Update /etc/resolv.conf, add 10.36.52.172 as the first DNS server. 
