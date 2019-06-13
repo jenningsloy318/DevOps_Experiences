@@ -299,6 +299,23 @@ WantedBy=multi-user.target
 ### 4.10 configure preprocess (optional)
 Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/preprocess/huntgroups` to preprocess the request from clients, which will be process within   directive `preprocess` of section `authorize` in each site files
 
+### 4.11 Notes on Freeradius attributes
+  We can get all attributes for different devices from directories in  ` /usr/share/freeradius/`
+- [Service-Type](https://www.gnu.org/software/radius/manual/html_node/radius_202.html)
+  
+  This attribute indicates the type of service the user has requested, or the type of service to be provided
+
+  - Login-User: The user should be connected to a host.
+  - Framed-User: A framed protocol, such as PPP or SLIP, should be started for the user. The Framed-IP-Address attribute will supply the IP to be used.
+  - Callback-Login-User: The user should be disconnected and called back, then connected to a host.
+  - Callback-Framed-User: The user should be disconnected and called back; then a framed protocol, such as PPP or SLIP, should be started for the user.
+  - Outbound-User: The user should be granted access to outgoing devices. **This can be configured when integrated with VPN** 
+  - Administrative-User: The user should be granted access to the administrative interface to the NAS, from which privileged commands can be executed.
+  - NAS-Prompt: The user should be provided a command prompt on the NAS, from which nonprivileged commands can be executed.
+  - Authenticate-Only: Only authentication is requested, and no authorization information needs to be returned in the Access-Accept.
+
+
+
 
 ## 5 Configure firewalld 
   ```
@@ -562,20 +579,8 @@ No special conf for switches on FreeIPA side, just defines the client in FreeRad
 
   ```
   > Cisco devices `nas_type` can be set to `cisco`, 
-  > to distinguish each client, add a label `appname` to each client
 ### 16.2 configure post auth for vpn  in freeradius  
   
-LDAP mapped users-To map LDAP attributes, see the ldap attribute-map command.
-    RADIUS users-Use the IETF RADIUS numeric service-type attribute, which maps to one of the following values:
-
-  -  Service-Type 5 (Outbound) denies management access. The user cannot use any services specified by the aaa authentication console commands (excluding the serial keyword; serial access is allowed). Remote access (IPsec and SSL) users can still authenticate and terminate their remote access sessions.
-
-  -  Service-Type 6 (Administrative) allows full access to any services specified by the aaa authentication console commands.
-
-  -  Service-Type 7 (NAS prompt) allows access to the CLI when you configure the aaa authentication { telnet | ssh} console command, but denies ASDM configuration access if you configure the aaa authentication http console command. ASDM monitoring access is allowed. If you configure enable authentication with the aaa authentication enable console command, the user cannot access privileged EXEC mode using the enable command.
-
-
-So if we want login to ASA console,     set `Service-Type` to `Administrative-User`, if we want to login as VPN accesss, `Service-Type` to `Outbound-User`.
 
 - modify `/etc/raddb/sites-enabled/default`, at  `post-auth` section, add following lines
   ```conf
