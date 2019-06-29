@@ -1,4 +1,9 @@
 
+# Links
+1. https://www.shapeblue.com/networking-kvm-for-cloudstack-2018-revisit-for-centos7-and-ubuntu-18-04/
+
+
+
 # Scenario 1:  
 Description:
   VM host is connected to a **router**(**`192.168.3.1`**) which connects internet directly. on VM host, we create a bridge **`br-k8s`** oupon the physical interface **`enp24s0`**, then assigned IP address **`192.168.3.10`** to bridge internal interface **`br-k8s`**;
