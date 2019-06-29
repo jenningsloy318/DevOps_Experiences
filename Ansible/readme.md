@@ -9,6 +9,8 @@
 2. 
 for a better management, we can use following structure 
 
+**we can place a `ansible.cfg` in any directory contains playbooks to define some specific ansible setting individually.**
+
 ```sh
 .
 ├── ansible.cfg
