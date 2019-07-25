@@ -4,7 +4,7 @@ Install freeipa and integrated with freeradius
 | Type   | hostname                                | IP Address   |
 |--------|-----------------------------------------|--------------|
 | Server | dc1-vm-freeipa-prod01.inb.hqxywl.com  |10.36.52.172 |
-| Server |   dc1-vm-freeipa-prod02.inb.hqxywl.com  | 10.36.52.173|
+| Server | dc1-vm-freeipa-prod02.inb.hqxywl.com  | 10.36.52.173|
 | domain |  inb.hqxywl.com |-|
 | Realm  |  INB.HQXYWL.COM |-|
 | OS     | CentOS Linux release 7.6.1810 (Core) |-|
@@ -73,9 +73,14 @@ yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
   > link： https://docs.pagure.org/bind-dyndb-ldap/BIND9/SyncPTR.html
 
 - Add/Modify DNS records 
+  - add second DNS zone 
+  ```
+  ipa dnszone-add oob.hqxywl.com
+  ```
   - add record 
   ```
   ipa dnsrecord-add  inb.hqxywl.com www --a-rec 10.1.1.1  --a-create-reverse
+  ipa dnsrecord-add  oob.hqxywl.com dc1-oob-vm-ipa-prod01 --a-rec 10.36.47.218 --a-create-reverse
   ```
   - modify record
   ```
