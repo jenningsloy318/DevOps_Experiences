@@ -32,7 +32,7 @@ At this stage,
 - [16. Integrate with Cisco ASA VPN via freeradius ](#16-integrate-with-cisco-asa-vpn-via-freeradius)
 - [17. Integrate with grafana via ldap ](#17-integrate-with-grafana-via-ldap)
 - [18. Integrate with kibana via ldap ](#18-integrate-with-kibana-via-ldap)
-
+- [19. administration via api](#19-administration-via-api)
 ## 1. Install package
 install packages on both master and replica nodes
 ```sh
@@ -493,6 +493,7 @@ Number of permissions added 1
 
 ## 11. Configure ipa-client on client server 
 
+- RHEL
   ```sh
   # yum install -y ipa-client nscd nss-pam-ldapd
   # ipa-client-install --domain=inb.hqxywl.com --realm=INB.HQXYWL.COM --server=dc1-vm-freeipa-prod01.inb.hqxywl.com  --mkhomedir -p hostenrolluser -w password  -U
@@ -504,6 +505,9 @@ Number of permissions added 1
   ```sh
   # authconfig --update --enablemkhomedir
   ```
+- SLES
+  
+  For configure freeipa client on sles 12, refer to [SLES_IPAClient](SLES_IPAClient.md).
 ## 12. Test user login and sudo switch to root on client server
 ```sh
 [jenningsl@workstation ]$ ssh 10.36.47.232
@@ -879,3 +883,152 @@ add:nsIdleTimeout:0
       }
   }
   ```
+
+## 19. administration via api
+
+### get authentication cookie 
+```
+# Login with user name and password
+export COOKIEJAR=./auth-COOKIEJAR
+export _USERNAME=admin
+export _PASSWORD=pass
+#  get the ca.crt
+
+curl -k   https://dc1-vm-freeipa-prod01.inb.hqxywl.com/ipa/config/ca.crt -o /tmp/ca.crt  
+
+$  curl -v  -k -H Referer:https://dc1-vm-freeipa-prod01.inb.hqxywl.com/ipa  -H "Content-Type:application/x-www-form-urlencoded" -H "Accept:text/plain" -c $COOKIEJAR -b $COOKIEJAR --cacert /tmp/ca.crt  --data "user=$_USERNAME&password=$_PASSWORD" -X POST https://dc1-vm-freeipa-prod01.inb.hqxywl.com/ipa/session/login_password
+```
+### find user via curl 
+```
+# query user_info 
+# cat request.json  
+    {
+        "method" : "user_show",
+        "params":[
+            ["i336589"],
+            {"all" : true,
+            "version": "2.230"
+            }
+        ],
+        "id":0
+    }
+
+curl -v -k     -H referer:https://dc1-vm-freeipa-prod01.inb.hqxywl.com/ipa      -H "Content-Type:application/json"     -H "Accept:application/json"    -c $COOKIEJAR -b $COOKIEJAR     --cacert /tmp/ca.crt    -d  @request.json     -X POST     https://dc1-vm-freeipa-prod01.inb.hqxywl.com/ipa/session/json
+
+{
+  "result": {
+    "result": {
+      "has_keytab": true,
+      "uid": [
+        "i336589"
+      ],
+      "krbcanonicalname": [
+        "i336589@INB.HQXYWL.COM"
+      ],
+      "ipauserauthtype": [
+        "otp"
+      ],
+      "memberof_group": [
+        "grafana_admin",
+        "ipausers",
+        "kibana_admin"
+      ],
+      "has_password": true,
+      "homedirectory": [
+        "/home/i336589"
+      ],
+      "nsaccountlock": false,
+      "cn": [
+        "Jennings Liu"
+      ],
+      "loginshell": [
+        "/bin/sh"
+      ],
+      "uidnumber": [
+        "1662200001"
+      ],
+      "preserved": false,
+      "krbextradata": [
+        {
+          "__base64__": "AALvz0ddaTMzNjU4OUBJTkIuU05GQy5DT00A"
+        }
+      ],
+      "mail": [
+        "i336589@inb.hqxywl.com"
+      ],
+      "dn": "uid=i336589,cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com",
+      "displayname": [
+        "Jennings Liu"
+      ],
+      "description": [
+        "Authenticated at 2019-08-05 16:23:27.786724"
+      ],
+      "mepmanagedentry": [
+        "cn=i336589,cn=groups,cn=accounts,dc=inb,dc=hqxywl,dc=com"
+      ],
+      "ipauniqueid": [
+        "048683f8-b74c-11e9-bb39-0050568eb537"
+      ],
+      "krbprincipalname": [
+        "i336589@INB.HQXYWL.COM"
+      ],
+      "givenname": [
+        "Jennings"
+      ],
+      "krbpasswordexpiration": [
+        {
+          "__datetime__": "20191103064255Z"
+        }
+      ],
+      "krblastfailedauth": [
+        {
+          "__datetime__": "20190806055522Z"
+        }
+      ],
+      "objectclass": [
+        "top",
+        "person",
+        "organizationalperson",
+        "inetorgperson",
+        "inetuser",
+        "posixaccount",
+        "krbprincipalaux",
+        "krbticketpolicyaux",
+        "ipaobject",
+        "ipasshuser",
+        "ipaSshGroupOfPubKeys",
+        "mepOriginEntry",
+        "ipauserauthtypeclass"
+      ],
+      "gidnumber": [
+        "1662200001"
+      ],
+      "gecos": [
+        "Jennings Liu"
+      ],
+      "sn": [
+        "Liu"
+      ],
+      "krbloginfailedcount": [
+        "0"
+      ],
+      "krblastpwdchange": [
+        {
+          "__datetime__": "20190805064255Z"
+        }
+      ],
+      "initials": [
+        "JL"
+      ]
+    },
+    "value": "i336589",
+    "summary": null
+  },
+  "version": "4.6.4",
+  "error": null,
+  "id": 0,
+  "principal": "admin@INB.HQXYWL.COM"
+}
+
+
+```
