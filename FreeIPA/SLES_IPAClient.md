@@ -51,7 +51,99 @@ I do not recommend using yast to set this up, however it is useful to check if t
 ## On the host to be enrolled
 
 **Prequsites:  hostname must be configured fqdn**
+### register dns and host on client host 
+we can also create dns record and add host into freeipa via api on the client host
+1. Retrieve the FreeIPA server's certificate
+    ```
+    mkdir /etc/ipa
+    curl -k -o /etc/ipa/ca.crt -SL  https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa/config/ca.crt
+    cp /etc/ipa/ca.crt /etc/pki/trust/anchors/ipa.crt
+    update-ca-certificates
+    ```
+2. login with user/pass via api
+set env for 
+- COOKIEJAR
+- _USERNAME
+- _PASSWORD
+```
+$ curl -v  \
+-H Referer:https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa  \
+-H "Content-Type:application/x-www-form-urlencoded" \
+-H "Accept:text/plain" \
+-c $COOKIEJAR -b $COOKIEJAR \
+--cacert /etc/ipa/ca.crt  \
+--data "user=$_USERNAME&password=$_PASSWORD" \
+-X POST \
+https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa/session/login_password
 
+```
+3. add dns record 
+```
+curl -v  \
+    -H referer:https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa  \
+    -H "Content-Type:application/json" \
+    -H "Accept:application/json"\
+    -c $COOKIEJAR -b $COOKIEJAR \
+    --cacert /etc/ipa/ca.crt  \
+    -d  @dns.jsaon \
+    -X POST \
+    https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa/session/json
+
+
+dns.jsaon
+{
+    "id": 0,
+    "method": "dnsrecord_add/1",
+    "params": [
+        [
+            "inb.hqxywl.com",
+            {
+                "__dns_name__": "yh-vm-freeipa-client-prod01"
+            }
+        ],
+        {
+            "arecord": [
+                "10.36.52.187"
+            ],
+            "version": "2.230"
+        }
+    ]
+}
+```
+4. add host record 
+```
+curl -v  \
+    -H referer:https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa  \
+    -H "Content-Type:application/json" \
+    -H "Accept:application/json"\
+    -c $COOKIEJAR -b $COOKIEJAR \
+    --cacert /etc/ipa/ca.crt  \
+    -d  @host.json \
+    -X POST \
+    https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa/session/json
+
+host.json
+{
+    "id": 0,
+    "method": "host_add/1",
+    "params": [
+        [
+            "yh-vm-freeipa-client-prod01.inb.hqxywl.com"
+        ],
+        {
+            "version": "2.230"
+        }
+    ]
+}
+```
+
+5. copy ipa-getkeytab from ipaserver to this server
+
+6. get keytab 
+```
+ipa-getkeytab -s yh-vm-freeipa-prod01.inb.hqxywl.com --cacert=/etc/ipa/ca.crt -p host/yh-vm-freeipa-client-prod01.inb.cnsgas.com -k  /etc/krb5.keytab  -D uid=hostenrolluser,cn=users,cn=accounts,dc=inb,dc=cnsgas,dc=com -w hostenrolluser   
+```
+### configure the settings
 
 1. change the DNS settings, add freeipa server as the nameservers
     ```
@@ -61,22 +153,20 @@ I do not recommend using yast to set this up, however it is useful to check if t
     ```
 2. Install the required packages for FreeIPA and the sssd ipa module 
     ```
-    zypper install  sssd sssd-ipa krb5-client openldap2-client sssd-ad cyrus-sasl-gssapi
+    zypper install  sssd sssd-ipa krb5-client openldap2-client sssd-ad cyrus-sasl-gssapi libini_config5 libbasicobjects0 libref_array1 libcollection4
+    ln -s /lib64/libcrypto.so.1.0.0 /lib64/libcrypto.so.10
+    ln -s /usr/lib64/libini_config.so.5 /usr/lib64/libini_config.so.3
     ```
 
-3. Deploy the host's keytab
+ 
+
+3. Deploy the host's keytab if it is generated on the ipa server host (optional)
     ```
     chown root:root /etc/krb5.keytab
     chmod 0600 /etc/krb5.keytab
     ```
+ 
 
-4. Retrieve the FreeIPA server's certificate
-    ```
-    mkdir /etc/ipa
-    curl -k -o /etc/ipa/ca.crt -SL  https://yh-vm-freeipa-prod01.inb.hqxywl.com/ipa/config/ca.crt
-    cp /etc/ipa/ca.crt /etc/pki/trust/anchors/ipa.crt
-    update-ca-certificates
-    ```
 5. configure /etc/sssd/sssd.conf
     ```conf
     [sssd]
@@ -98,7 +188,7 @@ I do not recommend using yast to set this up, however it is useful to check if t
     sudo_provider = ipa
     ipa_server = yh-vm-freeipa-prod01.inb.hqxywl.com,yh-vm-freeipa-prod02.inb.hqxywl.com,
     ldap_tls_cacert = /etc/sssd/ca.crt
-    ldap_sudo_search_base = ou=sudoers,dc=inb,dc=snfc,dc=com
+    ldap_sudo_search_base = ou=sudoers,dc=inb,dc=hqxywl,dc=com
     
     [nss]
     homedir_substring = /home
