@@ -37,3 +37,5 @@ users.json:
   "first": "Michael"
 }
 ```
+
+3. in shell scripts, use `read -n 1 -s -r -p "Press any key to continue"` to implement stop/contine actions
