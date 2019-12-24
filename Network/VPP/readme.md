@@ -8,7 +8,7 @@ The VPP platform is an extensible framework that provides out-of-the-box product
 - [VPP Wiki](https://wiki.fd.io/view/VPP)
 - [VPP Use Cases](https://wiki.fd.io/view/VPP#Use_Cases)
 - [vpp Doc](https://docs.fd.io/vpp/)
-
+- [How To Connect A PCI Interface To VPP](https://wiki.fd.io/view/VPP/How_To_Connect_A_PCI_Interface_To_VPP)
 ## BVI Support
 A bridge domain (BD) can have an L3 Bridge Virtual Interface (BVI) (one per BD) with multiple VXLAN-tunnels and Ethernet bridge ports. All three types of bridge ports (BVI, VXLAN and Ethernet) must interoperate properly to forward traffic to each other. BVI allow VMs on separate BDs or VXLAN segments to reach each other via IRB (Integrated Routing and Bridging).
 
