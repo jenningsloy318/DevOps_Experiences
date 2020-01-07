@@ -21,7 +21,25 @@
     ```
     python -c 'import crypt; print(crypt.crypt('password', crypt.mksalt(crypt.METHOD_SHA512)))'
     ```
+3. repo repos https://developer.aliyun.com/mirror
+    - kubernetes.repo
+    ```conf
+    [kubernetes]
+    name=Kubernetes
+    baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+    enabled=1
+    gpgcheck=1
+    repo_gpgcheck=1
+    gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+    ```
+    - https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+    - http://mirrors.aliyun.com/repo/epel-7.repo
+    - http://mirrors.aliyun.com/repo/epel-8.repo
 
+ 3. minikube 
+    - install docker engine
+    - minikube start  --vm-driver=none --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers   
+    
     reference:
     1. https://unix.stackexchange.com/questions/158400/etc-shadow-how-to-generate-6-s-encrypted-password
     2. https://www.linuxquestions.org/questions/linux-security-4/command-to-create-encrypted-password-265368/
