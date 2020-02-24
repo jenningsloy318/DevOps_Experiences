@@ -1,0 +1,21 @@
+[push]
+        default = simple
+[core]
+        editor = vim
+        eol = lf
+        quotepath = false
+[merge]
+        tool = vimdiff
+[diff]
+        tool = vimdiff
+[difftool]
+        prompt = No
+[mergetool]
+        prompt = No
+[alias]
+        st = status
+        co = checkout
+        br = branch
+        ci = commit
+[format]
+        pretty = format:%H %ai | %s%d  [%an]
