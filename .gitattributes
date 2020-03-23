@@ -8,8 +8,12 @@
 *.md            text
 *.sh            text 
 
-
-
+*.pdf           binary
+*.gif           binary
+*.png           binary
+*.zip           binary
 
 .gitattributes  export-ignore
 .gitignore      export-ignore
+
+
