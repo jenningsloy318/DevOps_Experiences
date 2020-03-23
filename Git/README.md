@@ -294,3 +294,28 @@
         
         nothing to commit, working directory clean
     ```
+
+
+---
+
+Notes:
+
+1. build git latest rpm package
+    a. clone code
+    ```
+    git clone https://src.fedoraproject.org/rpms/git.git
+
+    ```
+
+    copy git.spec to ~/rpmbuild/SPECS, and other files to ~/rpmbuild/SOURCES
+
+    download `git-version.tar.xz` and `git-version.tar.sign` from  https://mirrors.edge.kernel.org/pub/software/scm/git/
+    
+    b. install dependency packages
+    ```
+    yum install -y asciidoc xmlto emacs expat-devel libcurl-devel pcre2-devel tcl tk cvs cvsps highlight httpd mod_dav_svn perl-CGI-Carp perl-CGI-Util perl-IO-Pty perl-JSON-PP perl-Test-More subversion-perl libsecret-devel perl-IO-Pty-Easy.noarch perl-MailTools.noarch   perl-Test-Output-1.01-7.el7.noarch  perl-CGI.noarch  perl-JSON.noarch epel-rpm-macros 
+    ```
+    c. build with 
+    ```
+    rpmbuild -bb git-2.26.spec --nocheck --without docs
+    ```
