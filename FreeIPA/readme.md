@@ -219,7 +219,7 @@ But first create user and permissions
         base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
         identity = 'uid=radius,cn=sysaccounts,cn=etc,dc=oob,dc=hqxywl,dc=com'
         password = 'RadiusPass'
-        }
+        
         tls {
 
           ca_file = /etc/raddb/certs/ca.pem
@@ -227,24 +227,23 @@ But first create user and permissions
           private_key_file = /etc/raddb/certs/server.key
         }      
       ...
+      }
       ```
-    - user SASL certificate file to bind 
+    - user SASL certificate file(SASL + KRB5) to bind 
       ```conf
       ldap {
         server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
         server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
         base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
-        }
-          sasl {
-                  # SASL mechanism
-                  mech = 'GSSAPI'
-
-                  # SASL authorisation identity to proxy.
-                  #proxy = 'autz_id'
-
-                  # SASL realm. Used for kerberos.
-                  realm = 'INB.HQXYWL.COM'
-          }      
+        
+        sasl {
+                # SASL mechanism
+                mech = 'GSSAPI'
+                # SASL authorisation identity to proxy.
+                #proxy = 'autz_id'
+                # SASL realm. Used for kerberos.
+                realm = 'INB.HQXYWL.COM'
+        }      
         tls {
 
           ca_file = /etc/raddb/certs/ca.pem
@@ -252,8 +251,19 @@ But first create user and permissions
           private_key_file = /etc/raddb/certs/server.key
         }      
       ...
+      }
       ```
- 
+    - (optional) if use SASL certificate(SASL + KRB5) bind, we also need to configure `/etc/raddb/mods-enabled/krb5`
+      ```
+      krb5 {
+              keytab = /etc/raddb/radiusd.keytab
+              service_principal =  radius/dc1-vm-freeipa-prod01.inb.hqxywl.com@INB.HQXYWL.COM
+              pool {
+                ...
+              }
+      }
+      ```
+
 ### 4.7 configure module `eap`, edit `/etc/raddb/mods-enabled/eap`, setting following certificates and keys 
   ```
   ....
@@ -364,25 +374,6 @@ But first create user and permissions
      ```     
   > `post-auth` configure will be detailed described in [14.2.2](#14.2.2-configure-post-auth-for-vpn-in-freeradius) and [16.2](#16.2-configure-post-auth-for-vpn-in-freeradius) 
 
-### 4.11 modify `radiusd.service` file, add env`KRB5_CLIENT_KTNAME` to point to  `/etc/raddb/radiusd.keytab` when use SASL certificates authentication (optional)
-  ```conf
-  [Unit]
-  Description=FreeRADIUS high performance RADIUS server.
-  After=syslog.target network.target ipa.service dirsrv.target krb5kdc.service
-
-  [Service]
-  Environment=KRB5_CLIENT_KTNAME=/etc/raddb/radiusd.keytab
-  Type=forking
-  PIDFile=/var/run/radiusd/radiusd.pid
-  ExecStartPre=-/bin/chown -R radiusd.radiusd /var/run/radiusd
-  ExecStartPre=/usr/sbin/radiusd -C
-  ExecStart=/usr/sbin/radiusd -d /etc/raddb
-  ExecReload=/usr/sbin/radiusd -C
-  ExecReload=/bin/kill -HUP $MAINPID
-
-  [Install]
-  WantedBy=multi-user.target
-  ```
 
 ### 4.10 configure preprocess (optional)
 Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/preprocess/huntgroups` to preprocess the request from clients, which will be process within   directive `preprocess` of section `authorize` in each site files
