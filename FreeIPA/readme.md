@@ -35,13 +35,30 @@ At this stage,
 - [19. administration via api](#19-administration-via-api)
 ## 1. Install package
 install packages on both master and replica nodes
-```sh
-yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
-```
+- disable selinux
+  - rhel7/centos7
+    ```
+    sed -i  '/SELINUX/s/enforcing/disabled/g' /etc/sysconfig/selinux
+    ```
+  - rhel8/centos8 
+    ```
+    sed -i  '/SELINUX/s/enforcing/disabled/g' /etc/selinux/config
+    ```
+- install packages on rhel7/centos7
+  ```sh
+  yum install -y ipa-server bind bind-dyndb-ldap ipa-server-dns
+  ```
+- install packages rhel8/centos8, FreeIPA Server and client packages are distributed through AppStream repository in RHEL / CentOS 8. 
+
+  ```
+  dnf module list idm
+  dnf module info idm:DL1
+  dnf -y install @idm:DL1 install freeipa-server ipa-server-dns bind-dyndb-ldap
+  ```
 ## 2. Configure FreeIPA
 - install Master node 
   
-  **Make sure password don't contain special character**
+  **Make sure password don't contain any special characters**
   ```sh
   #ipa-server-install -a Devops2019  -p Devops2019 -r INB.HQXYWL.COM -n inb.hqxywl.com  --setup-dns --allow-zone-overlap  --reverse-zone=36.10.in-addr.arpa. --no-host-dns --forwarder 114.114.114.114 --forwarder 223.5.5.5 --forwarder 119.29.29.29 --mkhomedir -U 
 
@@ -118,9 +135,8 @@ ipa service-add radius/dc1-vm-freeipa-prod01.inb.hqxywl.com
   # ipa-getcert request -w -k /etc/raddb/certs/server.key -f /etc/raddb/certs/server.pem -T caIPAserviceCert -C 'systemctl restart radiusd.service' -N dc1-vm-freeipa-prod01.inb.hqxywl.com -D dc1-vm-freeipa-prod01.inb.hqxywl.com -K radius/dc1-vm-freeipa-prod01.inb.hqxywl.com
   # cp /etc/ipa/ca.crt /etc/raddb/certs/cacert.pem
   # cp /etc/ipa/ca.crt /etc/raddb/certs/ca.pem
-  # chown -R radiusd.radiusd  /etc/raddb/certs/
   # openssl dhparam 2048 -out /etc/raddb/certs/dh
-  # chmod -R radiusd:radiusd /etc/raddb/certs/*
+  # chown -R root:radiusd /etc/raddb/certs/*
   ```
 
 ### 4.5 configure radius clients, edit /etc/raddb/clients.conf,modified following items:
@@ -163,59 +179,93 @@ But first create user and permissions
     ipa role-add 'Radius server' --desc="Radius server role"
     ipa role-add-privilege --privileges="Radius services" 'Radius server'
     ```
-  - create radius user 
+  - add service `radius/ipa.myexample.com@MYEXAMPLE.COM` to role `Radius server` so that `radius` can `Modify User Description` in ldap
+    ```
+    ipa role-add-member  --services=radius/dc1-vm-freeipa-prod01.inb.hqxywl.com@INB.HQXYWL.COM 'Radius server'
+      Role name: Radius server
+      Description: Radius server role
+      Privileges: Radius services
+      Member services: radius/ipa.myexample.com@INB.HQXYWL.COM
+    -------------------------
+    Number of members added 1
+    -------------------------
+    ```
+  - create radius user, and add it to role `Radius server` so that it can  `Modify User Description` in ldap
     ```sh
     #cat radius.update
     dn: uid=radius,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com
     add:objectclass:account
     add:objectclass:simplesecurityobject
-    add:uid:nginx
+    add:uid:radius
     add:userPassword:RadiusPass
     add:passwordExpirationTime:20380119031407Z
     add:nsIdleTimeout:0
     # ipa-ldap-updater radius.update
     ```
-  - update role to include this user 
+  - update role to include this user  as a member
     ```
     # cat  radius-server-role.update
     dn: cn=Radius server,cn=roles,cn=accounts,dc=oob,dc=hqxywl,dc=com
     add:member: uid=radius,cn=sysaccounts,cn=etc,dc=oob,dc=hqxywl,dc=com
     # ipa-ldap-updater radius-server-role.update
     ``` 
-  - Full content of /etc/raddb/mods-enabled/ldap
-    ```conf
-    ldap {
-      server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
-      server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
-      base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
-      identity = 'uid=radius,cn=sysaccounts,cn=etc,dc=oob,dc=hqxywl,dc=com'
-      password = 'RadiusPass'
-     sasl {
-    #            mech = 'GSSAPI'
-    #           realm = 'INB.HQXYWL.COM'
-      }
-      tls {
 
-        ca_file = /etc/raddb/certs/ca.pem
-        certificate_file = /etc/raddb/certs/server.pem
-        private_key_file = /etc/raddb/certs/server.key
-      }      
-    ...
-    ```
+  - configure rlm_ldap in /etc/raddb/mods-enabled/ldap, we have two options:
+    - user user/name to bind
+      ```conf
+      ldap {
+        server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
+        server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
+        base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
+        identity = 'uid=radius,cn=sysaccounts,cn=etc,dc=oob,dc=hqxywl,dc=com'
+        password = 'RadiusPass'
+        }
+        tls {
 
+          ca_file = /etc/raddb/certs/ca.pem
+          certificate_file = /etc/raddb/certs/server.pem
+          private_key_file = /etc/raddb/certs/server.key
+        }      
+      ...
+      ```
+    - user SASL certificate file to bind 
+      ```conf
+      ldap {
+        server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
+        server = 'ldaps://dc1-vm-freeipa-prod01.inb.hqxywl.com'
+        base_dn = 'cn=users,cn=accounts,dc=inb,dc=hqxywl,dc=com'
+        }
+          sasl {
+                  # SASL mechanism
+                  mech = 'GSSAPI'
+
+                  # SASL authorisation identity to proxy.
+                  #proxy = 'autz_id'
+
+                  # SASL realm. Used for kerberos.
+                  realm = 'INB.HQXYWL.COM'
+          }      
+        tls {
+
+          ca_file = /etc/raddb/certs/ca.pem
+          certificate_file = /etc/raddb/certs/server.pem
+          private_key_file = /etc/raddb/certs/server.key
+        }      
+      ...
+      ```
  
 ### 4.7 configure module `eap`, edit `/etc/raddb/mods-enabled/eap`, setting following certificates and keys 
-```
-....
-    tls-config tls-common {
-    ....
-    private_key_file = ${certdir}/server.key
-    certificate_file = ${certdir}/server.pem
-    ca_file = ${cadir}/ca.pem
-    ....
-    }
-...
-```
+  ```
+  ....
+      tls-config tls-common {
+      ....
+      private_key_file = ${certdir}/server.key
+      certificate_file = ${certdir}/server.pem
+      ca_file = ${cadir}/ca.pem
+      ....
+      }
+  ...
+  ```
 ### 4.8 Configure site, edit `/etc/raddb/sites-enabled/default`, modify following items
   - authorize
   - authenticate
@@ -314,25 +364,25 @@ But first create user and permissions
      ```     
   > `post-auth` configure will be detailed described in [14.2.2](#14.2.2-configure-post-auth-for-vpn-in-freeradius) and [16.2](#16.2-configure-post-auth-for-vpn-in-freeradius) 
 
-### 4.11 modify `radiusd.service` file, add env`KRB5_CLIENT_KTNAME` to point to  `/etc/raddb/radiusd.keytab` 
-```conf
-[Unit]
-Description=FreeRADIUS high performance RADIUS server.
-After=syslog.target network.target ipa.service dirsrv.target krb5kdc.service
+### 4.11 modify `radiusd.service` file, add env`KRB5_CLIENT_KTNAME` to point to  `/etc/raddb/radiusd.keytab` when use SASL certificates authentication (optional)
+  ```conf
+  [Unit]
+  Description=FreeRADIUS high performance RADIUS server.
+  After=syslog.target network.target ipa.service dirsrv.target krb5kdc.service
 
-[Service]
-Environment=KRB5_CLIENT_KTNAME=/etc/raddb/radiusd.keytab
-Type=forking
-PIDFile=/var/run/radiusd/radiusd.pid
-ExecStartPre=-/bin/chown -R radiusd.radiusd /var/run/radiusd
-ExecStartPre=/usr/sbin/radiusd -C
-ExecStart=/usr/sbin/radiusd -d /etc/raddb
-ExecReload=/usr/sbin/radiusd -C
-ExecReload=/bin/kill -HUP $MAINPID
+  [Service]
+  Environment=KRB5_CLIENT_KTNAME=/etc/raddb/radiusd.keytab
+  Type=forking
+  PIDFile=/var/run/radiusd/radiusd.pid
+  ExecStartPre=-/bin/chown -R radiusd.radiusd /var/run/radiusd
+  ExecStartPre=/usr/sbin/radiusd -C
+  ExecStart=/usr/sbin/radiusd -d /etc/raddb
+  ExecReload=/usr/sbin/radiusd -C
+  ExecReload=/bin/kill -HUP $MAINPID
 
-[Install]
-WantedBy=multi-user.target
-```
+  [Install]
+  WantedBy=multi-user.target
+  ```
 
 ### 4.10 configure preprocess (optional)
 Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/preprocess/huntgroups` to preprocess the request from clients, which will be process within   directive `preprocess` of section `authorize` in each site files
