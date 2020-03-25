@@ -406,7 +406,7 @@ Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/p
   We can add user in ipa web portal or add it via command line, also we can add OTP(2FA) to this user
 
   ```sh
-  ipa user-add --first=Jennings --last=Liu --shell=/bin/bash   --sshpubkey=<Public key string> --password jenningsl
+  ipa user-add  --setattr=description="new user" --first=Jennings --last=Liu --shell=/bin/bash   --sshpubkey=<Public key string> --password jenningsl
   Password: 
   Enter Password again to verify: 
   -------------------
@@ -428,8 +428,31 @@ Edit `/etc/raddb/mods-config/preprocess/hints` and/or  `/etc/raddb/mods-config/p
     Member of groups: ipausers
     Member of Sudo rule: admin
     Kerberos keys available: True
-  ```
 
+    ip user-show --all jenningsl
+    --------------
+    1 user matched
+    --------------
+      User login: jenningsl
+      First name: jennings
+      Last name: liu
+      Home directory: /home/jenningsl
+      Login shell: /bin/bash
+      Principal name: jenningsl@INB.HQXYWL.COM
+      Principal alias: jenningsl@INB.HQXYWL.COM
+      Email address: jennings.liu@sap.com
+      UID: 352200001
+      GID: 352200001
+      SSH public key fingerprint: SHA256:9kX8nRmXzq7dc5ckwStN78i4RORoeBtLoASr+Ky1TMw jenningsl@workstation.lmy.com (ssh-rsa)
+      Account disabled: False
+      Password: True
+      Member of groups: ipausers
+      description: new user
+      Member of Sudo rule: admin
+      Kerberos keys available: True
+  ```
+  > when add a user, set an attribute `description="xxxx"`, this will add `description: xxxx` in its ldap attributes, this attribute can be updated by radius when integrade with radius for authentication
+ 
   then we can initialize a login, add will ask you to reset password as first login. after first login we can add otp to this user
 
   Step 1:
