@@ -190,7 +190,7 @@ But first create user and permissions
     Number of members added 1
     -------------------------
     ```
-  - create radius user, and add it to role `Radius server` so that it can  `Modify User Description` in ldap
+  - create radius system user, and add it to role `Radius server` so that it can  `Modify User Description` in ldap
     ```sh
     #cat radius.update
     dn: uid=radius,cn=sysaccounts,cn=etc,dc=inb,dc=hqxywl,dc=com
