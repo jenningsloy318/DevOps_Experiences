@@ -1,6 +1,6 @@
 1. settings for wsl, add options to /etc/wsl.conf 
 ```conf
-automount]
+[automount]
 enabled = true
 options = "metadata,umask=0022"
 ```
