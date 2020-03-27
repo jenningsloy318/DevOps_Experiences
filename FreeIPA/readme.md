@@ -42,7 +42,7 @@ install packages on both master and replica nodes
     ```
   - rhel8/centos8 
     ```
-    sed -i  '/SELINUX/s/enforcing/disabled/g' /etc/selinux/config
+    sed -i 's/\(SELINUX=enforcing\|SELINUX=permissive\)/SELINUX=disabled/g' /etc/selinux/config
     ```
 - install packages on rhel7/centos7
   ```sh
