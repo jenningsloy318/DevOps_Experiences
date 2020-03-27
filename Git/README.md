@@ -312,10 +312,15 @@ Notes:
     download `git-version.tar.xz` and `git-version.tar.sign` from  https://mirrors.edge.kernel.org/pub/software/scm/git/
     
     b. install dependency packages
+    - centos7/rhel7
+        ```
+        yum install -y asciidoc xmlto emacs expat-devel libcurl-devel pcre2-devel tcl tk cvs cvsps highlight httpd mod_dav_svn perl-CGI-Carp perl-CGI-Util perl-IO-Pty perl-JSON-PP perl-Test-More subversion-perl libsecret-devel perl-IO-Pty-Easy.noarch perl-MailTools.noarch   perl-Test-Output  perl-CGI.noarch  perl-JSON.noarch epel-rpm-macros 
+        ```
+    - on centos8/rhel8 
+        ```
+        dnf install apr-util-bdb desktop-file-utils emacs  expat-devel gcc glibc-langpack-en glibc-langpack-is highlight httpd libcurl-devel  libsecret-devel make mod_dav_svn openssl-devel  pcre2-devel bash-completion  python3-devel subversion  subversion-perl tcl time tk zlib-devel   perl-generators asciidoc xmlto  perl-Memoize perl-Time-HiRes perl-DBD-SQLite   perl-JSON perl-IO-All perl-IO perl-JSON-PP  perl-JSON perl-Test-Output perl-Test perl-IO-Tty perl-MailTools  -y
+        ```
+    c. build with  
     ```
-    yum install -y asciidoc xmlto emacs expat-devel libcurl-devel pcre2-devel tcl tk cvs cvsps highlight httpd mod_dav_svn perl-CGI-Carp perl-CGI-Util perl-IO-Pty perl-JSON-PP perl-Test-More subversion-perl libsecret-devel perl-IO-Pty-Easy.noarch perl-MailTools.noarch   perl-Test-Output-1.01-7.el7.noarch  perl-CGI.noarch  perl-JSON.noarch epel-rpm-macros 
-    ```
-    c. build with 
-    ```
-    rpmbuild -bb git-2.26.spec --nocheck --without docs
+    rpmbuild -bb git.spec --nocheck --without docs
     ```
