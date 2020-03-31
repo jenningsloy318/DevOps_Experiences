@@ -12,6 +12,7 @@
 *.gif           binary
 *.png           binary
 *.zip           binary
+*.rpm           binary
 
 .gitattributes  export-ignore
 .gitignore      export-ignore
