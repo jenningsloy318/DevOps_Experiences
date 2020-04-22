@@ -1,0 +1,12 @@
+[Unit]
+Description=m3db datanode service
+Documentation=https://m3db.github.io/
+
+[Service]
+Restart=always
+RestartSec=5s
+LimitNOFILE=60000
+TimeoutStartSec=0
+ExecStart=/usr/bin/m3dbnode -f /etc/m3db/m3dbnode.yaml
+[Install]
+WantedBy=multi-user.target
