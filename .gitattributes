@@ -13,7 +13,10 @@
 *.png           binary
 *.zip           binary
 *.rpm           binary
-
+*.tar.gz        binary
+*.jpg           binary
+generator          binary
+SAPCAR          binary
 .gitattributes  export-ignore
 .gitignore      export-ignore
 
