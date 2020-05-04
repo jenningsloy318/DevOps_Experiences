@@ -12,12 +12,12 @@ Since NetworkManager integrated with OVS, we can use NetworkManager to manage OV
     nmcli connection add  con-name br0  type ovs-bridge conn.interface br0
 
     ## add physical ethernet to br0
-    nmcli connection add con-name ens160 type ovs-port conn.interface ens160 master br0
-    nmcli connection add con-name ens160 type ethernet slave-type ovs-port conn.interface ens160 master ens160
+    nmcli connection add con-name enp24s0 type ovs-port conn.interface enp24s0 master br0
+    nmcli connection add con-name enp24s0 type ethernet slave-type ovs-port conn.interface enp24s0 master enp24s0
 
     ## create internal port and interface, and then IP address will be added to the interface
-    nmcli connection add con-name br0-port0 type ovs-port conn.interface br0-port0 master br0
-    nmcli connection add con-name br0-inface0 type ovs-interface conn.interface br0-inface0 master br0-port0 ipv4.method auto
+    nmcli connection add con-name br0-port0 type ovs-port conn.interface br0 master br0
+    nmcli connection add con-name br0-iface0 type ovs-interface  conn.slave-type ovs-port conn.interface br0  master br0 ipv4.method auto
     ```
 
 4. show all NetworkManager connections and devices
