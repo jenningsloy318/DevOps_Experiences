@@ -233,3 +233,9 @@
   # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,nw_proto=6,dl_vlan=100,actions=pop_vlan,output:1
 
   ```
+
+
+
+  link: 
+  - https://docs.pica8.com/pages/viewpage.action?pageId=3084121
+  - https://www.systutorials.com/docs/linux/man/8-ovs-ofctl/
