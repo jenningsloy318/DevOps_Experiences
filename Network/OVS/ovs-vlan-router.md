@@ -227,9 +227,9 @@
   
   ### remove vlan tag 100 of  packet from vlan100  then to enp24s0
 
-  # ovs-ofctl -O OpenFlow13 add-flow br0 dl_type=0x0800,dl_vlan=100,actions=pop_vlan,output:1
-  # ovs-ofctl -O OpenFlow13 add-flow br0 dl_type=0x0800,nw_proto=17,dl_vlan=100,actions=pop_vlan,output:1
-  # ovs-ofctl -O OpenFlow13 add-flow br0 dl_type=0x0800,nw_proto=1,dl_vlan=100,actions=pop_vlan,output:1
-  # ovs-ofctl -O OpenFlow13 add-flow br0 dl_type=0x0800,nw_proto=6,dl_vlan=100,actions=pop_vlan,output:1
+  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,dl_vlan=100,actions=pop_vlan,output:1
+  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,nw_proto=17,dl_vlan=100,actions=pop_vlan,output:1
+  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,nw_proto=1,dl_vlan=100,actions=pop_vlan,output:1
+  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,nw_proto=6,dl_vlan=100,actions=pop_vlan,output:1
 
   ```
