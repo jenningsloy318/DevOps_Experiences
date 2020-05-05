@@ -1,0 +1,105 @@
+#cloud-config
+apt:
+  preserve_sources_list: true
+  sources:
+      kubernetes.list:
+          source: "deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main"
+          keyid: 6A030B21BA07F4FB
+          keyserver: keyserver.ubuntu.com
+      docker-ce.list:
+          source: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+          keyid: 0EBFCD88
+          keyserver: p80.pool.sks-keyservers.net
+write_files:
+- path: /etc/systemd/system/sys-fs-bpf.mount
+  content: |
+    [Unit]
+    Description=Cilium BPF mounts
+    Documentation=http://docs.cilium.io/
+    DefaultDependencies=no
+    Before=local-fs.target umount.target
+    After=swap.target
+    [Mount]
+    What=bpffs
+    Where=/sys/fs/bpf
+    Type=bpf
+    [Install]
+    WantedBy=multi-user.target
+- path: /etc/security/limits.d/kubernetes.conf
+  content: |
+    *               soft    nofile            65535
+    *               hard    nofile            65535
+    *               soft    nproc            65535
+    *               hard    nproc            65535
+users:
+  - default
+  - name: jennningsl
+    primary_group: jenningsl
+    groups: [adm,wheel,systemd-journal]
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+    - ssh-rsa /vkg5UkzRH9SVAjejS7BGceYrzjI4Stk5/qp//dY9AygVB6r82M+qUAL+COdVqgypzY9TmxBiL8+e5+++/yeWrIu5cPx0MLfn7BfTM++ 
+
+packages:
+- linux-image-generic-hwe-18.04
+- jq
+- golang-cfssl
+- nfs-common
+- ipvsadm
+- ipset
+apt_update: true
+apt_upgrade: true
+apt_reboot_if_required: true
+
+ca-certs:
+    trusted:
+        - | 
+            -----BEGIN CERTIFICATE-----
+            MIIGTDCCBDSgAwIBAgIQXQPZPTFhXY9Iizlwx48bmTANBgkqhkiG9w0BAQsFADBO
+            MQswCQYDVQQGEwJERTERMA8GA1UEBwwIV2FsbGRvcmYxDzANBgNVBAoMBlNBUCBB
+            GJ7CUQtNCDBVGksVlwew/+XnesITxrDjUMu+2297at7wjBwCnO93zr1/wsx1e2Um
+            Xn+IfM6K/pbDar/y6uI9rHlyWu4iJ6cg7DAPJ2CCklw/YHJXhDHGwheO/qSrKtgz
+            PGHZoN9jcvvvWDLUGtJkEotMgdFpEA2XWR83H4fVFVc=
+            -----END CERTIFICATE-----
+
+        - |
+            -----BEGIN CERTIFICATE-----
+            MIIGPTCCBCWgAwIBAgIKYQ4GNwAAAAAADDANBgkqhkiG9w0BAQsFADBOMQswCQYD
+            VQQGEwJERTERMA8GA1UEBwwIV2FsbGRvcmYxDzANBgNVBAoMBlNBUCBBRzEbMBkG
+            A1UEAwwSU0FQIEdsb2JhbCBSb290IENBMB4XDTE1MDMxNzA5MjQ1MVoXDTI1MDMx
+            NzA5MzQ1MVowRDELMAkGA1UEBhMCREUxETAPBgNVBAcMCFdhbGxkb3JmMQwwCgYD
+            VQQKDANTQVAxFDASBgNVBAMMC1NBUE5ldENBX0cyMIICIjANBgkqhkiG9w0BAQEF
+            AAOCAg8AMIICCgKCAgEAjuP7Hj/1nVWfsCr8M/JX90s88IhdTLaoekrxpLNJ1W27
+            ECUQogQF6HCu/RFD4uIoanH0oGItbmp2p8I0XVevHXnisxQGxBdkjz+a6ZyOcEVk
+            cEGTcXev1i0R+MxM8Y2WW/LGDKKkYOoVRvA5ChhTLtX2UXnBLcRdf2lMMvEHd/nn
+            KWEQ47ENC+uXd6UPxzE+JqVSVaVN+NNbXBJrI1ddNdEE3/++PSAmhF7BSeNWscs7
+            w0MoPwHAGMvMHe9pas1xD3RsRFQkV01XiJqqUbf1OTdYAoUoXo9orPPrO7FMfXjZ
+            RbzwzFtdKRlAFnKZOVf95MKlSo8WzhffKf7pQmuabGSLqSSXzIuCpxuPlNy7kwCX
+            j5m8U1xGN7L2vlalKEG27rCLx/n6ctXAaKmQo3FM+cHim3ko/mOy+9GDwGIgToX3
+            5SQPnmCSR19H3nYscT06ff5lgWfBzSQmBdv//rjYkk2ZeLnTMqDNXsgT7ac6LJlj
+            WXAdfdK2+gvHruf7jskio29hYRb2//ti5jD3NM6LLyovo1GOVl0uJ0NYLsmjDUAJ
+            dqqNzBocy/eV3L2Ky1L6DvtcQ1otmyvroqsL5JxziP0/gRTj/t170GC/aTxjUnhs
+            7vDebVOT5nffxFsZwmolzTIeOsvM4rAnMu5Gf4Mna/SsMi9w/oeXFFc/b1We1a0C
+            AwEAAaOCASUwggEhMAsGA1UdDwQEAwIBBjAdBgNVHQ4EFgQUOCSvjXUS/Dg/N4MQ
+            r5A8/BshWv8wHwYDVR0jBBgwFoAUg8dB/Q4mTynBuHmOhnrhv7XXagMwSwYDVR0f
+            XBEylxyaegwOBLtlmcbII8PoUAEAGJzdZ4kFCYjqZBMgXK9754LMpvkXDTVzy4OP
+            emK5Il+t+B0VOV73T4yLamXG73qqt8QZndJ3ii7NGutv4SWhVYQ4s7MfjRwbFYlB
+            z/N5eH3veBx9lJbV6uXHuNX3liGS8pNVNKPycfwlaGEbD2qZE0aZRU8OetuH1kVp
+            jGqvWloPjj45iCGSCbG7FcY1gPVTEAreLjyINVH0pPve1HXcrnCV4PALT6HvoZoF
+            bCuBKVgkSSoGgmasxjjjVIfMiOhkevDya52E5m0WnM1LD3ZoZzavsDSYguBP6MOV
+            ViWNsVHocptphbEgdwvt3B75CDN4kf6MNZg2/t8bRhEQyK1FRy8NMeBnbRFnnEPe
+            7HJNBB1ZTjnrxJAgCQgNBIQ=
+            -----END CERTIFICATE-----
+
+
+runcmd:
+- sed -i  's/-H\s\S*\s//g'  /lib/systemd/system/docker.service 
+- systemctl daemon-reload
+- systemctl restart docker
+ntp:
+  enabled: true
+  ntp_client: chrony
+  servers:
+    - 147.204.9.202 
+    - 147.204.9.203 
+    - 147.204.9.204 

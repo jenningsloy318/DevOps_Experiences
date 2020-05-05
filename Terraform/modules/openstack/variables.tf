@@ -2,56 +2,43 @@
 
 variable "openstack_image_name" {
     description = "The image name."
-    default  = ""
 }
 
 
 variable "openstack_flavor" {
     description = "The instance flavor name."
-    default = ""
+    default = "m1.large"
 }
 
 
 
 variable "openstack_keypair" {
     description = "The keypair name."
-    default = ""
+    default = "jennings-default-key"
 }
 
 
 variable "openstack_secgroup_name" {
     description = "The security group name."
-    default = ""
+    default = "default"
 }
 
 
-variable "openstack_tenant_network_name" {
-    description = "The tenant network name."
-    default = ""
+variable "openstack_private_network_name" {
+    description = "The private network name."
+    default = "SAP Global Cloud Service Center_private"
 }
 
-variable "openstack_flp_network_name" {
-    description = "The  Floating network name."
-    default = ""
+variable openstack_instance_count {
+    description = "The instance count."
+    default = 1
 }
-variable "openstack_flp_subnetwork_name" {
-    description = "The  Floating subnetwork name."
-    default = ""
-}
-
-
 variable "openstack_instance_name" {
     description = "The instance name."
-    default = ""
 }
 
 
-variable "openstack_volume_size" {
-    description = "The volume size."
-    default = ""
-}
 
-variable "userdata" {
-    description = "cloudinit userdata for instance ."
-    default = ""
+variable "openstack_availability_zone_name" {
+    description = "The  availability zone install will be created in."
 }
