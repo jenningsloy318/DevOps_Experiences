@@ -284,3 +284,19 @@ to reuse this module, for example, to create a monitor instance, just create a d
       For example, to output a mapping of AWS IAM user names to the fingerprint
       of the key used to encrypt their initial password, you might use:
       `zipmap(aws_iam_user.users.*.name, aws_iam_user_login_profile.users.*.key_fingerprint)`.
+
+
+## Third-party modules/plugins
+
+- [terraform-provider-validate](https://github.com/craigmonson/terraform-provider-validate), to check a string  against some pattern
+   return attributes
+    - error_msg
+    - exact
+    - id
+    - not_exact
+    - not_one_of
+    - not_regex
+    - one_of
+    - optional
+    - regex
+    - val
