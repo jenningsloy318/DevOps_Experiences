@@ -21,10 +21,12 @@
                     type: internal
         ovs_version: "2.13.0"
 
-    [root@workstation libvirt]# ip l set vlan100 up
-    [root@workstation libvirt]# ip l set vlan200 up
-    [root@workstation libvirt]# ip a add 192.168.100.1/24 dev vlan100
-    [root@workstation libvirt]# ip a add 192.168.200.1/24 dev vlan200
+    # nmcli connection add con-name vlan100 connection.type ovs-port connection.autoconnect yes connection.slave-type ovs-bridge connection.interface vlan100 connection.master br0
+    # nmcli connection add con-name vlan100 connection.type ovs-interface connection.autoconnect yes connection.slave-type ovs-port connection.interface vlan100 connection.master vlan100 ipv4.method manual ipv4.address 192.168.100.1/24 
+
+
+    # nmcli connection add con-name vlan200 connection.type ovs-port connection.autoconnect yes connection.slave-type ovs-bridge connection.interface vlan200 connection.master br0
+    # nmcli connection add con-name vlan200 connection.type ovs-interface  connection.autoconnect yes connection.slave-type ovs-port connection.interface vlan200  connection.master vlan200 ipv4.method manual ipv4.address 192.168.200.1/24 
     ```
 
 2. define ovs net for libvirtd 
