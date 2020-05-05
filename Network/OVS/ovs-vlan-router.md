@@ -215,23 +215,6 @@
       state:      0
       speed: 0 Mbps now, 0 Mbps max
   OFPT_GET_CONFIG_REPLY (xid=0x4): frags=normal miss_send_len=0
-
-  ### set ovs  openflow version
-  # ovs-vsctl set bridge br0    protocols=OpenFlow13
-  ### add vlan tag 100 to the packet from enp24s0 then to vlan100
-
-  # ovs-ofctl -O OpenFlow13 add-flow br0  in_port=1,actions=push_vlan:0x8100,mod_vlan_vid:100,output:6
-  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=1,dl_type=0x0800,nw_proto=1,nw_dst=192.168.100.5/24,actions=push_vlan:0x8100,mod_vlan_vid:100,output:6
-  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=1,dl_type=0x0800,nw_proto=17,nw_dst=192.168.100.5/24,actions=push_vlan:0x8100,mod_vlan_vid:100,output:6
-  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=1,dl_type=0x0800,nw_proto=6,nw_dst=192.168.100.5/24,actions=push_vlan:0x8100,mod_vlan_vid:100,output:6
-  
-  ### remove vlan tag 100 of  packet from vlan100  then to enp24s0
-
-  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,dl_vlan=100,actions=pop_vlan,output:1
-  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,nw_proto=17,dl_vlan=100,actions=pop_vlan,output:1
-  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,nw_proto=1,dl_vlan=100,actions=pop_vlan,output:1
-  # ovs-ofctl -O OpenFlow13 add-flow br0 in_port=6,dl_type=0x0800,nw_proto=6,dl_vlan=100,actions=pop_vlan,output:1
-
   ```
 
 
@@ -239,3 +222,22 @@
   link: 
   - https://docs.pica8.com/pages/viewpage.action?pageId=3084121
   - https://www.systutorials.com/docs/linux/man/8-ovs-ofctl/
+
+
+- dl_type=ethertype: 
+  |id | type |
+  |---|--- |
+  |dl_type=0x0800 |ip|
+  |dl_type=0x86dd |ipv6|
+  |dl_type=0x0800,nw_proto=1|icmp|
+  |dl_type=0x86dd,nw_proto=58|icmp6|
+  |dl_type=0x0800,nw_proto=6|tcp|
+  |dl_type=0x86dd,nw_proto=6|tcp6|
+  |dl_type=0x0800,nw_proto=17|udp|
+  |dl_type=0x86dd,nw_proto=17|udp6|
+  |dl_type=0x0800,nw_proto=132|sctp|
+  |dl_type=0x86dd,nw_proto=132|sctp6|
+  |dl_type=0x0806|arp|
+  |dl_type=0x8035|rarp|
+  |dl_type=0x8847|mpls|
+  |dl_type=0x8848|mplsm|
