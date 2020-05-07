@@ -23,8 +23,9 @@ module "vm-instance"  {
 }
 
 
+
 output "vm_fixed_ip_address" {
-value = module.vm-instance.vm_floating_ip_address
+value = module.vm-instance.vm_fixed_ip_address
 }
 output "vm_floating_ip_address" {
 value = module.vm-instance.vm_floating_ip_address
