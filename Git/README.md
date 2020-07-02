@@ -1,5 +1,13 @@
-1. git status can display chinese path.
+# github 
+1. download source with commit ID
+    ```
+    curl -SLO https://github.com/ukui/ukui-power-manager/archive/f937de93f7c83e68176c3d04355068b66fccdf1f.tar.gz 
+    ```
 
+
+# git commands
+1. git status can display chinese path.
+ 
     Error shows as following image:
 
     ![](./images/git-1.jpg)
