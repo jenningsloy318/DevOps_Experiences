@@ -15,6 +15,7 @@ BuildArch:      x86_64
 BuildRequires: fcitx-devel
 BuildRequires: librime-devel
 BuildRequires: fcitx-qt5-devel
+BuildRequires: qt5-qtbase-devel
 BuildRequires: brise
 
 Requires: hicolor-icon-theme
