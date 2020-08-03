@@ -43,3 +43,6 @@
     reference:
     1. https://unix.stackexchange.com/questions/158400/etc-shadow-how-to-generate-6-s-encrypted-password
     2. https://www.linuxquestions.org/questions/linux-security-4/command-to-create-encrypted-password-265368/
+
+4. rpm spec to build packages
+    - install `rpmdevtools`, ans use `spectool -g -R vim.spec` to download the tarball file
