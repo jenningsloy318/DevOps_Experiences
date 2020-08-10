@@ -46,3 +46,16 @@
 
 4. rpm spec to build packages
     - install `rpmdevtools`, ans use `spectool -g -R vim.spec` to download the tarball file
+    - for condition of the `Source0`
+        ```
+        # Conditional for release and snapshot builds. Uncomment for release-builds.
+        %global rel_build 1
+
+        # for downloading the tarball use 'spectool -g -R mate-terminal.spec'
+
+        # Source for release-builds.
+        %{?rel_build:Source0:     http://pub.mate-desktop.org/releases/%{branch}/%{name}-%{version}.tar.xz}
+        # Source for snapshot-builds.
+        %{!?rel_build:Source0:    http://git.mate-desktop.org/%{name}/snapshot/%{name}-%{commit}.tar.xz#/%{git_tar}}
+
+        ```
