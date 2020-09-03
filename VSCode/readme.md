@@ -29,6 +29,8 @@ tomoki1207.pdf
 VisualStudioExptTeam.vscodeintellicode
 vscoss.vscode-ansible
 wholroyd.jinja
+vscode-blink-mind
+vscod-mindmap
 ```
 
 
