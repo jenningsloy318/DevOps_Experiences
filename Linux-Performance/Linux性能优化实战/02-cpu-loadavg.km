@@ -11,21 +11,24 @@
                     "id": "c5deojc8zhs0",
                     "created": 1599102936122,
                     "text": "mpstat -P ALL 1 or \npidstat -u 1",
-                    "expandState": "expand"
+                    "expandState": "expand",
+                    "background": "#73a1bf"
                 },
                 "children": [
                     {
                         "data": {
                             "id": "c5denfxjvpk0",
                             "created": 1599102850339,
-                            "text": "%usr and %nice high"
+                            "text": "%usr and %nice high",
+                            "background": "#73a1bf"
                         },
                         "children": [
                             {
                                 "data": {
                                     "id": "c5depni72e00",
                                     "created": 1599103023553,
-                                    "text": "find out the userspace app/thread"
+                                    "text": "find out the userspace app/thread",
+                                    "background": "#73a1bf"
                                 },
                                 "children": []
                             }
@@ -39,25 +42,41 @@
                             "layout_right_offset": {
                                 "x": 51,
                                 "y": -25
-                            }
+                            },
+                            "background": "#73a1bf"
                         },
                         "children": [
                             {
                                 "data": {
                                     "id": "c5deq4p00co0",
                                     "created": 1599103060969,
-                                    "text": "vmstat -w 1"
+                                    "text": "vmstat -w 1",
+                                    "background": "#73a1bf"
                                 },
                                 "children": [
                                     {
                                         "data": {
                                             "id": "c5deqnb0ulc0",
                                             "created": 1599103101483,
-                                            "text": "r: if job queue is more than CPU count",
+                                            "text": "r: runing or runable threads",
                                             "layout_right_offset": {
                                                 "x": 52,
                                                 "y": -23
-                                            }
+                                            },
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dinbkw5b40",
+                                            "created": 1599114125306,
+                                            "text": "b: blocked, no-interruptable threads",
+                                            "layout_right_offset": {
+                                                "x": 57,
+                                                "y": 3
+                                            },
+                                            "background": "#73a1bf"
                                         },
                                         "children": []
                                     },
@@ -69,14 +88,16 @@
                                             "layout_right_offset": {
                                                 "x": 48,
                                                 "y": 3
-                                            }
+                                            },
+                                            "background": "#73a1bf"
                                         },
                                         "children": [
                                             {
                                                 "data": {
                                                     "id": "c5derq1sd3s0",
                                                     "created": 1599103185819,
-                                                    "text": "watch -d cat /proc/softirqs"
+                                                    "text": "watch -d cat /proc/softirqs",
+                                                    "background": "#73a1bf"
                                                 },
                                                 "children": []
                                             },
@@ -84,14 +105,16 @@
                                                 "data": {
                                                     "id": "c5dev3u469k0",
                                                     "created": 1599103450923,
-                                                    "text": "watch -d cat /proc/interrupts"
+                                                    "text": "watch -d cat /proc/interrupts",
+                                                    "background": "#73a1bf"
                                                 },
                                                 "children": [
                                                     {
                                                         "data": {
                                                             "id": "c5dex8q7ue80",
                                                             "created": 1599103618299,
-                                                            "text": "Rescheduling interruption（RES）is increasing,CPU will wakeup idle CPU to reschedule new job, CPU is busy"
+                                                            "text": "Rescheduling interruption(RES)is increasing,\nmeans that CPU  wakeup idle CPU to reschedule new job, CS switching is frequently ",
+                                                            "background": "#73a1bf"
                                                         },
                                                         "children": []
                                                     }
@@ -107,28 +130,32 @@
                                             "layout_right_offset": {
                                                 "x": 43,
                                                 "y": 2
-                                            }
+                                            },
+                                            "background": "#73a1bf"
                                         },
                                         "children": [
                                             {
                                                 "data": {
                                                     "id": "c5derw1fq1c0",
                                                     "created": 1599103198859,
-                                                    "text": "pidstat -w -t 1"
+                                                    "text": "pidstat -w -t 1",
+                                                    "background": "#73a1bf"
                                                 },
                                                 "children": [
                                                     {
                                                         "data": {
                                                             "id": "c5desobdoig0",
                                                             "created": 1599103260410,
-                                                            "text": "cswch/s :Total number of voluntary context switches the task made per second. "
+                                                            "text": "cswch/s :Total number of voluntary context switches the task made per second. ",
+                                                            "background": "#73a1bf"
                                                         },
                                                         "children": [
                                                             {
                                                                 "data": {
                                                                     "id": "c5detxgwp9c0",
                                                                     "created": 1599103358699,
-                                                                    "text": "IO, Memory is insufficient"
+                                                                    "text": "IO, Memory is insufficient",
+                                                                    "background": "#73a1bf"
                                                                 },
                                                                 "children": []
                                                             }
@@ -142,14 +169,16 @@
                                                             "layout_right_offset": {
                                                                 "x": -3,
                                                                 "y": 6
-                                                            }
+                                                            },
+                                                            "background": "#73a1bf"
                                                         },
                                                         "children": [
                                                             {
                                                                 "data": {
                                                                     "id": "c5deu73ewmo0",
                                                                     "created": 1599103379651,
-                                                                    "text": "Two many process are eating CPU"
+                                                                    "text": "Two many process are eating CPU",
+                                                                    "background": "#73a1bf"
                                                                 },
                                                                 "children": []
                                                             }
@@ -167,14 +196,16 @@
                         "data": {
                             "id": "c5denjuu2sw0",
                             "created": 1599102858882,
-                            "text": "%sys high and %iowait high"
+                            "text": "%sys high and %iowait high",
+                            "background": "#73a1bf"
                         },
                         "children": [
                             {
                                 "data": {
                                     "id": "c5deybraxeg0",
                                     "created": 1599103703260,
-                                    "text": "iostat"
+                                    "text": "iostat",
+                                    "background": "#73a1bf"
                                 },
                                 "children": []
                             }

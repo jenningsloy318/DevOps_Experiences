@@ -1,0 +1,435 @@
+{
+    "root": {
+        "data": {
+            "id": "c5dhfv7fecg0",
+            "created": 1599110720004,
+            "text": "Context Switch"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5dhhy89tbk0",
+                    "created": 1599110883314,
+                    "text": "Types",
+                    "expandState": "expand",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5dhg12b2oo0",
+                            "created": 1599110732755,
+                            "text": "Process Context Switch",
+                            "layout_right_offset": {
+                                "x": -2,
+                                "y": -67
+                            },
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5dhhtvdl5s0",
+                                    "created": 1599110873827,
+                                    "text": "Switch Conditions",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5dhhg9konk0",
+                                            "created": 1599110844210,
+                                            "text": "1. CPU Time exhausted",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhk2nl7680",
+                                            "created": 1599111049675,
+                                            "text": "2. insuffient Resources(IO,MEM)",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhkdksmw80",
+                                            "created": 1599111073451,
+                                            "text": "3. Deliberately change to sleep casued hanging",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhimvswuo0",
+                                            "created": 1599110936979,
+                                            "text": "4. High priority process",
+                                            "layout_right_offset": {
+                                                "x": 6,
+                                                "y": -9
+                                            },
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhj0jyivc0",
+                                            "created": 1599110966739,
+                                            "text": "5. Hardware interrupt singnal",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5dhooviisg0",
+                                    "created": 1599111411500,
+                                    "text": "property",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5dhmmttg200",
+                                            "created": 1599111250316,
+                                            "text": "Process will hold the resource, process's virtual memory,gloab variables, ..etc should be stored during switch",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5dhg7t7yi80",
+                            "created": 1599110747443,
+                            "text": "Thread Context Switch",
+                            "layout_right_offset": {
+                                "x": 0,
+                                "y": -38
+                            },
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5dhlydq6540",
+                                    "created": 1599111197100,
+                                    "text": "property",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5dhm66zs5c0",
+                                            "created": 1599111214107,
+                                            "text": "thread is the basic unit in CPU scheduling process",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhn4rg0l40",
+                                            "created": 1599111289355,
+                                            "text": "process can have one or more threads",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhnlvzv7s0",
+                                            "created": 1599111326635,
+                                            "text": "threads has stack and registers should be strored during switch",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5dhn3uii9s0",
+                                    "created": 1599111287363,
+                                    "text": "Types",
+                                    "layout_right_offset": {
+                                        "x": 20,
+                                        "y": -2
+                                    },
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5dhr9cbgvs0",
+                                            "created": 1599111612780,
+                                            "text": "threads switch in one process",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhrihi8ww0",
+                                            "created": 1599111632685,
+                                            "text": "threads switch in different processes",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5dhggrityw0",
+                            "created": 1599110766931,
+                            "text": "Interrupt Context Swtich",
+                            "layout_right_offset": {
+                                "x": -5,
+                                "y": -3
+                            },
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5dhptyt01s0",
+                                    "created": 1599111500947,
+                                    "text": "Property",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5dhpwnntjk0",
+                                            "created": 1599111506804,
+                                            "text": "only contains kernel data, \nincluding CPU Register,kernel stack,hw interrupt parameter",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dhrvb4gyg0",
+                                            "created": 1599111660597,
+                                            "text": "Highest priority",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5di6rvcj800",
+                    "created": 1599112828576,
+                    "text": "Simulation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5di73ffud40",
+                            "created": 1599112853735,
+                            "text": "Tools",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5di6vm65oo0",
+                                    "created": 1599112836728,
+                                    "text": "sysbench --threads=10 --max-time=300 threads run    \n(make sure threads more than cpu count)",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5di79ryb880",
+                                    "created": 1599112867552,
+                                    "text": "systat",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5di7gg3rnk0",
+                            "created": 1599112882073,
+                            "text": "Analysis",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5di7jgfusg0",
+                                    "created": 1599112888624,
+                                    "text": "vmstat 5",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5di7zkprfk0",
+                                            "created": 1599112923711,
+                                            "text": "r: runing or runable task queue",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5di86sax7s0",
+                                            "created": 1599112939407,
+                                            "text": "b: blocked no-interruptable process",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5di8k15cw80",
+                                            "created": 1599112968240,
+                                            "text": "in: interrupt count",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5di8pki9e00",
+                                            "created": 1599112980295,
+                                            "text": "cs: context switch",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dijoyddfk0",
+                                            "created": 1599113840962,
+                                            "text": "us: user space usage high indicate use process,",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dik6jud8o0",
+                                            "created": 1599113879266,
+                                            "text": "sy: kernel usage high, indicates that block at kernel",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5di8vu8g9s0",
+                                    "created": 1599112993944,
+                                    "text": "pidstat -w -t -u 1",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5di9lqv3q80",
+                                            "created": 1599113050336,
+                                            "text": "check CPU usage\nfind the process which has consumed most CPU",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5di9qurl940",
+                                            "created": 1599113061456,
+                                            "text": "check process context switch\nno changes meansthat processes are not switching too much",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5di9wzpxb40",
+                                            "created": 1599113074816,
+                                            "text": "check threads context switch",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5dia5j6a0g0",
+                                    "created": 1599113093407,
+                                    "text": "As in also increase while cs is increase",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5diaix5tmo0",
+                                            "created": 1599113122552,
+                                            "text": "watch -d cat /proc/interrupts",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5dib0bmtk80",
+                                                    "created": 1599113160431,
+                                                    "text": "check how fast the in is increasing, pay attention to  RES interrupt. \nwhile CS is increaing, cause CPU to wakeup CPU to re-schedule tasks on them.",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5dieuok8s00",
+                                                    "created": 1599113461609,
+                                                    "text": "In SMP systems, RES is also called Inter-Processor Interrupt(IPI)",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
