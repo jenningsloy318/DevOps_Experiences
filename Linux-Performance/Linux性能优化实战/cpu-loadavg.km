@@ -1,0 +1,190 @@
+{
+    "root": {
+        "data": {
+            "id": "c5denad9dx40",
+            "created": 1599102838228,
+            "text": "CPU Load"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5deojc8zhs0",
+                    "created": 1599102936122,
+                    "text": "mpstat -P ALL 1 or \npidstat -u 1",
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5denfxjvpk0",
+                            "created": 1599102850339,
+                            "text": "%usr and %nice high"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5depni72e00",
+                                    "created": 1599103023553,
+                                    "text": "find out the userspace app/thread"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5deo9m13v40",
+                            "created": 1599102914946,
+                            "text": "%sys high but %iowait low or zero",
+                            "layout_right_offset": {
+                                "x": 51,
+                                "y": -25
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5deq4p00co0",
+                                    "created": 1599103060969,
+                                    "text": "vmstat -w 1"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5deqnb0ulc0",
+                                            "created": 1599103101483,
+                                            "text": "r: if job queue is more than CPU count",
+                                            "layout_right_offset": {
+                                                "x": 52,
+                                                "y": -23
+                                            }
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5der2ou7q00",
+                                            "created": 1599103134970,
+                                            "text": "in: if interruption is high",
+                                            "layout_right_offset": {
+                                                "x": 48,
+                                                "y": 3
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5derq1sd3s0",
+                                                    "created": 1599103185819,
+                                                    "text": "watch -d cat /proc/softirqs"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5dev3u469k0",
+                                                    "created": 1599103450923,
+                                                    "text": "watch -d cat /proc/interrupts"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5dex8q7ue80",
+                                                            "created": 1599103618299,
+                                                            "text": "Rescheduling interruption（RES）is increasing,CPU will wakeup idle CPU to reschedule new job, CPU is busy"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dereplgv40",
+                                            "created": 1599103161138,
+                                            "text": "cs: if context switch is high",
+                                            "layout_right_offset": {
+                                                "x": 43,
+                                                "y": 2
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5derw1fq1c0",
+                                                    "created": 1599103198859,
+                                                    "text": "pidstat -w -t 1"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5desobdoig0",
+                                                            "created": 1599103260410,
+                                                            "text": "cswch/s :Total number of voluntary context switches the task made per second. "
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "data": {
+                                                                    "id": "c5detxgwp9c0",
+                                                                    "created": 1599103358699,
+                                                                    "text": "IO, Memory is insufficient"
+                                                                },
+                                                                "children": []
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5destrut000",
+                                                            "created": 1599103272290,
+                                                            "text": "nvcswch/s:Total number of non voluntary context switches the task made per second",
+                                                            "layout_right_offset": {
+                                                                "x": -3,
+                                                                "y": 6
+                                                            }
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "data": {
+                                                                    "id": "c5deu73ewmo0",
+                                                                    "created": 1599103379651,
+                                                                    "text": "Two many process are eating CPU"
+                                                                },
+                                                                "children": []
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5denjuu2sw0",
+                            "created": 1599102858882,
+                            "text": "%sys high and %iowait high"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5deybraxeg0",
+                                    "created": 1599103703260,
+                                    "text": "iostat"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
