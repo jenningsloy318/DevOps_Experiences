@@ -1,0 +1,264 @@
+{
+    "root": {
+        "data": {
+            "id": "c5djdjb66m80",
+            "created": 1599116179600,
+            "text": "CPU Utilization",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5djigfnzw80",
+                    "created": 1599116565163,
+                    "text": "simulation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5djiuockyg0",
+                            "created": 1599116596163,
+                            "text": "server",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5dl2aj2y800",
+                                    "created": 1599120940702,
+                                    "text": "docker run --name nginx -p 10000:80 -itd feisky/nginx:sp\ndocker run --name phpfpm -itd --network container:nginx feisky/php-fpm:sp\n ",
+                                    "layout_right_offset": {
+                                        "x": 6,
+                                        "y": -106
+                                    },
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5dl38zucds0",
+                                    "created": 1599121015726,
+                                    "text": "analysis",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5dl3x7v42w0",
+                                            "created": 1599121068454,
+                                            "text": "top",
+                                            "background": "#73a1bf",
+                                            "layout_right_offset": {
+                                                "x": 1,
+                                                "y": 34
+                                            },
+                                            "expandState": "collapse"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5dl3za499c0",
+                                                    "created": 1599121072943,
+                                                    "text": "don't find any process eating much cpu resource",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5eexbfq1tk0",
+                                                    "created": 1599205184152,
+                                                    "text": "find %us + %sy  is about 80%",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5eevoqjyq80",
+                                                    "created": 1599205056377,
+                                                    "text": "top working as a sampling method, capture data every 3 seconds, may not be able to capture short-lived process",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5eewxiohls0",
+                                            "created": 1599205153856,
+                                            "text": "pidstat 1",
+                                            "background": "#73a1bf",
+                                            "layout_right_offset": {
+                                                "x": -6,
+                                                "y": 35
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5eex4bbl140",
+                                                    "created": 1599205168648,
+                                                    "text": "still no found process eating much cpu resources",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5eexnvpw540",
+                                            "created": 1599205211240,
+                                            "text": "vmstat 1",
+                                            "background": "#73a1bf",
+                                            "layout_right_offset": {
+                                                "x": 7,
+                                                "y": -212
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5eexsrae0o0",
+                                                    "created": 1599205221856,
+                                                    "text": "r: queue is larger than cpu count",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5egj5tx0ww0",
+                                            "created": 1599209717071,
+                                            "text": "consider short-lived process",
+                                            "layout_right_offset": {
+                                                "x": 17,
+                                                "y": 0
+                                            },
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5egq29wnmo0",
+                                                    "created": 1599210257880,
+                                                    "text": "execsnoop",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ehplnhhrc0",
+                                                            "created": 1599213042805,
+                                                            "text": "find the shortlived process and its parent process",
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dl49yuwtc0",
+                                            "created": 1599121096207,
+                                            "text": "perf record -g ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5dljoec3fc0",
+                                            "created": 1599122303081,
+                                            "text": "perf report ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5dllerf61s0",
+                                                    "created": 1599122438832,
+                                                    "text": "find stress with highest usage",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5dlljxz5sw0",
+                                                            "created": 1599122450113,
+                                                            "text": "Enter e to expan the tree",
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "data": {
+                                                                    "id": "c5dlnsckfao0",
+                                                                    "created": 1599122625137,
+                                                                    "text": "check blocked functions, which is random function",
+                                                                    "background": "#73a1bf"
+                                                                },
+                                                                "children": []
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5ei3kje3bc0",
+                                            "created": 1599214137479,
+                                            "text": "check the source code for stress, fix it",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5ei45nhgiw0",
+                                            "created": 1599214183439,
+                                            "text": "check the application output or logs ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5dl33y6y400",
+                            "created": 1599121004742,
+                            "text": "client",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5dl3g8hskw0",
+                                    "created": 1599121031486,
+                                    "text": "ab -c 100 -n 1000000 http://192.168.34.137:10000/",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
