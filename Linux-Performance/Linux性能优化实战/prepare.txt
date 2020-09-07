@@ -1,3 +1,0 @@
-grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
-reboot
-dnf install moby-engine perf sysbench stress-ng sysstat -y 

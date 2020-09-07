@@ -1,0 +1,73 @@
+{
+    "root": {
+        "data": {
+            "id": "c5gqtt4eqdk0",
+            "created": 1599441882425,
+            "text": "zombie and uninterruptible processes"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5gqulofm740",
+                    "created": 1599441944586,
+                    "text": "process state",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5gquqg0db40",
+                            "created": 1599441954961,
+                            "text": "R : running or runnable",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5gquw06zvk0",
+                            "created": 1599441967065,
+                            "text": "D : uninterruptible sleep (usually IO)",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5gqv9migf40",
+                            "created": 1599441996713,
+                            "text": "S : interruptible sleep (waiting for an event to complete)",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5gqvffprhc0",
+                            "created": 1599442009362,
+                            "text": "Z : defunct/zombie, terminated but not reaped by its parent",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5gqwb89hj40",
+                            "created": 1599442078569,
+                            "text": " T : stopped, either by a job control signal SIGSTOP or because it is being traced,\nsignals it will handle are SIGKILL and SIGCONT. \nThe former will remove the process permanently, \nwhile the later will put the process back to the Running/Runnable state",
+                            "background": "#73a1bf",
+                            "layout_right_offset": {
+                                "x": 2,
+                                "y": -6
+                            }
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
