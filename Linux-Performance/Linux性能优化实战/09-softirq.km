@@ -1,0 +1,137 @@
+{
+    "root": {
+        "data": {
+            "id": "c5hmves6fcw0",
+            "created": 1599532283456,
+            "text": "interrupt(IRQ)",
+            "expandState": "expand",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5hn9l9qs680",
+                    "created": 1599533394677,
+                    "text": "top half",
+                    "expandState": "expand",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hmvjkdgb40",
+                            "created": 1599532293868,
+                            "text": "top half: is the routine that actually responds to the interrupt, \nincluding I/O interrupts andTimer interrupts",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hn95knpv40",
+                            "created": 1599533360509,
+                            "text": "top half saves device data to a device-specific buffer, schedules its bottom half, and exits",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hnbe9oo4w0",
+                            "created": 1599533536165,
+                            "text": "treated as hard interrrupt",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hnd92hlpc0",
+                                    "created": 1599533681574,
+                                    "text": "cat /proc/interrupts",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hn9rp4uls0",
+                    "created": 1599533408669,
+                    "text": "bottom half",
+                    "expandState": "expand",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hmxeam8yw0",
+                            "created": 1599532439123,
+                            "text": "bottom half:  is a routine that is scheduled by the top half to be executed later, at a safer time.",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hn9g05jk80",
+                            "created": 1599533383214,
+                            "text": "The bottom half then performs whatever other work is required, \nsuch as awakening processes, starting up another I/O operation, and so on.",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hnbl6tiv40",
+                            "created": 1599533551229,
+                            "text": "treated as soft interrupt",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hndot0hvk0",
+                                    "created": 1599533715830,
+                                    "text": "cat /proc/softirqs",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5hnet1hvnc0",
+                            "created": 1599533803414,
+                            "text": "running as kernel threads",
+                            "layout_right_offset": {
+                                "x": -3,
+                                "y": 11
+                            },
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hnegce0ps0",
+                                    "created": 1599533775774,
+                                    "text": "ps aux | grep softirq",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
