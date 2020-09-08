@@ -1,0 +1,233 @@
+{
+    "root": {
+        "data": {
+            "id": "c5hnx5yopvs0",
+            "created": 1599535242097,
+            "text": "CPU softirq",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5hnxggyakg0",
+                    "created": 1599535264969,
+                    "text": "Simulation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hnxlghnrk0",
+                            "created": 1599535275825,
+                            "text": "server",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hnxnibqm00",
+                                    "created": 1599535280290,
+                                    "text": "docker run -itd --name=nginx -p 80:80 nginx",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5hnxyyl0uw0",
+                            "created": 1599535305217,
+                            "text": "client",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hny17a7340",
+                                    "created": 1599535310097,
+                                    "text": "hping3 -S -p 80 -i u100 192.168.0.30",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hnyi3wsl40",
+                    "created": 1599535346898,
+                    "text": "Symtoms ",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hnyqpvyeo0",
+                            "created": 1599535365642,
+                            "text": "on server it is very slow, it takes a long time to response  for a keyboard input",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hnzhynfmo0",
+                    "created": 1599535424945,
+                    "text": "Analysis",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5ho1708s3c0",
+                            "created": 1599535557825,
+                            "text": "top",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ho4i0pujc0",
+                                    "created": 1599535816890,
+                                    "text": "loadavg is nearly zero",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5ho4ohb9hc0",
+                                    "created": 1599535830954,
+                                    "text": "only one running process",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5ho4ynsl140",
+                                    "created": 1599535853114,
+                                    "text": "%idle 95, and %si 5",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5horlzj6dc0",
+                                            "created": 1599537627902,
+                                            "text": "indicates there maybe soft interrupt issue",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5horwy35940",
+                                    "created": 1599537651759,
+                                    "text": "check the process list",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hos0lusbs0",
+                                            "created": 1599537659726,
+                                            "text": "only ksoftirq process has cpu usage ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5hoshd66g80",
+                            "created": 1599537696206,
+                            "text": "watch -d cat /proc/softirqs",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hosu6io800",
+                                    "created": 1599537724102,
+                                    "text": "NET_RX has dramatically chages ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5hot8twhe80",
+                            "created": 1599537755991,
+                            "text": "sar -n DEV 1",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hotagrik80",
+                                    "created": 1599537759550,
+                                    "text": "for ens33, rxpck/s and txpck/s are increasing, and rxpck/s changes more dramatically",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hov9pinds0",
+                                    "created": 1599537914631,
+                                    "text": "calculate recieved packet size: rxkB/s x 1024 /  rxpck/s , which is only 54 bits",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5howev280w0",
+                            "created": 1599538004215,
+                            "text": "tcpdump -i eth0 -n tcp port 80",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hoydxpr4w0",
+                                    "created": 1599538158927,
+                                    "text": "12:08:08.022598 IP 192.168.34.137.20492 > 192.168.34.141.80: Flags [S], seq 191397701, win 512, length 0",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hoygm5y9s0",
+                                    "created": 1599538164759,
+                                    "text": "flag S: indicates it is a SYN FLOOD attack",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
