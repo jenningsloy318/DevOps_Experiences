@@ -3,7 +3,8 @@
         "data": {
             "id": "c5gqtt4eqdk0",
             "created": 1599441882425,
-            "text": "zombie and uninterruptible processes"
+            "text": "zombie and uninterruptible processes",
+            "background": "#73a1bf"
         },
         "children": [
             {
@@ -60,6 +61,312 @@
                                 "x": 2,
                                 "y": -6
                             }
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5gqzahv7tc0",
+                    "created": 1599442312065,
+                    "text": "Simulation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5gqzdvl6rc0",
+                            "created": 1599442319425,
+                            "text": "docker run --privileged --name=app -itd feisky/app:iowait",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5gr08gmu8g0",
+                    "created": 1599442386001,
+                    "text": "Analysis",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5gr0brh9000",
+                            "created": 1599442393187,
+                            "text": "top",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5gr1cmlzz40",
+                                    "created": 1599442473434,
+                                    "text": "loadavg is increasing",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5gr0e4skb40",
+                                    "created": 1599442398346,
+                                    "text": "%us %sy low",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5gr0m9gbgw0",
+                                    "created": 1599442416042,
+                                    "text": "%iowait high, cause loadavg increasing",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5gr0q6smxs0",
+                                    "created": 1599442424588,
+                                    "text": "only few running process but zombie processes number is increasing",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5gr1bd8btk0",
+                            "created": 1599442470690,
+                            "text": "deal with iowat issue",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5grewy2btc0",
+                                    "created": 1599443536396,
+                                    "text": "dstat 1 : show that when there is a read operation, the iowat is increasing",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grkzw6ag00",
+                                    "created": 1599444012997,
+                                    "text": "top: re-check the app process, confirm its state is D, maybe waiting for IO or have IO issues",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hs5t8vpio0",
+                                    "created": 1599547204132,
+                                    "text": "sar -d 1",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grfjmxe800",
+                                    "created": 1599443585789,
+                                    "text": "pidstat -d -u  1 : shows that app processes cause iowat high ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grjzkkqg00",
+                                    "created": 1599443933932,
+                                    "text": "perf record -g ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grk4jl6rs0",
+                                    "created": 1599443944756,
+                                    "text": "perf report",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5grlqh9qhs0",
+                                            "created": 1599444070869,
+                                            "text": "filter the app process",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5grnzbpsyw0",
+                                                    "created": 1599444246853,
+                                                    "text": "find the most CPU time is blkdev_direct_IO ",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grpfehee00",
+                                    "created": 1599444360213,
+                                    "text": "find source code to check if has blkdev_direct_IO funcion call and fix ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5grqjpwb8g0",
+                            "created": 1599444447974,
+                            "text": "deal with zombie processes are increasing"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5grqtkbiqo0",
+                                    "created": 1599444469405,
+                                    "text": "root cause",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5grr07t9io0",
+                                            "created": 1599444483886,
+                                            "text": "child process quit quickly and don't send notification to its PPID",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5grrfgckm80",
+                                            "created": 1599444517054,
+                                            "text": "PPID don't correctly hanle child process quit ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grsw967eg0",
+                                    "created": 1599444631989,
+                                    "text": "top ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5grtjnp8kg0",
+                                            "created": 1599444682934,
+                                            "text": "find zombie process",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grtps4m9s0",
+                                    "created": 1599444696262,
+                                    "text": "pstree -aps  <zombie process pid>  to find the tree of zombie process",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5grty1xqgw0",
+                                    "created": 1599444714270,
+                                    "text": "find the PPID, which is app ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5gruuwvtdc0",
+                                    "created": 1599444785798,
+                                    "text": "check source code if it  manages  the child process quit and fix",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5grw0bfxrc0",
+                    "created": 1599444875926,
+                    "text": "summary",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5grw2n21280",
+                            "created": 1599444880982,
+                            "text": "iowat high don't mean it has IO problem",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5grxderluo0",
+                            "created": 1599444982790,
+                            "text": "first to use pidstat and dstat to identiy if it has a IO problem",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5grxz0cjjc0",
+                            "created": 1599445029807,
+                            "text": "then find the process caused the IO problem",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5gry7i3hbc0",
+                            "created": 1599445048295,
+                            "text": "use perf tools to figure out",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5gryhhbiyg0",
+                            "created": 1599445070015,
+                            "text": "zombie use pstree -aps <pid> to get the PPID and to verify the source code of the app",
+                            "background": "#73a1bf"
                         },
                         "children": []
                     }

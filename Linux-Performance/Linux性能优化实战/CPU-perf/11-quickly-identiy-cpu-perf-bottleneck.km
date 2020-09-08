@@ -1,0 +1,520 @@
+{
+    "root": {
+        "data": {
+            "id": "c5hs7yrmujc0",
+            "created": 1599547372879,
+            "text": "cpu perf bottle neck quick identification"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5hs9uzynj40",
+                    "created": 1599547521403,
+                    "text": "top: %sy high",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hsbkhajaw0",
+                            "created": 1599547655235,
+                            "text": "vmstat 1 : cs",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hsbyxsdjk0",
+                                    "created": 1599547686707,
+                                    "text": "pidstat -wt -u 1: nvcswch/s and cswch/s",
+                                    "layout_right_offset": {
+                                        "x": 26,
+                                        "y": 1
+                                    },
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hscvgu4bc0",
+                                            "created": 1599547757516,
+                                            "text": "perf record -g",
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5hsd2ipp880",
+                                                    "created": 1599547772867,
+                                                    "text": "perf report",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hsdk4g8js0",
+                    "created": 1599547811187,
+                    "text": "top: %us high",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hsdpb59400",
+                            "created": 1599547822475,
+                            "text": "pidstat -u 1: check user space process",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hsdsqq0vk0",
+                                    "created": 1599547829948,
+                                    "text": "perf record -g",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hse1ll9400",
+                                            "created": 1599547849228,
+                                            "text": "perf report ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5hseleyo0g0",
+                            "created": 1599547892363,
+                            "text": "if no process found, consider short-lived process",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hsf1znrog0",
+                                    "created": 1599547928443,
+                                    "text": "execsnoop",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hsf6dhnfk0",
+                                            "created": 1599547937988,
+                                            "text": "perf record -g",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5hsf9okh8o0",
+                                                    "created": 1599547945187,
+                                                    "text": "perf report",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hsef7ws4g0",
+                    "created": 1599547878876,
+                    "text": "top:  too many zombie process  ",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hsfowukhk0",
+                            "created": 1599547978339,
+                            "text": "pstree -ans <zombie process id>",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hsg0knz4w0",
+                            "created": 1599548003724,
+                            "text": "top: %hi is high",
+                            "background": "#73a1bf",
+                            "expandState": "collapse"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hsg3lk0400",
+                                    "created": 1599548010308,
+                                    "text": "perf report",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hsg89q3ko0",
+                    "created": 1599548020477,
+                    "text": "top: %hi is high",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hsgbtisbc0",
+                            "created": 1599548028204,
+                            "text": "vmstat 1: in(interrupt) count",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hshn0uxkg0",
+                                    "created": 1599548130957,
+                                    "text": "/proc/interrups",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hshsk8an40",
+                    "created": 1599548143012,
+                    "text": "top: %si is high",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hshxxj4ew0",
+                            "created": 1599548154701,
+                            "text": "/proc/softirqs",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hsifxalaw0",
+                                    "created": 1599548193868,
+                                    "text": "NET_RX/NET_TX",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hsim1gqtk0",
+                                            "created": 1599548207181,
+                                            "text": "sar -n",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5hsiqihifk0",
+                                            "created": 1599548216917,
+                                            "text": "tcpdump",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hsix8vd4o0",
+                                    "created": 1599548231573,
+                                    "text": "SCHED",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hsj1klm740",
+                                            "created": 1599548240989,
+                                            "text": "nvcswch/s nvcswch/s ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5hsj9bh3f40",
+                                                    "created": 1599548257852,
+                                                    "text": "consider CPU is exhausting",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hsjonc82w0",
+                    "created": 1599548291221,
+                    "text": "top: loadavg is increasing",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hsk3bwmqo0",
+                            "created": 1599548323181,
+                            "text": "vmstat 1: r(runnable processes) count",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hskfbc2cg0",
+                                    "created": 1599548349268,
+                                    "text": "analyze with %us %sy respectively",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hskpf70mo0",
+                    "created": 1599548371269,
+                    "text": "top: %iowat",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hsl4eb6og0",
+                            "created": 1599548403868,
+                            "text": "vmstat 1: b(uninterruptible process) count",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hsmao40hs0",
+                                    "created": 1599548495885,
+                                    "text": "pidstat -d -u 1\ndstat 1",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hsnrpenpc0",
+                                            "created": 1599548611333,
+                                            "text": "perf record -g",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5hsoqkzqio0",
+                                                    "created": 1599548687253,
+                                                    "text": "perf report ",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5hw3ip6qag0",
+                    "created": 1599558308885,
+                    "text": "caution",
+                    "background": "#ff0000"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5hw3lqv0o00",
+                            "created": 1599558315517,
+                            "text": "pidstat 中， %wait 表示进程等待 CPU 的时间百分比。此时进程是运行状态。",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hw3vptv540",
+                            "created": 1599558337222,
+                            "text": "top 中 ，iowait% 则表示等待 I/O 的 CPU 时间百分比。此时进程处于不可中断睡眠态。",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hw428ogf40",
+                            "created": 1599558351422,
+                            "text": "等待 CPU 的进程已经在 CPU 的就绪队列中，处于运行状态；而等待 I/O 的进程则处于不可中断状态。",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hwe9v6giw0",
+                            "created": 1599559151662,
+                            "text": "swapper它只在系统初始化时创建 init 进程之后，它就成了一个最低优先级的空闲任务。\n当 CPU 上没有其他任务运行时，就会执行 swapper 。所以，你可以称它为“空闲任务”\nswapper 时钟事件都耗费在了 do_idle 上，也就是在执行空闲任务",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5hwg1xo8b40",
+                            "created": 1599559291127,
+                            "text": "perf analyse container",
+                            "layout_right_offset": {
+                                "x": 5,
+                                "y": -98
+                            },
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hwgfmr7q80",
+                                    "created": 1599559320942,
+                                    "text": "bound mount container to host",
+                                    "layout_right_offset": {
+                                        "x": 21,
+                                        "y": 97
+                                    },
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hwglvfjpk0",
+                                            "created": 1599559334527,
+                                            "text": "mkdir /tmp/foo",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5hwgoz3dmg0",
+                                            "created": 1599559341279,
+                                            "text": "PID=$(docker inspect --format {{.State.Pid}} phpfpm)",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5hwgscadrs0",
+                                            "created": 1599559348607,
+                                            "text": "bindfs /proc/$PID/root /tmp/foo",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hwh1tcs880",
+                                    "created": 1599559369230,
+                                    "text": "perf record -g",
+                                    "layout_right_offset": {
+                                        "x": 18,
+                                        "y": -63
+                                    },
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hwhczpaqg0",
+                                    "created": 1599559393559,
+                                    "text": "perf report --symfs /tmp/foo",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf",
+                                    "layout_right_offset": {
+                                        "x": 15,
+                                        "y": 3
+                                    }
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5hwjivejso0",
+                            "created": 1599559563088,
+                            "text": "perf to analysis java app",
+                            "background": "#73a1bf",
+                            "layout_right_offset": {
+                                "x": 42,
+                                "y": -72
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hwjotqecw0",
+                                    "created": 1599559576047,
+                                    "text": "https://netflixtechblog.com/java-in-flames-e763b3d32166",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

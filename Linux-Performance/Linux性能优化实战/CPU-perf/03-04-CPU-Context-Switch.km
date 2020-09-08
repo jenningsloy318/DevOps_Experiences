@@ -369,7 +369,7 @@
                                         "data": {
                                             "id": "c5di9qurl940",
                                             "created": 1599113061456,
-                                            "text": "check process context switch\nno changes meansthat processes are not switching too much",
+                                            "text": "check process context switch\nno changes means that processes are not switching too much",
                                             "background": "#73a1bf"
                                         },
                                         "children": []
@@ -381,7 +381,36 @@
                                             "text": "check threads context switch",
                                             "background": "#73a1bf"
                                         },
-                                        "children": []
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5hrxnvfebc0",
+                                                    "created": 1599546565522,
+                                                    "text": "if increasing quickly, means threads are switching frequently ",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5hry1iecn40",
+                                                            "created": 1599546595209,
+                                                            "text": "nvcswch/s: is high mean process and threads are waiting for other resources ",
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5hry5jezvk0",
+                                                            "created": 1599546603977,
+                                                            "text": "nvcswch/s:  is hgigh mean CPU resouce is exhausting. process/thread are competing CPU resources",
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
                                     }
                                 ]
                             },

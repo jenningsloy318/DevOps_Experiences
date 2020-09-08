@@ -1,0 +1,403 @@
+{
+    "root": {
+        "data": {
+            "id": "c5ht8pojlew0",
+            "created": 1599550252575,
+            "text": "CPU Perf Tuning",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5ht8vjzp880",
+                    "created": 1599550265360,
+                    "text": "Methodology",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5ht90qswog0",
+                            "created": 1599550276656,
+                            "text": "How to evaluate the result of the tuning? ",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5htgqvz8cg0",
+                                    "created": 1599550882114,
+                                    "text": "determine the indicator for the perf tuning",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5hthuvca140",
+                                            "created": 1599550969147,
+                                            "text": "choose multipe dimension of the indicator",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5hticslk5s0",
+                                                    "created": 1599551008163,
+                                                    "text": "application aspect",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5htihpcquw0",
+                                                            "created": 1599551018851,
+                                                            "text": "latency",
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5htikroe540",
+                                                            "created": 1599551025522,
+                                                            "text": "throughput",
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5htiocetco0",
+                                                    "created": 1599551033306,
+                                                    "text": "system aspect",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5htiu7u48o0",
+                                                            "created": 1599551046091,
+                                                            "text": "CPU utulization",
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hth12goo00",
+                                    "created": 1599550904274,
+                                    "text": "test and find the indicator value before tuning",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5htk4r8l7k0",
+                                            "created": 1599551147395,
+                                            "text": "perf tool and application are runing on different machines",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5htkf66c6g0",
+                                            "created": 1599551170066,
+                                            "text": "application should running with same configuration ",
+                                            "background": "#73a1bf",
+                                            "layout_right_offset": {
+                                                "x": 22,
+                                                "y": 1
+                                            }
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5hthiwa3yw0",
+                                    "created": 1599550943082,
+                                    "text": "test and find the indicator value after tuning",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5ht9ib8wm00",
+                            "created": 1599550314897,
+                            "text": "Perf issue may be  caused by many aspects, how to pick a proper one?",
+                            "background": "#73a1bf",
+                            "layout_right_offset": {
+                                "x": 17,
+                                "y": -12
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5htllgqqk00",
+                                    "created": 1599551262130,
+                                    "text": "20-80 method: 80% problems are caused by 20% code",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htlvzfbc00",
+                                    "created": 1599551285027,
+                                    "text": "analyze all perf issue, and choose one which is resonable and profitbale",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htmmb4g9c0",
+                                    "created": 1599551342331,
+                                    "text": "system resource tuning is the first choice",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htmytmv280",
+                                    "created": 1599551369572,
+                                    "text": "and then choose the bottle neck caused issue and gain most profit problems to tune",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5htbcghp600",
+                            "created": 1599550458882,
+                            "text": "If there are more than one method can be used to tune, which one to choose ? ",
+                            "background": "#73a1bf",
+                            "layout_right_offset": {
+                                "x": 28,
+                                "y": 2
+                            }
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5htooneu0o0",
+                                    "created": 1599551504156,
+                                    "text": "denpends on the real problem",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htouq91nk0",
+                                    "created": 1599551517388,
+                                    "text": "normally choose the method which can gain most profit",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htp7ukajk0",
+                                    "created": 1599551545947,
+                                    "text": "make proper trade-off not introducing complexity or other perf issue",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5htq2g5elc0",
+                    "created": 1599551612556,
+                    "text": "Approaches",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5htqcgy6wg0",
+                            "created": 1599551634372,
+                            "text": "application tune",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5htqgl9az40",
+                                    "created": 1599551643340,
+                                    "text": "compiler parameters(gcc -o2)",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htqsmkcvk0",
+                                    "created": 1599551669540,
+                                    "text": "algorithm improvement",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htr6eb7vc0",
+                                    "created": 1599551699516,
+                                    "text": "use asynchronization instead",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htrj3sts80",
+                                    "created": 1599551727179,
+                                    "text": "use multi-thread instead of multi-process",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htrvtqiw00",
+                                    "created": 1599551754868,
+                                    "text": "use cache effectively",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5hts2wyrd40",
+                            "created": 1599551770301,
+                            "text": "system tune",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5hts68auns0",
+                                    "created": 1599551777517,
+                                    "text": "CPU binding: improve cpu cache hit rate",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htsc0j4dc0",
+                                    "created": 1599551790108,
+                                    "text": "CPU dedication: CPU-affinity",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htt4nhcqw0",
+                                    "created": 1599551852445,
+                                    "text": "adjust process nice",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5httdb1kmg0",
+                                    "created": 1599551871284,
+                                    "text": "using Cgroups",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5httk08soo0",
+                                    "created": 1599551885869,
+                                    "text": "NUMA tune: ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5htts7swo80",
+                                    "created": 1599551903740,
+                                    "text": "irqbalance: ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5htu245gp40",
+                                            "created": 1599551925287,
+                                            "text": "enable irqbalance",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5htu4frnug0",
+                                            "created": 1599551930343,
+                                            "text": "enable smp_affinity ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5htul0bs6g0",
+                    "created": 1599551966415,
+                    "text": "warning",
+                    "background": "#ff0000",
+                    "font-size": 24
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5htupav9s00",
+                            "created": 1599551975759,
+                            "text": "Avoid tuning too early ",
+                            "background": "#ff0000",
+                            "font-size": 24
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
