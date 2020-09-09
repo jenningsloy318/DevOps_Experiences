@@ -1,0 +1,467 @@
+{
+    "root": {
+        "data": {
+            "id": "c5ih6dnn56w0",
+            "created": 1599617776308,
+            "text": "How Memory Works",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5ih85fofyw0",
+                    "created": 1599617915141,
+                    "text": "Memory Mapping",
+                    "expandState": "expand",
+                    "layout_right_offset": {
+                        "x": 172,
+                        "y": -1
+                    },
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5ih6slm2hs0",
+                            "created": 1599617808837,
+                            "text": "Virtual Memory",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5ih776kq680",
+                            "created": 1599617840580,
+                            "text": "MMU (memory management unit)",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5ih705r6ko0",
+                            "created": 1599617825293,
+                            "text": "Physical Memory",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5ih8hixzdc0",
+                    "created": 1599617941460,
+                    "text": "Memory Allocation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5ihzwgzdq80",
+                            "created": 1599620089825,
+                            "text": "user space",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ih8vuesa80",
+                                    "created": 1599617972628,
+                                    "text": "malloc()",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5ih8x6uavc0",
+                                            "created": 1599617975556,
+                                            "text": "brk()/ sbrk()",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5ih984g5jk0",
+                                                    "created": 1599617999356,
+                                                    "text": "Less than 128K",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5ihdfyivfs0",
+                                                    "created": 1599618329869,
+                                                    "text": "easy to extend the process heap",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5ihd6k86fc0",
+                                                    "created": 1599618309414,
+                                                    "text": "not easy to hand back allocated\nmemory",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5ihdz36ids0",
+                                                    "created": 1599618371509,
+                                                    "text": "only one “heap”",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5ih93z2v4w0",
+                                            "created": 1599617990324,
+                                            "text": "mmap()",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5ih9boo0z40",
+                                                    "created": 1599618007109,
+                                                    "text": "Larger than 128K",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5ihdji7zbk0",
+                                                    "created": 1599618337590,
+                                                    "text": "easy to allocate several large areas",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5ihdn37hnk0",
+                                                    "created": 1599618345390,
+                                                    "text": "easy to hand back allocated\nmemory",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5ihdrozdao0",
+                                                    "created": 1599618355413,
+                                                    "text": "ability to map a file in memory",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihzrii1lk0",
+                            "created": 1599620079033,
+                            "text": "kernel space",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihzuilhow0",
+                                    "created": 1599620085569,
+                                    "text": "Buddy system(partner system)",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5ii2cbw9z40",
+                                            "created": 1599620281074,
+                                            "text": "Divide the memory into many levels according to pages",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5ii1lamotc0",
+                                            "created": 1599620222225,
+                                            "text": "slab page",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5ii5xzhxq00",
+                                                    "created": 1599620563306,
+                                                    "text": "slab()",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5ihhmi69ns0",
+                    "created": 1599618657574,
+                    "text": "Memory Recycle",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5iho0p02b40",
+                            "created": 1599619158647,
+                            "text": "Recycle cache",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihp5j1dso0",
+                                    "created": 1599619247535,
+                                    "text": "LRU（Least Recently Used）",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5iho7wpg4o0",
+                            "created": 1599619174351,
+                            "text": "Recycle not frequent used memory, swap them out to disk",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihoqikj0g0",
+                            "created": 1599619214855,
+                            "text": "kill process due to OOM",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihpfyeqjk0",
+                                    "created": 1599619270232,
+                                    "text": "oom_score",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5ihpk21irk0",
+                                    "created": 1599619279159,
+                                    "text": "oom_adj",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5ihpp12ofs0",
+                                            "created": 1599619289984,
+                                            "text": "echo -16 > /proc/$(pidof sshd)/oom_adj",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5ihpvmo7xc0",
+                    "created": 1599619304351,
+                    "text": "free -m",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5ihwe7892w0",
+                            "created": 1599619814961,
+                            "text": "total",
+                            "layout_right_offset": {
+                                "x": 23,
+                                "y": -12
+                            },
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihwjalch40",
+                            "created": 1599619826049,
+                            "text": "used",
+                            "layout_right_offset": {
+                                "x": 13,
+                                "y": 1
+                            },
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihwh7leoo0",
+                            "created": 1599619821513,
+                            "text": "free",
+                            "layout_right_offset": {
+                                "x": 14,
+                                "y": 2
+                            },
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihwl09pqo0",
+                            "created": 1599619829777,
+                            "text": "cache/buffer",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihw8dnx400",
+                            "created": 1599619802289,
+                            "text": "available",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihwowdb2o0",
+                                    "created": 1599619838249,
+                                    "text": "free + recyclable buffer",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5ihx34a9xk0",
+                    "created": 1599619869202,
+                    "text": "top",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5ihx5vqxw80",
+                            "created": 1599619875217,
+                            "text": "VIRT",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihx7w4kds0",
+                                    "created": 1599619879593,
+                                    "text": "Virtual Memory, not map all physical memory ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihxdxe5ts0",
+                            "created": 1599619892730,
+                            "text": "RES",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihxg2mwqg0",
+                                    "created": 1599619897401,
+                                    "text": "Allocated physical Memory",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihxrl5l6w0",
+                            "created": 1599619922465,
+                            "text": "SHR",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihxu14u880",
+                                    "created": 1599619927785,
+                                    "text": "Shared memory, including memory shared with other process(shared), dymatic libary(private), application code(private)",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihyovpeyw0",
+                            "created": 1599619994937,
+                            "text": "%MEM",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5ihyrwgvvs0",
+                                    "created": 1599620001513,
+                                    "text": "pertentage physical memory used",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
