@@ -511,6 +511,57 @@
                         ]
                     }
                 ]
+            },
+            {
+                "data": {
+                    "id": "c5jg5iah5pc0",
+                    "created": 1599716446879,
+                    "text": "/proc/stat",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jg5mivirk0",
+                            "created": 1599716456094,
+                            "text": "The amount of time, measured in units of USER_HZ that the system spent in various states:",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5jgepdhudc0",
+                                    "created": 1599717167576,
+                                    "text": "#include <stdio.h>\n#include <unistd.h>\n#include <sys/times.h>\n\nmain ()\n{\n\n\tprintf (\"USER_HZ: is %ld\\n\", sysconf (_SC_CLK_TCK));\n\n}",
+                                    "layout_right_offset": {
+                                        "x": 15,
+                                        "y": 3
+                                    },
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5jggm2tixc0",
+                            "created": 1599717317129,
+                            "text": "user/nice/system/idle/iowait/irq/softirq/steal/guest/guest_nice",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5jhbbnp3p40",
+                            "created": 1599719723735,
+                            "text": "idle: is the second colomn value of /proc/uptime",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
             }
         ]
     },

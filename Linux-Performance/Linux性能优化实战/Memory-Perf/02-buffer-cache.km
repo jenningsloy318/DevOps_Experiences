@@ -1,0 +1,214 @@
+{
+    "root": {
+        "data": {
+            "id": "c5jgimehacg0",
+            "created": 1599717474562,
+            "text": "Buffer vs Cache",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5jglz7e2yw0",
+                    "created": 1599717737524,
+                    "text": "free -m",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jgm24k0q00",
+                            "created": 1599717743883,
+                            "text": "buffers: Memory used by kernel buffers (Buffers in /proc/meminfo)",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5jgmfy5pr40",
+                            "created": 1599717773971,
+                            "text": "cache: Memory used by the page cache and slabs (Cached and SReclaimable in /proc/meminfo)",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5jgjl11smo0",
+                    "created": 1599717549937,
+                    "text": "/proc/meminfo",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jgjohoejk0",
+                            "created": 1599717557473,
+                            "text": "Buffers:Relatively temporary storage for raw disk blocks that shouldn't get tremendously large (20MB or so)",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5jgk3ya5hk0",
+                            "created": 1599717591129,
+                            "text": "Cached: In-memory cache for files read from the disk (the page cache). ",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5jgn8shwfk0",
+                            "created": 1599717836755,
+                            "text": "SReclaimable: Part of Slab, that might be reclaimed, such as caches. ",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5jgnnzg79s0",
+                            "created": 1599717869828,
+                            "text": "SUnreclaim: Part of Slab, that cannot be reclaimed on memory pressure.",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5jgl74f8vs0",
+                    "created": 1599717676395,
+                    "text": "page cache",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jgro22of40",
+                            "created": 1599718183443,
+                            "text": "Linux performs all file I/O through the page cache",
+                            "font-weight": "bold",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5jgs2ncihs0",
+                                    "created": 1599718215204,
+                                    "text": "Writes will performed to page caches,then write back to disk",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5jgsj98imo0",
+                                    "created": 1599718251356,
+                                    "text": "Reads are implemented by returning the data from the page cache;\n if the data is not yet in the cache, it is first populated from disk",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5jgtdp9stc0",
+                                    "created": 1599718317629,
+                                    "text": "system will purge the page cache along with swapping data out to disk to make available more memory as needed",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5jgwi5tkdc0",
+                    "created": 1599718562430,
+                    "text": "Buffers",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jgtq0lz3k0",
+                            "created": 1599718344436,
+                            "text": "Buffers are in-memory block I/O buffers",
+                            "font-weight": "bold",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5jgugq83800",
+                                    "created": 1599718402581,
+                                    "text": "Buffers is raw disk blocks not represented in the page cache--e.g., not file data",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5jh2w1efhc0",
+                                    "created": 1599719062822,
+                                    "text": "read and write are directly to raw device, thus only use buffer",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5jh7g41to80",
+                    "created": 1599719419975,
+                    "text": "/proc/[pid]/smaps",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jh9i7bslc0",
+                            "created": 1599719581255,
+                            "text": "This file shows memory consumption for each of the process's mappings.",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5jh7ljq1s00",
+                            "created": 1599719431806,
+                            "text": "RSS: amount of the mapping that is currently  resident  in  RAM",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5jh8ycqiw00",
+                            "created": 1599719538046,
+                            "text": "PSS: the process's proportional share of this mapping",
+                            "background": "#73a1bf",
+                            "font-weight": "bold"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
