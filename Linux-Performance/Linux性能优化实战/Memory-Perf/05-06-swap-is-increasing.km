@@ -1,0 +1,341 @@
+{
+    "root": {
+        "data": {
+            "id": "c5kaunz0yqw0",
+            "created": 1599803051648,
+            "text": "MainTopic",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5kayb7zgw00",
+                    "created": 1599803337348,
+                    "text": "page reclaim",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5kbvgc6un40",
+                            "created": 1599805934504,
+                            "text": "reclaim targets",
+                            "expandState": "expand",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5kayye7wuw0",
+                                    "created": 1599803387791,
+                                    "text": "file backed mapping",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5kb0nnuekw0",
+                                            "created": 1599803521157,
+                                            "text": "active list",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5kb0qsjy2w0",
+                                            "created": 1599803527972,
+                                            "text": "inactive list",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5kdgj9sr4o0",
+                                            "created": 1599810407647,
+                                            "text": "write dirty page, reclaim pages",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kayzispns0",
+                                    "created": 1599803390245,
+                                    "text": "anonymous mapping",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5kdgv1bh1k0",
+                                            "created": 1599810433256,
+                                            "text": "swap out to disk",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5kbtkrmqdk0",
+                            "created": 1599805787417,
+                            "text": "methods",
+                            "layout": null,
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5kbto9gv3c0",
+                                    "created": 1599805795025,
+                                    "text": "direct reclaim",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kbts1qnkw0",
+                                    "created": 1599805803265,
+                                    "text": "kswapd0",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5kbu5jjths0",
+                                            "created": 1599805832640,
+                                            "text": "pages_min",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5kbunjusa00",
+                                                    "created": 1599805871841,
+                                                    "text": "/proc/sys/vm/min_free_kbytes",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5kbu8nrc3s0",
+                                            "created": 1599805839425,
+                                            "text": "pages_low",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5kbubbeocg0",
+                                            "created": 1599805845209,
+                                            "text": "pages_high",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kbv44kobs0",
+                                    "created": 1599805907922,
+                                    "text": "/proc/sys/vm/swappiness",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5kd12ui0xk0",
+                    "created": 1599809196431,
+                    "text": "NUMA",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5kd155axig0",
+                            "created": 1599809201438,
+                            "text": "zones",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5kd171fnq80",
+                                    "created": 1599809205558,
+                                    "text": "DMA",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kd1bh4uzc0",
+                                    "created": 1599809215214,
+                                    "text": "NORMAL",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kd1dzcvfs0",
+                                    "created": 1599809220669,
+                                    "text": "MOVABLE",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5kd2wmcug00",
+                            "created": 1599809339606,
+                            "text": "zoneinfo",
+                            "expandState": "expand",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5kd1jhtdbk0",
+                                    "created": 1599809232669,
+                                    "text": "numactl --hardware",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kd1kmkfko0",
+                                    "created": 1599809235134,
+                                    "text": "/proc/zoneinfo",
+                                    "layout": null,
+                                    "expandState": "expand",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kd2mrifz40",
+                                    "created": 1599809318150,
+                                    "text": "/proc/sys/vm/zone_reclaim_mode",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5kd4butryg0",
+                    "created": 1599809451134,
+                    "text": "SWAP",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5kd4hhido80",
+                            "created": 1599809463390,
+                            "text": "/proc/sys/vm/swappiness",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5kfjizum6g0",
+                    "created": 1599816284358,
+                    "text": "Similation",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5kfjm341280",
+                            "created": 1599816291085,
+                            "text": "dd if=/dev/sda2 of=/dev/null bs=1G count=2048",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5kfjtfkeso0",
+                            "created": 1599816307076,
+                            "text": "sar -r -S 1",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5kfjx9z5280",
+                            "created": 1599816315445,
+                            "text": "cachetop 5",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

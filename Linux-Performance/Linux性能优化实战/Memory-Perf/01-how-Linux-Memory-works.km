@@ -13,19 +13,27 @@
                     "created": 1599617915141,
                     "text": "Memory Mapping",
                     "expandState": "expand",
-                    "layout_right_offset": {
-                        "x": 172,
-                        "y": -1
-                    },
-                    "background": "#73a1bf"
+                    "background": "#73a1bf",
+                    "layout": null
                 },
                 "children": [
                     {
                         "data": {
+                            "id": "c5kb9y4kq280",
+                            "created": 1599804249214,
+                            "text": "A memory mapping is a set of page table entries describing the properties\n  of a consecutive virtual address range.  Each memory mapping has a\n  start address and length, permissions (such as whether the program can\n  read, write, or execute from that memory), and associated resources (such\n  as physical pages, swap pages, file contents, and so on).",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
                             "id": "c5ih6slm2hs0",
                             "created": 1599617808837,
-                            "text": "Virtual Memory",
-                            "background": "#73a1bf"
+                            "text": "Virtual Memory: virtual memory addresses  are unique per-process",
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": []
                     },
@@ -34,7 +42,8 @@
                             "id": "c5ih776kq680",
                             "created": 1599617840580,
                             "text": "MMU (memory management unit)",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": []
                     },
@@ -43,9 +52,113 @@
                             "id": "c5ih705r6ko0",
                             "created": 1599617825293,
                             "text": "Physical Memory",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5kb8hv6n4w0",
+                            "created": 1599804135454,
+                            "text": "Page tables are data structures which containing a process's list of memory\n  mappings and track associated resources",
+                            "layout": null,
                             "background": "#73a1bf"
                         },
                         "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5kbbrbotlk0",
+                            "created": 1599804391135,
+                            "text": "mapping types",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5kbbucz53k0",
+                                    "created": 1599804397743,
+                                    "text": "anonymous",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5kbe6pna9c0",
+                                            "created": 1599804581359,
+                                            "text": "programs allocate memory from the operating system for use\n  by things like the stack and heap",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kbc271fc80",
+                                    "created": 1599804414799,
+                                    "text": "file backed",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5kbmy8cfc00",
+                                            "created": 1599805268176,
+                                            "text": "File backed mappings mirror the contents of an existing file",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kbc4wt39k0",
+                                    "created": 1599804420710,
+                                    "text": "device backed",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kbc94ywr40",
+                                    "created": 1599804429911,
+                                    "text": "shared",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5kbne9kpxk0",
+                                            "created": 1599805303079,
+                                            "text": "Multiple Page Table Entries can map the same physical page",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kbca6j0bk0",
+                                    "created": 1599804432182,
+                                    "text": "copy on write",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             },
@@ -54,7 +167,8 @@
                     "id": "c5ih8hixzdc0",
                     "created": 1599617941460,
                     "text": "Memory Allocation",
-                    "background": "#73a1bf"
+                    "background": "#73a1bf",
+                    "layout": null
                 },
                 "children": [
                     {
@@ -63,7 +177,8 @@
                             "created": 1599620089825,
                             "text": "user space",
                             "expandState": "expand",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -71,7 +186,8 @@
                                     "id": "c5ih8vuesa80",
                                     "created": 1599617972628,
                                     "text": "malloc()",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": [
                                     {
@@ -79,7 +195,8 @@
                                             "id": "c5ih8x6uavc0",
                                             "created": 1599617975556,
                                             "text": "brk()/ sbrk()",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": [
                                             {
@@ -87,7 +204,8 @@
                                                     "id": "c5ih984g5jk0",
                                                     "created": 1599617999356,
                                                     "text": "Less than 128K",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             },
@@ -96,7 +214,8 @@
                                                     "id": "c5ihdfyivfs0",
                                                     "created": 1599618329869,
                                                     "text": "easy to extend the process heap",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             },
@@ -105,7 +224,8 @@
                                                     "id": "c5ihd6k86fc0",
                                                     "created": 1599618309414,
                                                     "text": "not easy to hand back allocated\nmemory",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             },
@@ -114,7 +234,8 @@
                                                     "id": "c5ihdz36ids0",
                                                     "created": 1599618371509,
                                                     "text": "only one “heap”",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             }
@@ -125,7 +246,8 @@
                                             "id": "c5ih93z2v4w0",
                                             "created": 1599617990324,
                                             "text": "mmap()",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": [
                                             {
@@ -133,7 +255,8 @@
                                                     "id": "c5ih9boo0z40",
                                                     "created": 1599618007109,
                                                     "text": "Larger than 128K",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             },
@@ -142,7 +265,8 @@
                                                     "id": "c5ihdji7zbk0",
                                                     "created": 1599618337590,
                                                     "text": "easy to allocate several large areas",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             },
@@ -151,7 +275,8 @@
                                                     "id": "c5ihdn37hnk0",
                                                     "created": 1599618345390,
                                                     "text": "easy to hand back allocated\nmemory",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             },
@@ -160,7 +285,8 @@
                                                     "id": "c5ihdrozdao0",
                                                     "created": 1599618355413,
                                                     "text": "ability to map a file in memory",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             }
@@ -175,7 +301,8 @@
                                     "text": "userspace memory structure",
                                     "hyperlink": null,
                                     "hyperlinkTitle": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": [
                                     {
@@ -203,21 +330,8 @@
                                             "id": "c5kam6d2lc80",
                                             "created": 1599802386402,
                                             "text": "堆和文件映射段的内存是动态分配的",
-                                            "background": "#73a1bf"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "data": {
-                                            "id": "c5kapezwtb40",
-                                            "created": 1599802640290,
-                                            "text": "userspace virtual memory stucture",
-                                            "image": "https://raw.githubusercontent.com/jenningsloy318/DevOps_Experiences/master/Linux-Performance/Linux%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E6%88%98/Memory-Perf/userspace-memory-structure.png",
-                                            "imageTitle": "userspace virtual memory stucture",
-                                            "imageSize": {
-                                                "width": 100,
-                                                "height": 80
-                                            }
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": []
                                     }
@@ -230,7 +344,8 @@
                             "id": "c5ihzrii1lk0",
                             "created": 1599620079033,
                             "text": "kernel space",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -238,7 +353,8 @@
                                     "id": "c5ihzuilhow0",
                                     "created": 1599620085569,
                                     "text": "Buddy system(partner system)",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": [
                                     {
@@ -246,7 +362,8 @@
                                             "id": "c5ii2cbw9z40",
                                             "created": 1599620281074,
                                             "text": "Divide the memory into many levels according to pages",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": []
                                     },
@@ -255,7 +372,8 @@
                                             "id": "c5ii1lamotc0",
                                             "created": 1599620222225,
                                             "text": "slab page",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": [
                                             {
@@ -263,11 +381,34 @@
                                                     "id": "c5ii5xzhxq00",
                                                     "created": 1599620563306,
                                                     "text": "slab()",
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "layout": null
                                                 },
                                                 "children": []
                                             }
                                         ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5kbi85vyl40",
+                                    "created": 1599804897975,
+                                    "text": "page cache",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5kbifd2q6w0",
+                                            "created": 1599804913647,
+                                            "text": "kernel' cache of file contents",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
                                     }
                                 ]
                             }
@@ -280,7 +421,8 @@
                     "id": "c5ihhmi69ns0",
                     "created": 1599618657574,
                     "text": "Memory Recycle",
-                    "background": "#73a1bf"
+                    "background": "#73a1bf",
+                    "layout": null
                 },
                 "children": [
                     {
@@ -288,7 +430,8 @@
                             "id": "c5iho0p02b40",
                             "created": 1599619158647,
                             "text": "Recycle cache",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -296,7 +439,8 @@
                                     "id": "c5ihp5j1dso0",
                                     "created": 1599619247535,
                                     "text": "LRU（Least Recently Used）",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": []
                             }
@@ -307,7 +451,8 @@
                             "id": "c5iho7wpg4o0",
                             "created": 1599619174351,
                             "text": "Recycle not frequent used memory, swap them out to disk",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": []
                     },
@@ -316,7 +461,8 @@
                             "id": "c5ihoqikj0g0",
                             "created": 1599619214855,
                             "text": "kill process due to OOM",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -324,7 +470,8 @@
                                     "id": "c5ihpfyeqjk0",
                                     "created": 1599619270232,
                                     "text": "oom_score",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": []
                             },
@@ -333,7 +480,8 @@
                                     "id": "c5ihpk21irk0",
                                     "created": 1599619279159,
                                     "text": "oom_adj",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": [
                                     {
@@ -341,7 +489,8 @@
                                             "id": "c5ihpp12ofs0",
                                             "created": 1599619289984,
                                             "text": "echo -16 > /proc/$(pidof sshd)/oom_adj",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": []
                                     }
@@ -356,7 +505,8 @@
                     "id": "c5ihpvmo7xc0",
                     "created": 1599619304351,
                     "text": "free -m",
-                    "background": "#73a1bf"
+                    "background": "#73a1bf",
+                    "layout": null
                 },
                 "children": [
                     {
@@ -364,11 +514,8 @@
                             "id": "c5ihwe7892w0",
                             "created": 1599619814961,
                             "text": "total",
-                            "layout_right_offset": {
-                                "x": 23,
-                                "y": -12
-                            },
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": []
                     },
@@ -377,11 +524,8 @@
                             "id": "c5ihwjalch40",
                             "created": 1599619826049,
                             "text": "used",
-                            "layout_right_offset": {
-                                "x": 13,
-                                "y": 1
-                            },
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": []
                     },
@@ -390,11 +534,8 @@
                             "id": "c5ihwh7leoo0",
                             "created": 1599619821513,
                             "text": "free",
-                            "layout_right_offset": {
-                                "x": 14,
-                                "y": 2
-                            },
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": []
                     },
@@ -403,7 +544,8 @@
                             "id": "c5ihwl09pqo0",
                             "created": 1599619829777,
                             "text": "cache/buffer",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": []
                     },
@@ -412,7 +554,8 @@
                             "id": "c5ihw8dnx400",
                             "created": 1599619802289,
                             "text": "available",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -420,7 +563,8 @@
                                     "id": "c5ihwowdb2o0",
                                     "created": 1599619838249,
                                     "text": "free + recyclable buffer",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": []
                             }
@@ -433,7 +577,8 @@
                     "id": "c5ihx34a9xk0",
                     "created": 1599619869202,
                     "text": "top",
-                    "background": "#73a1bf"
+                    "background": "#73a1bf",
+                    "layout": null
                 },
                 "children": [
                     {
@@ -441,7 +586,8 @@
                             "id": "c5ihx5vqxw80",
                             "created": 1599619875217,
                             "text": "VIRT",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -449,7 +595,8 @@
                                     "id": "c5ihx7w4kds0",
                                     "created": 1599619879593,
                                     "text": "Virtual Memory, not map all physical memory ",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": []
                             }
@@ -460,7 +607,8 @@
                             "id": "c5ihxdxe5ts0",
                             "created": 1599619892730,
                             "text": "RES",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -468,7 +616,8 @@
                                     "id": "c5ihxg2mwqg0",
                                     "created": 1599619897401,
                                     "text": "Allocated physical Memory",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": []
                             }
@@ -479,7 +628,8 @@
                             "id": "c5ihxrl5l6w0",
                             "created": 1599619922465,
                             "text": "SHR",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -487,7 +637,8 @@
                                     "id": "c5ihxu14u880",
                                     "created": 1599619927785,
                                     "text": "Shared memory, including memory shared with other process(shared), dymatic libary(private), application code(private)",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": []
                             }
@@ -498,7 +649,8 @@
                             "id": "c5ihyovpeyw0",
                             "created": 1599619994937,
                             "text": "%MEM",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "layout": null
                         },
                         "children": [
                             {
@@ -506,7 +658,8 @@
                                     "id": "c5ihyrwgvvs0",
                                     "created": 1599620001513,
                                     "text": "pertentage physical memory used",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "layout": null
                                 },
                                 "children": []
                             }

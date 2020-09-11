@@ -1,0 +1,140 @@
+{
+    "root": {
+        "data": {
+            "id": "c5jjikn446w0",
+            "created": 1599725934060,
+            "text": "Memory Leak",
+            "background": "#73a1bf",
+            "expandState": "expand"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5jk4cplyjc0",
+                    "created": 1599727640808,
+                    "text": "simulation",
+                    "background": "#73a1bf",
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jk4fh7w880",
+                            "created": 1599727646831,
+                            "text": "docker run --name=app -itd feisky/app:mem-leak",
+                            "background": "#73a1bf",
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5jk4hbrfu00",
+                    "created": 1599727650855,
+                    "text": "analysis",
+                    "background": "#73a1bf",
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5jk4p6hnpc0",
+                            "created": 1599727667951,
+                            "text": "vmstat 5",
+                            "background": "#73a1bf",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5jk6fxqk0g0",
+                                    "created": 1599727804559,
+                                    "text": "buffer and cache is increasing",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5jk6lvk15c0",
+                                    "created": 1599727817487,
+                                    "text": "free is decreasing",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5jkk6irms00",
+                            "created": 1599728881161,
+                            "text": "pidstat -r 5",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5jkkzke5pk0",
+                                    "created": 1599728944386,
+                                    "text": "app process has memory usage changes",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5jkadf3u5s0",
+                            "created": 1599728112535,
+                            "text": "memleak -a -p $(pgrep app)",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5jkmaj4ijs0",
+                                    "created": 1599729046618,
+                                    "text": "\taddr = 7fced8a9c3e0 size = 8192\n\taddr = 7fced8a68240 size = 8192\n\taddr = 7fced8a80300 size = 8192\n\taddr = 7fced8a6a250 size = 8192\n\taddr = 7fced8a742a0 size = 8192\n\taddr = 7fced8a82310 size = 8192\n\taddr = 7fced8a983c0 size = 8192\n\taddr = 7fced8a6e270 size = 8192\n\taddr = 7fced8a7a2d0 size = 8192\n\taddr = 7fced8a8a350 size = 8192\n\taddr = 7fced8a762b0 size = 8192\n\taddr = 7fced8a963b0 size = 8192\n\taddr = 7fced8a943a0 size = 8192\n\taddr = 7fced8a7c2e0 size = 8192\n\taddr = 7fced8a9a3d0 size = 8192\n\taddr = 7fced8a64220 size = 8192\n\taddr = 7fced8a90380 size = 8192\n\taddr = 7fced8a6c260 size = 8192\n\taddr = 7fced8a84320 size = 8192\n\taddr = 7fced8a66230 size = 8192\n\taddr = 7fced8a8c360 size = 8192\n\taddr = 7fced8a72290 size = 8192\n\taddr = 7fced8a88340 size = 8192\n\taddr = 7fced8a7e2f0 size = 8192\n\taddr = 7fced8a70280 size = 8192\n\taddr = 7fced8a86330 size = 8192\n\taddr = 7fced8a62210 size = 8192\n\taddr = 7fced8a92390 size = 8192\n\taddr = 7fced8a8e370 size = 8192\n\taddr = 7fced8a782c0 size = 8192\n\t245760 bytes in 30 allocations from stack\n\t\tfibonacci+0x1f [app]\n\t\tchild+0x4f [app]\n\t\tstart_thread+0xdb [libpthread-2.27.so]",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5jkmwme5eg0",
+                                            "created": 1599729094705,
+                                            "text": "fibonacci and child function allocated memory but didn't free them",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5jknyco7y80",
+                            "created": 1599729176835,
+                            "text": "fix in source code",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
