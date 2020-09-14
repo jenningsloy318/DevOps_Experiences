@@ -1,0 +1,227 @@
+{
+    "root": {
+        "data": {
+            "id": "c5mqm18eobk0",
+            "created": 1600050632908,
+            "text": "How To",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5mqm6gv4600",
+                    "created": 1600050644303,
+                    "text": "Analysis",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5mqm974y600",
+                            "created": 1600050650246,
+                            "text": "free -m / top",
+                            "layout": null,
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5mqmfibpwg0",
+                                    "created": 1600050663983,
+                                    "text": "if  buffer/cached usage is high",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mqnegan740",
+                                            "created": 1600050740047,
+                                            "text": "cache",
+                                            "expandState": "expand",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5mqmz4g3aw0",
+                                                    "created": 1600050706679,
+                                                    "text": "cachestat / cachetop",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5mqnb3rf7c0",
+                                                    "created": 1600050732759,
+                                                    "text": "slaptop",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5mqqf1ibts0",
+                                                    "created": 1600050976423,
+                                                    "text": "pcstat <filename>: to see how much read/write hit rate for when application is access the <filename>",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mqr43gpi00",
+                                    "created": 1600051030960,
+                                    "text": "use pidstat /top to check process used most memory",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mqrpzraww0",
+                                            "created": 1600051078625,
+                                            "text": "pmap: analyze process memory space",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mqrylpx1c0",
+                                    "created": 1600051097368,
+                                    "text": "also check the memory usage trend with  sar -r -S 1 or vmstat",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mqtiajrpc0",
+                                            "created": 1600051218592,
+                                            "text": "memleak check if has memory leak issue",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5mquf4fqq00",
+                    "created": 1600051290056,
+                    "text": "Tuning",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5mqukbiig00",
+                            "created": 1600051301368,
+                            "text": "disable swap or configure its wight in ",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5mr75epegw0",
+                            "created": 1600052287643,
+                            "text": "reduce dynamic memory allocation",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5mr7o87wag0",
+                                    "created": 1600052328610,
+                                    "text": "use memory pool",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mr80t3j340",
+                                    "created": 1600052355994,
+                                    "text": "hugepage",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5mr85vk2gg0",
+                            "created": 1600052367027,
+                            "text": "use cache/buffer  to storage hot data as possible",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5mr8xpmzds0",
+                                    "created": 1600052427619,
+                                    "text": "allocate stack memory for application data",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mr8e1xi6o0",
+                                    "created": 1600052384826,
+                                    "text": "redis",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5mr9btk60g0",
+                            "created": 1600052458331,
+                            "text": "use cgroups to restrict memory usage",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5mrad59gjs0",
+                            "created": 1600052539579,
+                            "text": "/proc/<pid>/oom_adj adjust oom_score",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

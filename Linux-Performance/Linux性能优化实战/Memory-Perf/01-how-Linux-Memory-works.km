@@ -89,7 +89,7 @@
                                         "data": {
                                             "id": "c5kbe6pna9c0",
                                             "created": 1599804581359,
-                                            "text": "programs allocate memory from the operating system for use\n  by things like the stack and heap",
+                                            "text": "Memory mapping with no file or device backing it,\nthese pages may contain memory requested on-the-fly by programs to hold data, \nor for such things as the stack and the heap",
                                             "layout": null,
                                             "background": "#73a1bf"
                                         },
@@ -110,7 +110,7 @@
                                         "data": {
                                             "id": "c5kbmy8cfc00",
                                             "created": 1599805268176,
-                                            "text": "File backed mappings mirror the contents of an existing file",
+                                            "text": "File backed mappings contain data that has been read from a file. It can be any kind of file",
                                             "layout": null,
                                             "background": "#73a1bf"
                                         },
@@ -126,7 +126,18 @@
                                     "layout": null,
                                     "background": "#73a1bf"
                                 },
-                                "children": []
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mqx9pvv5c0",
+                                            "created": 1600051513385,
+                                            "text": "Devices are addressed through block device files that can be treated as though they were files",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             },
                             {
                                 "data": {
@@ -142,7 +153,8 @@
                                             "id": "c5kbne9kpxk0",
                                             "created": 1599805303079,
                                             "text": "Multiple Page Table Entries can map the same physical page",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": []
                                     }
@@ -156,7 +168,18 @@
                                     "layout": null,
                                     "background": "#73a1bf"
                                 },
-                                "children": []
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mqyj2si7k0",
+                                            "created": 1600051612121,
+                                            "text": "If a copy of a resource already in memory is requested, \nthe request is satisfied by returning a mapping to the original resource. \nIf one of the processes “sharing” the resource tries to write to it, \nthe resource must be truly replicated in memory to allow the changes to be made to the new copy.",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -422,39 +445,88 @@
                     "created": 1599618657574,
                     "text": "Memory Recycle",
                     "background": "#73a1bf",
-                    "layout": null
+                    "layout": null,
+                    "expandState": "expand"
                 },
                 "children": [
                     {
                         "data": {
-                            "id": "c5iho0p02b40",
-                            "created": 1599619158647,
-                            "text": "Recycle cache",
-                            "background": "#73a1bf",
-                            "layout": null
+                            "id": "c5mrnridnwo0",
+                            "created": 1600053589581,
+                            "text": "mechanism",
+                            "expandState": "expand",
+                            "layout": null,
+                            "background": "#73a1bf"
                         },
                         "children": [
                             {
                                 "data": {
-                                    "id": "c5ihp5j1dso0",
-                                    "created": 1599619247535,
-                                    "text": "LRU（Least Recently Used）",
+                                    "id": "c5mrhkyl8pc0",
+                                    "created": 1600053105139,
+                                    "text": "Direct memory reclaim",
+                                    "expandState": "expand",
                                     "background": "#73a1bf",
                                     "layout": null
                                 },
                                 "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mrmwssz340",
+                                    "created": 1600053522732,
+                                    "text": "kswapd0",
+                                    "layout_right_offset": {
+                                        "x": 18,
+                                        "y": -2
+                                    },
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mrxbg68680",
+                                            "created": 1600054338261,
+                                            "text": "page cache",
+                                            "expandState": "expand",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5mrs5ty1xk0",
+                                                    "created": 1600053934212,
+                                                    "text": "page_min",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5mrs95adm80",
+                                                    "created": 1600053941429,
+                                                    "text": "page_low",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5mrsba667k0",
+                                                    "created": 1600053946077,
+                                                    "text": "page_high",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
-                    },
-                    {
-                        "data": {
-                            "id": "c5iho7wpg4o0",
-                            "created": 1599619174351,
-                            "text": "Recycle not frequent used memory, swap them out to disk",
-                            "background": "#73a1bf",
-                            "layout": null
-                        },
-                        "children": []
                     },
                     {
                         "data": {
@@ -493,6 +565,125 @@
                                             "layout": null
                                         },
                                         "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5mrnwsvgbs0",
+                            "created": 1600053601100,
+                            "text": "targets",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5mro0zpb6o0",
+                                    "created": 1600053610220,
+                                    "text": "File-backed Page",
+                                    "background": "#73a1bf",
+                                    "layout": null,
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5muojbxkg80",
+                                            "created": 1600062113471,
+                                            "text": "clean page(inactive page list)",
+                                            "expandState": "expand",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5mrhkyl8pc0",
+                                                    "created": 1600053105139,
+                                                    "text": "Direct memory reclaim",
+                                                    "expandState": "expand",
+                                                    "background": "#73a1bf",
+                                                    "layout": null
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5mro4rv5w80",
+                                            "created": 1600053618453,
+                                            "text": "dirty page(data is modified but not write to disk)",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5mrozs3ey00",
+                                                    "created": 1600053685947,
+                                                    "text": "swap out",
+                                                    "background": "#73a1bf",
+                                                    "layout": null
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5mrq2tbirc0",
+                                                            "created": 1600053770916,
+                                                            "text": "fsync",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5mrq6qho2o0",
+                                                            "created": 1600053779452,
+                                                            "text": "pdflush",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mrqk11m880",
+                                    "created": 1600053808388,
+                                    "text": "Anonymous Page",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mrqwnruzc0",
+                                            "created": 1600053835884,
+                                            "text": "application stack memory",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5mrrfl0lkg0",
+                                                    "created": 1600053877076,
+                                                    "text": "swap out",
+                                                    "background": "#73a1bf",
+                                                    "layout": null
+                                                },
+                                                "children": []
+                                            }
+                                        ]
                                     }
                                 ]
                             }
