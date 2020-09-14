@@ -191,7 +191,8 @@
                     "created": 1599617941460,
                     "text": "Memory Allocation",
                     "background": "#73a1bf",
-                    "layout": null
+                    "layout": null,
+                    "expandState": "expand"
                 },
                 "children": [
                     {
@@ -210,108 +211,124 @@
                                     "created": 1599617972628,
                                     "text": "malloc()",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
                                         "data": {
-                                            "id": "c5ih8x6uavc0",
-                                            "created": 1599617975556,
-                                            "text": "brk()/ sbrk()",
-                                            "background": "#73a1bf",
-                                            "layout": null
+                                            "id": "c5myv6dws6o0",
+                                            "created": 1600073918281,
+                                            "text": "libc",
+                                            "expandState": "expand",
+                                            "layout_right_offset": {
+                                                "x": 21,
+                                                "y": 1
+                                            },
+                                            "background": "#73a1bf"
                                         },
                                         "children": [
                                             {
                                                 "data": {
-                                                    "id": "c5ih984g5jk0",
-                                                    "created": 1599617999356,
-                                                    "text": "Less than 128K",
+                                                    "id": "c5ih93z2v4w0",
+                                                    "created": 1599617990324,
+                                                    "text": "mmap()",
                                                     "background": "#73a1bf",
                                                     "layout": null
                                                 },
-                                                "children": []
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ih9boo0z40",
+                                                            "created": 1599618007109,
+                                                            "text": "Larger than 128K",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdji7zbk0",
+                                                            "created": 1599618337590,
+                                                            "text": "easy to allocate several large areas",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdn37hnk0",
+                                                            "created": 1599618345390,
+                                                            "text": "easy to hand back allocated\nmemory",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdrozdao0",
+                                                            "created": 1599618355413,
+                                                            "text": "ability to map a file in memory",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
                                             },
                                             {
                                                 "data": {
-                                                    "id": "c5ihdfyivfs0",
-                                                    "created": 1599618329869,
-                                                    "text": "easy to extend the process heap",
+                                                    "id": "c5ih8x6uavc0",
+                                                    "created": 1599617975556,
+                                                    "text": "brk()/ sbrk()",
                                                     "background": "#73a1bf",
                                                     "layout": null
                                                 },
-                                                "children": []
-                                            },
-                                            {
-                                                "data": {
-                                                    "id": "c5ihd6k86fc0",
-                                                    "created": 1599618309414,
-                                                    "text": "not easy to hand back allocated\nmemory",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": []
-                                            },
-                                            {
-                                                "data": {
-                                                    "id": "c5ihdz36ids0",
-                                                    "created": 1599618371509,
-                                                    "text": "only one “heap”",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "data": {
-                                            "id": "c5ih93z2v4w0",
-                                            "created": 1599617990324,
-                                            "text": "mmap()",
-                                            "background": "#73a1bf",
-                                            "layout": null
-                                        },
-                                        "children": [
-                                            {
-                                                "data": {
-                                                    "id": "c5ih9boo0z40",
-                                                    "created": 1599618007109,
-                                                    "text": "Larger than 128K",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": []
-                                            },
-                                            {
-                                                "data": {
-                                                    "id": "c5ihdji7zbk0",
-                                                    "created": 1599618337590,
-                                                    "text": "easy to allocate several large areas",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": []
-                                            },
-                                            {
-                                                "data": {
-                                                    "id": "c5ihdn37hnk0",
-                                                    "created": 1599618345390,
-                                                    "text": "easy to hand back allocated\nmemory",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": []
-                                            },
-                                            {
-                                                "data": {
-                                                    "id": "c5ihdrozdao0",
-                                                    "created": 1599618355413,
-                                                    "text": "ability to map a file in memory",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": []
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ih984g5jk0",
+                                                            "created": 1599617999356,
+                                                            "text": "Less than 128K",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdfyivfs0",
+                                                            "created": 1599618329869,
+                                                            "text": "easy to extend the process heap",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihd6k86fc0",
+                                                            "created": 1599618309414,
+                                                            "text": "not easy to hand back allocated\nmemory",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdz36ids0",
+                                                            "created": 1599618371509,
+                                                            "text": "only on “heap”",
+                                                            "background": "#73a1bf",
+                                                            "layout": null
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
@@ -325,7 +342,11 @@
                                     "hyperlink": null,
                                     "hyperlinkTitle": null,
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "layout_right_offset": {
+                                        "x": 135,
+                                        "y": -8
+                                    }
                                 },
                                 "children": [
                                     {
@@ -368,66 +389,42 @@
                             "created": 1599620079033,
                             "text": "kernel space",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand",
+                            "layout_right_offset": {
+                                "x": 137,
+                                "y": -44
+                            }
                         },
                         "children": [
                             {
                                 "data": {
-                                    "id": "c5ihzuilhow0",
-                                    "created": 1599620085569,
-                                    "text": "Buddy system(partner system)",
+                                    "id": "c5mytz88gw00",
+                                    "created": 1600073824337,
+                                    "text": "kmalloc",
+                                    "layout_right_offset": {
+                                        "x": 31,
+                                        "y": 17
+                                    },
+                                    "layout": null,
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
                                         "data": {
-                                            "id": "c5ii2cbw9z40",
-                                            "created": 1599620281074,
-                                            "text": "Divide the memory into many levels according to pages",
-                                            "background": "#73a1bf",
-                                            "layout": null
+                                            "id": "c5mz0fzabow0",
+                                            "created": 1600074330986,
+                                            "text": "can manage large pages",
+                                            "background": "#73a1bf"
                                         },
                                         "children": []
                                     },
                                     {
                                         "data": {
-                                            "id": "c5ii1lamotc0",
-                                            "created": 1599620222225,
-                                            "text": "slab page",
-                                            "background": "#73a1bf",
-                                            "layout": null
-                                        },
-                                        "children": [
-                                            {
-                                                "data": {
-                                                    "id": "c5ii5xzhxq00",
-                                                    "created": 1599620563306,
-                                                    "text": "slab()",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "data": {
-                                    "id": "c5kbi85vyl40",
-                                    "created": 1599804897975,
-                                    "text": "page cache",
-                                    "expandState": "expand",
-                                    "background": "#73a1bf",
-                                    "layout": null
-                                },
-                                "children": [
-                                    {
-                                        "data": {
-                                            "id": "c5kbifd2q6w0",
-                                            "created": 1599804913647,
-                                            "text": "kernel' cache of file contents",
+                                            "id": "c5ii5xzhxq00",
+                                            "created": 1599620563306,
+                                            "text": "slab() only for small pages",
                                             "background": "#73a1bf",
                                             "layout": null
                                         },
@@ -436,6 +433,16 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5ihzuilhow0",
+                            "created": 1599620085569,
+                            "text": "Buddy system(partner system): both user/kernel memory allocation is excuted by this system",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
                     }
                 ]
             },

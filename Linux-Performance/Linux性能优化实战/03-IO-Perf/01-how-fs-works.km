@@ -1,0 +1,291 @@
+{
+    "root": {
+        "data": {
+            "id": "c5myec0j9vc0",
+            "created": 1600072598343,
+            "text": "Filesystem"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5myfefehuw0",
+                    "created": 1600072681959,
+                    "text": "FS Components"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5myfnzs4nc0",
+                            "created": 1600072702783,
+                            "text": "index node(inode) - on-disk"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5njuybhxls0",
+                            "created": 1600133144029,
+                            "text": "directory entry (dentry) - in-memory"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5myfkn8gps0",
+                            "created": 1600072695494,
+                            "text": "super block - on-disk"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5mygqjtseo0",
+                            "created": 1600072786712,
+                            "text": "logic block - on-disk"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5myh6z7f7k0",
+                                    "created": 1600072822471,
+                                    "text": "unit of the block"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mygtm4jao0",
+                                    "created": 1600072793382,
+                                    "text": "4k"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mygy2refs0",
+                                            "created": 1600072803095,
+                                            "text": "8 slices(512B)"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5myfqr9pbs0",
+                            "created": 1600072708798,
+                            "text": "data block",
+                            "layout_right_offset": {
+                                "x": -11,
+                                "y": -2
+                            }
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5myhk6l19c0",
+                    "created": 1600072851215,
+                    "text": "VFS"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5myhn21qvk0",
+                            "created": 1600072857471,
+                            "text": "abstraction upon  various filesystems"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5myhwvowpc0",
+                            "created": 1600072878855,
+                            "text": "unified interface to user space application",
+                            "layout_right_offset": {
+                                "x": -6,
+                                "y": 6
+                            }
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5myyoq5x7k0",
+                    "created": 1600074193297,
+                    "text": "check usage ",
+                    "layout_right_offset": {
+                        "x": -4,
+                        "y": -29
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5myzcgbyo80",
+                            "created": 1600074244945,
+                            "text": "df -i"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5myzezhktc0",
+                            "created": 1600074250457,
+                            "text": "df -h"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5mz2im5k4o0",
+                    "created": 1600074493450,
+                    "text": "FS cache",
+                    "layout_right_offset": {
+                        "x": -12,
+                        "y": -79
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5mz30ibm5k0",
+                            "created": 1600074532401,
+                            "text": "type",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5mz2suloco0",
+                                    "created": 1600074515729,
+                                    "text": "inode cache"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mz2vcawqg0",
+                                    "created": 1600074521153,
+                                    "text": "dentry cache"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5mz2zjer6o0",
+                            "created": 1600074530290,
+                            "text": "managed by slab",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5mz3eko63k0",
+                                    "created": 1600074563018,
+                                    "text": "cat /proc/slabinfo | grep -E '^#|dentry|inode'"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5mz3t2mh7k0",
+                                            "created": 1600074594578,
+                                            "text": "dentry: directory entry cache"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5mz3ybfb340",
+                                            "created": 1600074605994,
+                                            "text": "inode_cache: vfs inode cache"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5mzfglonns0",
+                                            "created": 1600075507803,
+                                            "text": "other FS cache"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5mz4bpiosg0",
+                                    "created": 1600074635145,
+                                    "text": "slabtop"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5n01co1x3s0",
+                    "created": 1600077223250,
+                    "text": "example "
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5n01f073ao0",
+                            "created": 1600077228338,
+                            "text": "find / -name aaa.txt"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5n01j4dp280",
+                                    "created": 1600077237298,
+                                    "text": "proc_inode_cache"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5n01oxj1mw0",
+                                    "created": 1600077249946,
+                                    "text": "dentry"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5n01vvlmhk0",
+                                    "created": 1600077265066,
+                                    "text": "inode_cache"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5n01zforew0",
+                                    "created": 1600077272811,
+                                    "text": "ext4_inode_cache"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
