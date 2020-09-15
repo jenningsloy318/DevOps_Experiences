@@ -221,11 +221,8 @@
                                             "created": 1600073918281,
                                             "text": "libc",
                                             "expandState": "expand",
-                                            "layout_right_offset": {
-                                                "x": 21,
-                                                "y": 1
-                                            },
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": [
                                             {
@@ -342,11 +339,7 @@
                                     "hyperlink": null,
                                     "hyperlinkTitle": null,
                                     "background": "#73a1bf",
-                                    "layout": null,
-                                    "layout_right_offset": {
-                                        "x": 135,
-                                        "y": -8
-                                    }
+                                    "layout": null
                                 },
                                 "children": [
                                     {
@@ -390,11 +383,7 @@
                             "text": "kernel space",
                             "background": "#73a1bf",
                             "layout": null,
-                            "expandState": "expand",
-                            "layout_right_offset": {
-                                "x": 137,
-                                "y": -44
-                            }
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -402,10 +391,6 @@
                                     "id": "c5mytz88gw00",
                                     "created": 1600073824337,
                                     "text": "kmalloc",
-                                    "layout_right_offset": {
-                                        "x": 31,
-                                        "y": 17
-                                    },
                                     "layout": null,
                                     "background": "#73a1bf",
                                     "expandState": "expand"
@@ -416,17 +401,39 @@
                                             "id": "c5mz0fzabow0",
                                             "created": 1600074330986,
                                             "text": "can manage large pages",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5ii5xzhxq00",
+                                    "created": 1599620563306,
+                                    "text": "slab() only for small pages",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5nljgq2r3s0",
+                                            "created": 1600137885943,
+                                            "text": " allocate cache for kernel modules and drivers",
+                                            "layout": null,
                                             "background": "#73a1bf"
                                         },
                                         "children": []
                                     },
                                     {
                                         "data": {
-                                            "id": "c5ii5xzhxq00",
-                                            "created": 1599620563306,
-                                            "text": "slab() only for small pages",
-                                            "background": "#73a1bf",
-                                            "layout": null
+                                            "id": "c5nlkfy3fyg0",
+                                            "created": 1600137962615,
+                                            "text": "allocate temporary storage for non-persistent structures and objects, \nsuch as inodes, task structures, and device structures",
+                                            "layout": null,
+                                            "background": "#73a1bf"
                                         },
                                         "children": []
                                     }
@@ -482,10 +489,6 @@
                                     "id": "c5mrmwssz340",
                                     "created": 1600053522732,
                                     "text": "kswapd0",
-                                    "layout_right_offset": {
-                                        "x": 18,
-                                        "y": -2
-                                    },
                                     "layout": null,
                                     "background": "#73a1bf"
                                 },
@@ -496,7 +499,8 @@
                                             "created": 1600054338261,
                                             "text": "page cache",
                                             "expandState": "expand",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": [
                                             {
@@ -602,7 +606,8 @@
                                             "created": 1600062113471,
                                             "text": "clean page(inactive page list)",
                                             "expandState": "expand",
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "layout": null
                                         },
                                         "children": [
                                             {
