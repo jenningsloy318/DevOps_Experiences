@@ -1,0 +1,267 @@
+{
+    "root": {
+        "data": {
+            "id": "c5nk54kozqo0",
+            "created": 1600133941288,
+            "text": "IO",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5nk7jcp5y00",
+                    "created": 1600134130184,
+                    "text": "structure",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5nk7myc5bs0",
+                            "created": 1600134138023,
+                            "text": "VFS ---> Block I/Os(BIO)  ----> Block Layer",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nksub0vnk0",
+                            "created": 1600135799675,
+                            "text": "Disk IO graph",
+                            "hyperlink": "https://www.thomas-krenn.com/de/wikiDE/images/e/e0/Linux-storage-stack-diagram_v4.10.png",
+                            "hyperlinkTitle": "DISK IO graph",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5nk6rh06og0",
+                    "created": 1600134069495,
+                    "text": "BIOs",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5nk8c62o800",
+                            "created": 1600134192911,
+                            "text": "abstraction of bloack device, universal management for device driver",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nk8xkrob40",
+                            "created": 1600134239511,
+                            "text": "by queuing and re-arranging the IO request, to improve the performance of IO",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nk9j8uoa00",
+                                    "created": 1600134286680,
+                                    "text": "NONE algorithm",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nk9pzccco0",
+                                    "created": 1600134301343,
+                                    "text": "NOOP algorithm",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nk9tbmd4g0",
+                                    "created": 1600134308615,
+                                    "text": "CFQ",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nk9y1rgs80",
+                                    "created": 1600134318903,
+                                    "text": "Deadline",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5nkj1s47j40",
+                    "created": 1600135032305,
+                    "text": "IO perf indicator",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5nkj6nawg00",
+                            "created": 1600135042897,
+                            "text": "IO  utilization: evaluated im time frame, so disk support parelell, when utilization is 100% but still no full saturation. so it can still have write request",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nkja19ws80",
+                            "created": 1600135050273,
+                            "text": "IOPS",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nkjcglui80",
+                            "created": 1600135055553,
+                            "text": "IO saturation",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nkk3jk5rk0",
+                            "created": 1600135114505,
+                            "text": "IO duration",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nklq0y2ns0",
+                            "created": 1600135241810,
+                            "text": "IO throughput",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5nkke43f080",
+                    "created": 1600135137514,
+                    "text": "check the io",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5nkkn35mvk0",
+                            "created": 1600135157049,
+                            "text": "iostat -d -x 1 (/proc/diskstats)",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nkkqaedxc0",
+                                    "created": 1600135164017,
+                                    "text": "io uitilization: %util",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nkkzz67l40",
+                                    "created": 1600135185106,
+                                    "text": "IOPS: r/s+ w/sr/s+ w/s",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nklbb2j3c0",
+                                    "created": 1600135209770,
+                                    "text": "Througput: rkB/s+wkB/s",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nkm3exle00",
+                                    "created": 1600135270953,
+                                    "text": "duration: r_await+w_await",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nkmkve6qo0",
+                                    "created": 1600135308954,
+                                    "text": "request size: rareq-sz and  wareq-sz",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nknl0vjyg0",
+                                    "created": 1600135387650,
+                                    "text": "aqu-sz: avg request queue size",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5nkp0i35s80",
+                            "created": 1600135499706,
+                            "text": "pidstat -d 1",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nkpcq9oi80",
+                            "created": 1600135526322,
+                            "text": "iotop",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
