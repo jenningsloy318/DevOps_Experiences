@@ -1,0 +1,299 @@
+{
+    "root": {
+        "data": {
+            "id": "c5q400pnj8o0",
+            "created": 1600393083171,
+            "text": "IO latency",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5q408c40q00",
+                    "created": 1600393099767,
+                    "text": "simulation",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5q40blbig80",
+                            "created": 1600393106854,
+                            "text": "server",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5q40ee5bnc0",
+                                    "created": 1600393112950,
+                                    "text": "docker run --name=app -p 10000:80 -itd feisky/word-pop",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5q40k52fcw0",
+                            "created": 1600393125462,
+                            "text": "client",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5q40m9a1js0",
+                                    "created": 1600393130070,
+                                    "text": "while true; do time curl http://192.168.0.10:10000/popularity/word; sleep 1; done",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5q40un2zfc0",
+                    "created": 1600393148319,
+                    "text": "symtoms",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5q413zsf3c0",
+                            "created": 1600393168679,
+                            "text": "on server, any ssh command input will spend much more time to get result",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5q41t0i91s0",
+                    "created": 1600393223142,
+                    "text": "simulation",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5q41w2r21s0",
+                            "created": 1600393229808,
+                            "text": "top",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5qc82ma34w0",
+                                    "created": 1600416283113,
+                                    "text": "loadavg is increasing",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5qc881sxbs0",
+                                    "created": 1600416294936,
+                                    "text": "%us + %sy > 50%, %iowait ~2%",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5qc8t8o9rc0",
+                                    "created": 1600416341064,
+                                    "text": "memory is not exhausted, but swap is used ",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5qc97gpmzc0",
+                                    "created": 1600416372025,
+                                    "text": "one process python is eating 1 more CPU ",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5qc9gqii2w0",
+                            "created": 1600416392208,
+                            "text": "pidstat -u -d 1",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5qc9xvbqag0",
+                                    "created": 1600416429505,
+                                    "text": "besides python has eating 1 more CPU %103",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5qca9wh9r40",
+                                    "created": 1600416455696,
+                                    "text": "python process also has high  50605.32 kB_wr/s ",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5qcamy0zjk0",
+                                            "created": 1600416484088,
+                                            "text": "indicate python has casued io problem",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5qck2iy4680",
+                            "created": 1600417223282,
+                            "text": "iostat",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5qck574ykg0",
+                                    "created": 1600417229098,
+                                    "text": "# iostat -x -d 1\nLinux 4.15.0-115-generic (linux-perf-server)    09/18/2020      _x86_64_        (2 CPU)\n\n\nDevice            r/s     w/s     rkB/s     wkB/s   rrqm/s   wrqm/s  %rrqm  %wrqm r_await w_await aqu-sz rareq-sz wareq-sz  svctm  %util\nscd0             0.00    0.00      0.00      0.00     0.00     0.00   0.00   0.00    0.09    0.00   0.00    22.35     0.00   0.09   0.00\nsda              3.99    4.10   3568.06   3811.68     0.02     1.16   0.58  22.10    2.92   62.97   0.27   895.26   930.77   0.48   0.39",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5qcbuju8gw0",
+                            "created": 1600416579008,
+                            "text": "strace -f -p 84812 ",
+                            "expandState": "expand",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5qcbylxs400",
+                                    "created": 1600416587842,
+                                    "text": "# strace -f -p  84812\nstrace: Process 84812 attached with 3 threads\n[pid 84813] restart_syscall(<... resuming interrupted poll ...> <unfinished ...>\n[pid 86817] close(6)                    = 0\n[pid 84812] select(0, NULL, NULL, NULL, {tv_sec=0, tv_usec=842148} <unfinished ...>\n[pid 86817] mmap(NULL, 2551808, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fd9bc6d4000\n[pid 86817] madvise(0x5598b0112000, 430080, MADV_DONTNEED) = 0\n[pid 86817] munmap(0x7fd9bc943000, 2252800) = 0\n[pid 86817] open(\"/tmp/30b2e94e-f986-11ea-9324-0242ac110002/267.txt\", O_WRONLY|O_CREAT|O_TRUNC|O_CLOEXEC, 0666) = 6",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5qcc6piid40",
+                                            "created": 1600416605473,
+                                            "text": "has openfiles for writing, 6 is the file dicriptor",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5qcd2vbglk0",
+                            "created": 1600416675481,
+                            "text": "lsof |grep python|grep 6w",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5qcfhb0uf40",
+                                    "created": 1600416863634,
+                                    "text": "# lsof |grep python|grep 6w\npython    84812                   root    6w      REG               0,51   2599999    3412251 /tmp/d4cccf18-f986-11ea-9324-0242ac110002/552.txt\npython    84812 84813             root    6w      REG               0,51   1286144    3412251 /tmp/d4cccf18-f986-11ea-9324-0242ac110002/552.txt\npython    84812 86881             root    6w      REG               0,51   1970176    3412251 /tmp/d4cccf18-f986-11ea-9324-0242ac110002/552.txt",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5qcl0dh7rs0",
+                            "created": 1600417296962,
+                            "text": "bcc tools",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5qcl3ffi200",
+                                    "created": 1600417303610,
+                                    "text": "#  filetop -C\nTracing... Output every 1 secs. Hit Ctrl-C to end\n\n\n16:21:18 loadavg: 1.08 1.10 1.04 3/223 86938\n\n\nTID    COMM             READS  WRITES R_Kb    W_Kb    T FILE\n86938  python           0      1      0       5078    R 40.txt\n86938  python           0      1      0       4541    R 17.txt\n86938  python           0      1      0       4248    R 16.txt\n86938  python           0      1      0       4150    R 3.txt\n86938  python           0      1      0       4101    R 54.txt\n86938  python           0      1      0       4052    R 36.txt\n86938  python           0      1      0       4052    R 50.txt\n86938  python           0      1      0       3955    R 29.txt\n86938  python           0      1      0       3955    R 38.txt\n86938  python           0      1      0       3857    R 53.txt\n86938  python           0      1      0       3857    R 39.txt\n86938  python           0      1      0       3564    R 47.txt\n86938  python           0      1      0       3515    R 1.txt\n86938  python           0      1      0       3515    R 42.txt\n86938  python           0      1      0       3271    R 35.txt\n86938  python           0      1      0       3076    R 26.txt\n86938  python           0      1      0       3076    R 4.txt\n86938  python           0      1      0       3076    R 31.txt\n86938  python           0      1      0       2978    R 45.txt\n86938  python           0      1      0       2978    R 28.txt",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5qclxoz3m00",
+                                    "created": 1600417369491,
+                                    "text": "#  opensnoop\nPID    COMM               FD ERR PATH\n84812  python              6   0 /tmp/175645e8-f988-11ea-9324-0242ac110002/845.txt\n84812  python              6   0 /tmp/175645e8-f988-11ea-9324-0242ac110002/846.txt\n84812  python              6   0 /tmp/175645e8-f988-11ea-9324-0242ac110002/847.txt\n84812  python              6   0 /tmp/175645e8-f988-11ea-9324-0242ac110002/848.txt\n84812  python              6   0 /tmp/175645e8-f988-11ea-9324-0242ac110002/849.txt\n84812  python              6   0 /tmp/175645e8-f988-11ea-9324-0242ac110002/850.txt\n84812  python              6   0 /tmp/175645e8-f988-11ea-9324-0242ac110002/851.txt",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}

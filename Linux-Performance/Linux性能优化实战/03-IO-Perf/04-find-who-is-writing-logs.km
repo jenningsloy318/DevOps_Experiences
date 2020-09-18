@@ -1,0 +1,297 @@
+{
+    "root": {
+        "data": {
+            "id": "c5nm1cedc5s0",
+            "created": 1600139287083,
+            "text": "Who is writing logs",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c5nm1j9cr5s0",
+                    "created": 1600139302017,
+                    "text": "simulation",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5nm1lm1x280",
+                            "created": 1600139307138,
+                            "text": "docker run -v /tmp:/tmp --name=app -itd feisky/logapp",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5nm1qij1jc0",
+                    "created": 1600139317809,
+                    "text": "analysis",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5nm1wvy5dc0",
+                            "created": 1600139331681,
+                            "text": "top",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nm5jb2mk80",
+                                    "created": 1600139615578,
+                                    "text": "loadavg is increasing",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nm1z13jn40",
+                                    "created": 1600139336346,
+                                    "text": "%sy: 20%",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nm2ce12a80",
+                                    "created": 1600139365426,
+                                    "text": "%iowati: 70%",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5nm2za4q280",
+                                            "created": 1600139415257,
+                                            "text": "maybe have IO issue",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nm2l8by0o0",
+                                    "created": 1600139384673,
+                                    "text": "one CPU has 90% usage ",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5nm2vuu4j40",
+                                            "created": 1600139407802,
+                                            "text": "python",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5nm6g5d74w0",
+                            "created": 1600139687066,
+                            "text": "iostat -x -d 1",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nm6j2ewq00",
+                                    "created": 1600139693418,
+                                    "text": "/dev/sda %util is 100%, maybe full saturation",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nm74wkhqo0",
+                                    "created": 1600139740954,
+                                    "text": " wkB/s , w_await and  aqu-sz are high",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5nm3hlfao00",
+                            "created": 1600139455122,
+                            "text": "pidstat -d 1 ",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nm3kus13k0",
+                                    "created": 1600139462218,
+                                    "text": "kB_wr/s: 230401.00  for python process",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5nm8oprey80",
+                            "created": 1600139862442,
+                            "text": "cat /proc/meminfo |grep -iE \"buffer|cache\"",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nm8q1jekg0",
+                                    "created": 1600139865331,
+                                    "text": "for memory, a large amount of memory is occupied by cache",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5nmamejxc00",
+                            "created": 1600140014139,
+                            "text": "strace -p 80648",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nmaqkbaxc0",
+                                    "created": 1600140023195,
+                                    "text": "writing file to file descriptor 3",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nmbfgo0so0",
+                                    "created": 1600140077394,
+                                    "text": "strace -p 80648\nstrace: Process 80648 attached\nstrace: [ Process PID=80648 runs in x32 mode. ]\nstrace: [ Process PID=80648 runs in 64 bit mode. ]\nmmap(NULL, 314576896, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f03dc2c8000\nwrite(3, \"2020-09-15 03:19:42,554 - __main\"..., 314572844) = 314572844\nmunmap(0x7f03dc2c8000, 314576896)       = 0\nwrite(3, \"\\n\", 1)                       = 1",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c5nmbkq4tf40",
+                            "created": 1600140088850,
+                            "text": "lsof -p 80648",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nmcs5lwz40",
+                                    "created": 1600140183387,
+                                    "text": "COMMAND   PID   USER    FD   TYPE  DEVICE  SIZE/OFF    NODE    NAME\npython    80648 root    3w   REG    8,2    629145690   3025218 /tmp/logtest.txt",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c5nmcudvzkg0",
+                                    "created": 1600140188242,
+                                    "text": "3w: file descriptor is 3, w means write operation",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c5nmf4sbtw00",
+                    "created": 1600140367611,
+                    "text": "fixes",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c5nmf8o1d7s0",
+                            "created": 1600140376059,
+                            "text": "check source code",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c5nmffvil540",
+                            "created": 1600140391748,
+                            "text": "update log level",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c5nmfjgwkzk0",
+                                    "created": 1600140399572,
+                                    "text": "  kill -SIGUSR2 80648",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
