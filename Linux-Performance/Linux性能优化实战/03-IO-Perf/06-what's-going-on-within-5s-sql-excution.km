@@ -1,0 +1,390 @@
+{
+    "root": {
+        "data": {
+            "id": "c6d8eb0vuzs0",
+            "created": 1602741366159,
+            "text": "Slow SQL Excution",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c6d8ewjy4ts0",
+                    "created": 1602741413025,
+                    "text": "Simulation",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6d8f7q9d4w0",
+                            "created": 1602741437351,
+                            "text": "server",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6d8rffr3e00",
+                                    "created": 1602742394500,
+                                    "text": "https://github.com/feiskyer/linux-perf-examples",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c6d8rkgrue80",
+                                            "created": 1602742405445,
+                                            "text": "make up",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c6d8rmi1o1c0",
+                                            "created": 1602742409876,
+                                            "text": "change DATA_NUM to 100000 and then make init",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6d8rbojq2o0",
+                            "created": 1602742386324,
+                            "text": "client",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6d8rdondmo0",
+                                    "created": 1602742390684,
+                                    "text": "while true; do curl http://192.168.34.128:10000/products/geektime;done",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c6dbz3f2bbk0",
+                                            "created": 1602751458580,
+                                            "text": "Got data: () in 4.777026653289795 sec \nGot data: () in 4.912583827972412 sec \nGot data: () in 4.772883415222168 sec \nGot data: () in 5.079684257507324 sec \nGot data: () in 5.153669357299805 sec \nGot data: () in 5.357957124710083 sec \nGot data: () in 5.144531488418579 sec ",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c6d9svcm0yo0",
+                    "created": 1602745328612,
+                    "text": "symtoms",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6d9t8intsw0",
+                            "created": 1602745357276,
+                            "text": "server is slower now",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c6d9tnt6jio0",
+                    "created": 1602745390564,
+                    "text": "Analyze",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6d9tsqig0o0",
+                            "created": 1602745401287,
+                            "text": "top ",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6d9ucnydg00",
+                                    "created": 1602745444668,
+                                    "text": "%Cpu(s):  7.7 us, 40.0 sy,  0.0 ni, 50.4 id,  0.7 wa,  0.0 hi,  1.2 si,  0.0 st",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6d9ugx22rc0",
+                                    "created": 1602745453925,
+                                    "text": "%sy 40%, cpu usage high",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6d9usrlmsg0",
+                            "created": 1602745479717,
+                            "text": "pidstat -d -u 1",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6d9valj6800",
+                                    "created": 1602745518532,
+                                    "text": "03:04:53 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command\n03:04:54 PM     0      1479    0.00    1.00    0.00    0.00    1.00     0  dockerd\n03:04:54 PM   999      2222   25.00   68.00    0.00    0.00   93.00     1  mysqld",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6d9vd5i4680",
+                                    "created": 1602745524093,
+                                    "text": "Average:      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command\nAverage:        0       321      0.00      2.00      0.00       0  systemd-journal\nAverage:        0      1479      0.00      2.00      0.00       0  dockerd\nAverage:      999      2222 124795.01      0.00      0.00       0  mysqld",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6d9vnwk0s80",
+                                    "created": 1602745547497,
+                                    "text": "mysqld used more CPU, and it has 124795.01 KB_rd/s, so it has more reads at IO",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6d9weg39p40",
+                            "created": 1602745605274,
+                            "text": "iostat -x -d 1",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6d9wxrss400",
+                                    "created": 1602745647341,
+                                    "text": "Device            r/s     w/s     rkB/s     wkB/s   rrqm/s   wrqm/s  %rrqm  %wrqm r_await w_await aqu-sz rareq-sz wareq-sz  svctm  %util\nscd0             0.00    0.00      0.00      0.00     0.00     0.00   0.00   0.00    0.00    0.00   0.00     0.00     0.00   0.00   0.00\nsda           3912.00    1.00 500428.00      4.00     0.00     0.00   0.00   0.00    0.17    0.00   0.66   127.92     4.00   0.12  45.20",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6d9x0i31fc0",
+                                    "created": 1602745653284,
+                                    "text": "confirmed that io %util can read to 45.3%, so there must be IO issue",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6d9xjp89xs0",
+                            "created": 1602745695075,
+                            "text": "strace -f -p 2222",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6d9y4eunxs0",
+                                    "created": 1602745740160,
+                                    "text": "[pid  2871] read(37, \"ketrQ8KNNZHmrGLAYoeZN9dGErJCYiH7\"..., 20480) = 20480",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6d9y7i26f40",
+                                    "created": 1602745746884,
+                                    "text": "it has many threads reading files with file descriptor 37, with thread id 2871",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6d9ymfnsr40",
+                            "created": 1602745779391,
+                            "text": "lsof -p 2222|grep 37",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6d9z059hv40",
+                                    "created": 1602745809237,
+                                    "text": "if spefify the thread id, will get no output",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6d9zemii7c0",
+                                    "created": 1602745840755,
+                                    "text": "mysqld  2222      999   37u   REG    8,2 512440000 2893366 /var/lib/mysql/test/products.MYD",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6da000xgko0",
+                                    "created": 1602745887339,
+                                    "text": "thread has read/writ(37u) the file /var/lib/mysql/test/products.MYD",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6da0l5aawg0",
+                                    "created": 1602745933315,
+                                    "text": "confirmed that this is the file of mysql db used to storing test db ",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6da12py8280",
+                            "created": 1602745971570,
+                            "text": "docker exec -i -t mysql mysql",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6da1d57o2g0",
+                                    "created": 1602745994260,
+                                    "text": "mysql> show full processlist;\n+-------+------+-----------------+------+---------+------+--------------+-----------------------------------------------------+\n| Id    | User | Host            | db   | Command | Time | State        | Info                                                |\n+-------+------+-----------------+------+---------+------+--------------+-----------------------------------------------------+\n| 16194 | root | localhost       | NULL | Query   |    0 | init         | show full processlist                               |\n| 16327 | root | 127.0.0.1:39094 | test | Query   |    0 | Sending data | select * from products where productName='geektime' |\n+-------+------+-----------------+------+---------+------+--------------+-----------------------------------------------------+\n2 rows in set (0.00 sec)",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6da1rnicio0",
+                                    "created": 1602746025843,
+                                    "text": "mysql> use test\nReading table information for completion of table and column names\nYou can turn off this feature to get a quicker startup with -A\n\nDatabase changed\nmysql> explain select * from products where productName='geektime';\n+----+-------------+----------+------+---------------+------+---------+------+-------+-------------+\n| id | select_type | table    | type | possible_keys | key  | key_len | ref  | rows  | Extra       |\n+----+-------------+----------+------+---------------+------+---------+------+-------+-------------+\n|  1 | SIMPLE      | products | ALL  | NULL          | NULL | NULL    | NULL | 10000 | Using where |\n+----+-------------+----------+------+---------------+------+---------+------+-------+-------------+\n1 row in set (0.03 sec)",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c6da27yphvk0",
+                                            "created": 1602746061347,
+                                            "text": "we can see that the type of the excution is ALL, not  using index, may be the root cause",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c6da33q2bdc0",
+                                    "created": 1602746130482,
+                                    "text": "try to create index",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c6da3me0lsw0",
+                                            "created": 1602746171112,
+                                            "text": "show create table products;",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c6da393xi1s0",
+                                            "created": 1602746142204,
+                                            "text": "CREATE INDEX products_index ON products (productName(64));",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
