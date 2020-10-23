@@ -1,0 +1,430 @@
+{
+    "root": {
+        "data": {
+            "id": "c6k2ijadsh40",
+            "created": 1603435690642,
+            "text": "Redis High Latency",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c6k2iyp9xyw0",
+                    "created": 1603435724194,
+                    "text": "Simulation",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6k2j4ec8vk0",
+                            "created": 1603435736594,
+                            "text": "Server",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k2jezs57k0",
+                                    "created": 1603435759658,
+                                    "text": "docker run --name=redis -itd -p 10000:80 feisky/redis-server",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k2jgesk340",
+                                    "created": 1603435762742,
+                                    "text": "docker run --name=app --network=container:redis -itd feisky/redis-app",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k2j6l8rog0",
+                            "created": 1603435741365,
+                            "text": "Client",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k2knbp6fk0",
+                                    "created": 1603435856157,
+                                    "text": "curl http://192.168.34.128:10000/",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k2l1mrsbs0",
+                                    "created": 1603435887301,
+                                    "text": "curl http://192.168.34.128:10000/init/500000",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k2ljoj8tc0",
+                                    "created": 1603435926590,
+                                    "text": "while true;do curl http://192.168.34.128:10000/get_cache;done",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c6k2lev2bkw0",
+                    "created": 1603435916101,
+                    "text": "Symtoms",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6k2yq7ot1c0",
+                            "created": 1603436959543,
+                            "text": "Take long time to get the response",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c6k32kf798g0",
+                    "created": 1603437260393,
+                    "text": "Analysis",
+                    "background": "#73a1bf",
+                    "layout": null
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6k32ox3t200",
+                            "created": 1603437270183,
+                            "text": "top",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k3efhccm00",
+                                    "created": 1603438190009,
+                                    "text": "%Cpu(s):  0.3 us,  3.0 sy,  0.0 ni, 49.1 id, 47.0 wa,  0.0 hi,  0.5 si,  0.0 st",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k3enip6480",
+                                    "created": 1603438207505,
+                                    "text": "there is high %wa, indicate that there maybe some IO issue",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k3f9vieqg0",
+                            "created": 1603438256169,
+                            "text": "pidstat -d 1",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k3fyidhag0",
+                                    "created": 1603438309794,
+                                    "text": "Average:      UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s iodelay  Command\nAverage:      100     63235      0.00    476.54      0.00      95  redis-server",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k3j3e55000",
+                                    "created": 1603438555515,
+                                    "text": "we can see that process have some writes but not heavy",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k3jtnv72w0",
+                            "created": 1603438612699,
+                            "text": "iostat -x -d 1",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k3jwrolyw0",
+                                    "created": 1603438619460,
+                                    "text": "Device            r/s     w/s     rkB/s     wkB/s   rrqm/s   wrqm/s  %rrqm  %wrqm r_await w_await aqu-sz rareq-sz wareq-sz  svctm  %util\nsda              0.00  339.00      0.00   1840.00     0.00   121.00   0.00  26.30    0.00    2.81   0.96     0.00     5.43   2.82  95.60",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k3k1olto00",
+                                    "created": 1603438630158,
+                                    "text": "IO utilization is high, about 95%",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k3p6n3xlk0",
+                            "created": 1603439032772,
+                            "text": "perf record -g -p 63235",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k3pezmit40",
+                                    "created": 1603439050943,
+                                    "text": "perf report ",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k3picdye80",
+                                    "created": 1603439058245,
+                                    "text": "we can see redis-server has consumed many sys_write and sys_fdatasync  system call ",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k3qocihjc0",
+                            "created": 1603439149678,
+                            "text": "strace -f -T -tt -p 63235",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k3s6njmi80",
+                                    "created": 1603439267892,
+                                    "text": "[pid 63235] 15:46:48.883949 epoll_pwait(5, [{EPOLLIN, {u32=9, u64=9}}, {EPOLLIN, {u32=8, u64=8}}], 10128, 36, NULL, 8) = 2 <0.000156>\n[pid 63235] 15:46:48.884283 read(9, \"*3\\r\\n$4\\r\\nSADD\\r\\n$4\\r\\ngood\\r\\n$36\\r\\n45d\"..., 16384) = 67 <0.000108>\n[pid 63235] 15:46:48.884572 read(8, \"*3\\r\\n$3\\r\\nSET\\r\\n$41\\r\\nuuid:e8263a7a-\"..., 16384) = 73 <0.000113>\n[pid 63235] 15:46:48.884852 read(3, 0x7ffdecd63dd7, 1) = -1 EAGAIN (Resource temporarily unavailable) <0.000009>\n[pid 63235] 15:46:48.884902 write(7, \"*3\\r\\n$4\\r\\nSADD\\r\\n$4\\r\\ngood\\r\\n$36\\r\\n45d\"..., 140) = 140 <0.000018>\n[pid 63235] 15:46:48.884949 fdatasync(7) = 0 <0.007111>\n[pid 63235] 15:46:48.892103 write(8, \"+OK\\r\\n\", 5) = 5 <0.000051>\n[pid 63235] 15:46:48.892206 write(9, \":1\\r\\n\", 4) = 4 <0.000148>",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k3sbj9t1s0",
+                                    "created": 1603439278517,
+                                    "text": "the process has may write ",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k3si0ixls0",
+                            "created": 1603439292621,
+                            "text": " lsof -p 63235",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k3sqeb4xk0",
+                                    "created": 1603439310868,
+                                    "text": "COMMAND     PID            USER   FD      TYPE DEVICE SIZE/OFF    NODE NAME\nredis-ser 63235 systemd-network  cwd       DIR    8,2     4096 3681389 /data\nredis-ser 63235 systemd-network  rtd       DIR   0,49     4096  661141 /\nredis-ser 63235 systemd-network  txt       REG   0,49  8191592  661104 /usr/local/bin/redis-server\nredis-ser 63235 systemd-network  mem       REG    8,2           661104 /usr/local/bin/redis-server (stat: No such file or directory)\nredis-ser 63235 systemd-network  mem       REG    8,2           532039 /etc/localtime (path inode=1445909)\nredis-ser 63235 systemd-network  mem       REG    8,2           532094 /lib/ld-musl-x86_64.so.1 (stat: No such file or directory)\nredis-ser 63235 systemd-network    0u      CHR  136,0      0t0       3 /dev/pts/0\nredis-ser 63235 systemd-network    1u      CHR  136,0      0t0       3 /dev/pts/0\nredis-ser 63235 systemd-network    2u      CHR  136,0      0t0       3 /dev/pts/0\nredis-ser 63235 systemd-network    3r     FIFO   0,12      0t0  305056 pipe\nredis-ser 63235 systemd-network    4w     FIFO   0,12      0t0  305056 pipe\nredis-ser 63235 systemd-network    5u  a_inode   0,13        0   10717 [eventpoll]\nredis-ser 63235 systemd-network    6u     sock    0,9      0t0  305058 protocol: TCP\nredis-ser 63235 systemd-network    7w      REG    8,2 23390993 3681392 /data/appendonly.aof\nredis-ser 63235 systemd-network    8u     sock    0,9      0t0  305624 protocol: TCP\nredis-ser 63235 systemd-network    9u     sock    0,9      0t0  476472 protocol: TCP",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k3tz3hljc0",
+                                    "created": 1603439408169,
+                                    "text": "we can see only file desciptor 7 is a file wirt operation(7w), and it is writing to  /data/appendonly.aof",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k3y34ybv40",
+                            "created": 1603439730422,
+                            "text": "as we can see from perf report, redis-server has many syscall  sys_write and sys_fdatasync  , and fdatasync is config of redis-server ",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c6k3z28cr1c0",
+                            "created": 1603439806815,
+                            "text": "check and re-config fdatasync",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k3z74ft7k0",
+                                    "created": 1603439817462,
+                                    "text": "docker exec -it redis redis-cli config get 'append*'",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c6k3ztun7g80",
+                                            "created": 1603439866936,
+                                            "text": "1) \"appendfsync\"\n2) \"always\"\n3) \"appendonly\"\n4) \"yes\"",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k3zxt8rnk0",
+                                    "created": 1603439875558,
+                                    "text": "it is to offten to fsync per each write, we can change it via docker exec -it redis redis-cli config set appendfsync everysec",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6k422z03140",
+                            "created": 1603440043518,
+                            "text": "but another thing, the desciptor 9 also has \"SADD\" operation, which is a write, but 9 is a tcp socket which is used for reading",
+                            "background": "#73a1bf",
+                            "layout": null
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6k47bgyts00",
+                                    "created": 1603440453840,
+                                    "text": "so each read from tcp  caused a write operation, so we can conclude that maybe the redis client make this write operation",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k4byv2je80",
+                                    "created": 1603440818215,
+                                    "text": "PID=$(docker inspect --format {{.State.Pid}} app)",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k4db2age80",
+                                    "created": 1603440923137,
+                                    "text": "nsenter --target $PID --net -- lsof -i",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c6k4dh5rae00",
+                                            "created": 1603440936408,
+                                            "text": "COMMAND     PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME\nredis-ser 63235 systemd-network    6u  IPv4 305058      0t0  TCP localhost:6379 (LISTEN)\nredis-ser 63235 systemd-network    8u  IPv4 305624      0t0  TCP localhost:6379->localhost:45162 (ESTABLISHED)\nredis-ser 63235 systemd-network    9u  IPv4 476472      0t0  TCP localhost:6379->localhost:45164 (ESTABLISHED)",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c6k4dlt97tk0",
+                                    "created": 1603440946536,
+                                    "text": "so check the app code",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
