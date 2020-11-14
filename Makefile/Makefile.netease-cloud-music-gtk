@@ -1,0 +1,20 @@
+
+
+DOCKER := $(shell { command -v podman || command -v docker; } 2>/dev/null)
+
+
+all: docker-rpm
+docker-rpm:
+	$(DOCKER) run  --rm --privileged -v `pwd`:/root/  -w /root/ docker.io/library/fedora:33  /bin/bash -c "dnf install -y git gcc dbus-devel gtk3-devel openssl-devel gstreamer1-devel   gstream-devel gstreamer1-devel gstreamer1-plugins-* cairo-devel cargo rpm-build && \
+	rm -rf netease-cloud-music-gtk && \
+	git clone https://github.com/gmg137/netease-cloud-music-gtk.git && \
+	export PATH=/root/.cargo/bin:${PATH} && \
+	cd netease-cloud-music-gtk && \
+	cargo build --release && \
+	cargo install cargo-rpm  && \
+	sed -i '/gstreamer-plugins-libav/d' .rpm/netease-cloud-music-gtk.spec && \
+	sed -i  's/streamer-plugins-bad/streamer-plugins-bad-free/g' .rpm/netease-cloud-music-gtk.spec && \
+	sed -i  's/streamer/streamer1/g' .rpm/netease-cloud-music-gtk.spec && \
+	cargo rpm build  "
+
+.PHONY: all  docker-rpm 
