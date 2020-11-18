@@ -1,0 +1,14 @@
+
+DOCKER := $(shell { command -v podman || command -v docker; } 2>/dev/null)
+
+
+all: docker-build
+docker-build:
+	$(DOCKER) run  --rm --privileged -v `pwd`:/root/  -w /root/ docker.io/library/fedora:33  /bin/bash -c "dnf install -y git gcc dbus-devel gtk3-devel openssl-devel gstreamer1-devel   gstream-devel gstreamer1-devel gstreamer1-plugins-* cargo rpm-build libhandy-devel libhandy1-devel ninja-build meson cmake sqlite-devel sqlite2-devel desktop-file-utils && \
+#	rm -rf podcasts && \
+#	git clone https://gitlab.gnome.org/World/podcasts.git && \
+	cd podcasts && \
+	meson --prefix=/usr build && \
+	ninja -C build  && ninja -C build install"
+
+.PHONY: all  docker-build 
