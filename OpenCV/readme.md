@@ -153,3 +153,12 @@ Build opencv 4.2 on CentOS 8
 	rpmbuild -ba opencv-4.2.spec  --without vulkan --without cuda
 	rpm -ivh /root/rpmbuild/RPMS/x86_64/opencv-4.2.0-5.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/opencv-core-4.2.0-5.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/opencv-devel-4.2.0-5.el8.x86_64.rpm   /root/rpmbuild/RPMS/x86_64/opencv-contrib-4.2.0-5.el8.x86_64.rpm
     ```
+
+
+
+- final install 
+    ```
+    dnf install MUMPS glpk gdal suitesparse protobuf hdf5 OpenEXR-libs ilmbase libdc1394 libucil libunicap environment-modules -y 
+    rpm -ivh /root/rpmbuild/RPMS/x86_64/opencv-4.2.0-5.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/opencv-core-4.2.0-5.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/opencv-devel-4.2.0-5.el8.x86_64.rpm   /root/rpmbuild/RPMS/x86_64/opencv-contrib-4.2.0-5.el8.x86_64.rpm nauty-2.7.1-2.el8.x86_64.rpm libnauty-2.7.1-2.el8.x86_64.rpm  cliquer-libs-1.21-19.el8.x86_64.rpm  cliquer-1.21-19.el8.x86_64.rpm  coin-or-Clp-1.17.6-2.el8.x86_64.rpm coin-or-CoinUtils-2.11.4-3.el8.x86_64.rpm gdcm-applications-3.0.7-5.el8.x86_64.rpm gdcm-3.0.7-5.el8.x86_64.rpm  coin-or-Cbc-2.10.5-4.el8.x86_64.rpm  coin-or-Osi-0.108.6-2.el8.x86_64.rpm  CharLS-2.0.0-4.el8.x86_64.rpm  coin-or-Cgl-0.60.3-2.el8.x86_64.rpm 
+    ```
+
