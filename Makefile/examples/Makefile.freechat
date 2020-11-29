@@ -16,4 +16,20 @@ docker-rpm:
 	sed -i '/--linux AppImage/s/$$/\n\t\"dist:linux:rpm\": \"electron-builder --linux rpm\",/g' package.json && npm install && \
 	npm run dist:linux:rpm"
 
-.PHONY: all  docker-rpm 
+docker-rpm-centos-8:
+	$(DOCKER) run  --rm --privileged -v `pwd`:/root/  -w /root/ docker.io/library/centos:8  /bin/bash -c "dnf install centos-release-stream -y && \
+	dnf install -y https://mirrors.tuna.tsinghua.edu.cn/epel/epel-release-latest-8.noarch.rpm https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm	dnf-plugins-core  centos-stream-release centos-stream-repos && \
+	sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/CentOS-Stream-PowerTools.repo && \
+	dnf install -y rpmfusion-free-release-tainted rpmfusion-nonfree-release-tainted && \
+	dnf install -y gcc-c++ make  rpm-build libxcrypt-devel libX11-devel libxkbfile-devel git && \
+	dnf module install nodejs:13/default -y && \
+	echo "registry=https://registry.npm.taobao.org"  > ~/.npmrc && \
+	echo "electron_mirror=https://npm.taobao.org/mirrors/electron/" >> ~/.npmrc  && \
+	rm -rf freechat && \
+	git clone https://github.com/eNkru/freechat.git && \
+	cd freechat && \
+	sed -i '/deb/s/$$/,\n\t\"rpm\"/g' package.json && 	\
+	sed -i '/--linux AppImage/s/$$/\n\t\"dist:linux:rpm\": \"electron-builder --linux rpm\",/g' package.json && npm install && \
+	npm run dist:linux:rpm"
+
+.PHONY: all  docker-rpm  docker-rpm-centos-8
