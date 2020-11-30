@@ -2141,25 +2141,47 @@ rpm -ivh /root/rpmbuild/RPMS/x86_64/kf5-akonadi-contacts-20.08.1-1.el8.x86_64.rp
 
     rpm -vvh /root/rpmbuild/RPMS/x86_64/kf5-grantleetheme-20.08.1-1.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/kf5-grantleetheme-devel-20.08.1-1.el8.x86_64.rpm
     ```
-- install gpgme
-```
-rpmbuild -ba gpgme.spec
-Wrote: /root/rpmbuild/SRPMS/gpgme-1.14.0-2.el8.src.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-devel-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgmepp-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgmepp-devel-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/qgpgme-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/qgpgme-devel-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/python3-gpg-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-debugsource-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-debuginfo-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-devel-debuginfo-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/gpgmepp-debuginfo-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/qgpgme-debuginfo-1.14.0-2.el8.x86_64.rpm
-Wrote: /root/rpmbuild/RPMS/x86_64/python3-gpg-debuginfo-1.14.0-2.el8.x86_64.rpm
+- install libgpg-error
+    ```
+    rpmbuild -ba libgpg-error.spec
+    Wrote: /root/rpmbuild/SRPMS/libgpg-error-1.37-2.el8.src.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libgpg-error-1.37-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libgpg-error-devel-1.37-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libgpg-error-debugsource-1.37-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libgpg-error-debuginfo-1.37-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libgpg-error-devel-debuginfo-1.37-2.el8.x86_64.rpm
+    rpm -ivh /root/rpmbuild/RPMS/x86_64/libgpg-error-1.37-2.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/libgpg-error-devel-1.37-2.el8.x86_64.rpm
+    ```
+- install libassuan
+    ```
+    rpmbuild -ba libassuan.spec 
+    Wrote: /root/rpmbuild/SRPMS/libassuan-2.5.3-4.el8.src.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libassuan-2.5.3-4.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libassuan-devel-2.5.3-4.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libassuan-debugsource-2.5.3-4.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/libassuan-debuginfo-2.5.3-4.el8.x86_64.rpm
+    rpm -ivh /root/rpmbuild/RPMS/x86_64/libassuan-2.5.3-4.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/libassuan-devel-2.5.3-4.el8.x86_64.rpm
+    ```
+- install gpgme -- need rebuilt 
+    ```
+    rpmbuild -ba gpgme.spec
+    Wrote: /root/rpmbuild/SRPMS/gpgme-1.14.0-2.el8.src.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-devel-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgmepp-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgmepp-devel-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/qgpgme-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/qgpgme-devel-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/python3-gpg-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-debugsource-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-debuginfo-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgme-devel-debuginfo-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/gpgmepp-debuginfo-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/qgpgme-debuginfo-1.14.0-2.el8.x86_64.rpm
+    Wrote: /root/rpmbuild/RPMS/x86_64/python3-gpg-debuginfo-1.14.0-2.el8.x86_64.rpm
 
-rpm -ivh  /root/rpmbuild/RPMS/x86_64/gpgme-devel-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gpgme-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/qgpgme-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/qgpgme-devel-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gpgmepp-1.14.0-2.el8.x86_64.rpm
+    rpm -ivh  /root/rpmbuild/RPMS/x86_64/gpgme-devel-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gpgme-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/qgpgme-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/qgpgme-devel-1.14.0-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gpgmepp-1.14.0-2.el8.x86_64.rpm
+    ```
 - install kf5-libkleo
 ```
 rpmbuild -ba kf5-libkleo.spec
@@ -2168,9 +2190,7 @@ rpmbuild -ba kf5-libkleo.spec
 
 - install kdepim-apps-libs
         cmake(KF5Libkleo) is needed by kdepim-apps-libs-20.08.1-1.el8.x86_64
-        cmake(QGpgme) is needed by kdepim-apps-libs-20.08.1-1.el8.x86_64
         kf5-libkleo-devel >= 20.08.1 is needed by kdepim-apps-libs-20.08.1-1.el8.x86_64
-
 - install kf5-calendarsupport
         kdepim-apps-libs-devel >= 20.08.1 is needed by kf5-calendarsupport-20.08.1-1.el8.x86_64
 
