@@ -15,6 +15,7 @@ Build fcitx5 on centos 8
     rpmbuild -ba xcb-imdkit.spec
     rpm -ivh  /root/rpmbuild/RPMS/x86_64/xcb-imdkit-1.0.0-1.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/xcb-imdkit-devel-1.0.0-1.el8.x86_64.rpm
     ```
+    
 
 - install fcitx5
     ```
@@ -56,3 +57,4 @@ Build fcitx5 on centos 8
     rpmbuild -ba fcitx5-chinese-addons.spec
     rpm -ivh /root/rpmbuild/RPMS/x86_64/fcitx5-chinese-addons-5.0.1-1.el8.x86_64.rpm /root/rpmbuild/RPMS/noarch/fcitx5-chinese-addons-data-5.0.1-1.el8.noarch.rpm /root/rpmbuild/RPMS/x86_64/fcitx5-chinese-addons-devel-5.0.1-1.el8.x86_64.rpm
     ```
+- install fcitx5-configtool
