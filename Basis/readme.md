@@ -46,6 +46,8 @@
 
 4. rpm spec to build packages
     - install `rpmdevtools`, ans use `spectool -g -R vim.spec` to download the tarball file
+    - use `dnf builddep vim.spec` to install the dependencies
+    - check which package depends on specific one, `dnf repoquery --whatrequires glib2`, will list all packages that dependon `glib2`
     - for condition of the `Source0`
         ```
         # Conditional for release and snapshot builds. Uncomment for release-builds.
