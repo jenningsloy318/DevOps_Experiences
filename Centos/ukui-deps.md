@@ -2551,7 +2551,7 @@ rpm -ivh  /root/rpmbuild/RPMS/x86_64/qt5-qtwebkit-5.212.0-0.52.alpha4.el8.x86_64
 	- install coin-or-Data-Netlib
     ```
     rpmbuild -ba coin-or-Data-Netlib.spec
-    rpm -vih rpm -ivh /root/rpmbuild/RPMS/noarch/coin-or-Data-Netlib-1.2.9-2.el8.noarch.rpm
+    rpm -ivh /root/rpmbuild/RPMS/noarch/coin-or-Data-Netlib-1.2.9-2.el8.noarch.rpm
     ```
 	- install coin-or-Sample
     ```
@@ -2622,7 +2622,7 @@ rpm -ivh  /root/rpmbuild/RPMS/x86_64/qt5-qtwebkit-5.212.0-0.52.alpha4.el8.x86_64
                 ```
     		- rebuilt coin-or-Clp-devel
     			```
-                rpmbuild -ba  coin-or-Clp.spec --with bootstrap
+          rpmbuild -ba  coin-or-Clp.spec 
     			rpm -Uvh /root/rpmbuild/RPMS/x86_64/coin-or-Clp-devel-1.17.6-2.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/coin-or-Clp-devel-1.17.6-2.el8.x86_64.rpm  /root/rpmbuild/RPMS/noarch/coin-or-Clp-doc-1.17.6-2.el8.noarch.rpm --force
                 ```
 
@@ -2661,9 +2661,9 @@ rpm -ivh  /root/rpmbuild/RPMS/x86_64/qt5-qtwebkit-5.212.0-0.52.alpha4.el8.x86_64
 	
 - build opencv 4.2
     ```
-	dnf install -y OpenEXR-devel SFML-devel ant blas-devel ceres-solver-devel chrpath coin-or-Clp-devel gdal-devel gdcm-devel gflags-devel glog-devel gstreamer1-devel gstreamer1-plugins-base-devel gtkglext-devel hdf5-devel jasper-devel lapack-devel libgphoto2-devel libmfx-devel libtheora-devel libucil-devel libv4l-devel libva-devel libvorbis-devel libwebp-devel openblas-devel opencl-headers openni-devel openni-primesense protobuf-devel pylint python3-flake8 python3-numpy swig tbb-devel vulkan-headers hdf5-devel opencl-headers
-	rpmbuild -ba opencv-4.2.spec  --without vulkan --without cuda
-	rpm -ivh /root/rpmbuild/RPMS/x86_64/opencv-4.2.0-5.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/opencv-core-4.2.0-5.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/opencv-devel-4.2.0-5.el8.x86_64.rpm   /root/rpmbuild/RPMS/x86_64/opencv-contrib-4.2.0-5.el8.x86_64.rpm
+    dnf install -y OpenEXR-devel SFML-devel ant blas-devel ceres-solver-devel chrpath coin-or-Clp-devel gdal-devel gdcm-devel gflags-devel glog-devel gstreamer1-devel gstreamer1-plugins-base-devel gtkglext-devel hdf5-devel jasper-devel lapack-devel libgphoto2-devel libmfx-devel libtheora-devel libucil-devel libv4l-devel libva-devel libvorbis-devel libwebp-devel openblas-devel opencl-headers openni-devel openni-primesense protobuf-devel pylint python3-flake8 python3-numpy swig tbb-devel vulkan-headers hdf5-devel opencl-headers
+    rpmbuild -ba opencv-4.2.spec  --without vulkan --without cuda
+    rpm -ivh /root/rpmbuild/RPMS/x86_64/opencv-4.2.0-5.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/opencv-core-4.2.0-5.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/opencv-devel-4.2.0-5.el8.x86_64.rpm   /root/rpmbuild/RPMS/x86_64/opencv-contrib-4.2.0-5.el8.x86_64.rpm
     ```
 
 
@@ -2671,7 +2671,7 @@ rpm -ivh  /root/rpmbuild/RPMS/x86_64/qt5-qtwebkit-5.212.0-0.52.alpha4.el8.x86_64
 - final install 
     ```
     dnf install MUMPS glpk gdal suitesparse protobuf hdf5 OpenEXR-libs ilmbase libdc1394 libucil libunicap environment-modules -y 
-    rpm -ivh /root/rpmbuild/RPMS/x86_64/opencv-4.2.0-5.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/opencv-core-4.2.0-5.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/opencv-devel-4.2.0-5.el8.x86_64.rpm   /root/rpmbuild/RPMS/x86_64/opencv-contrib-4.2.0-5.el8.x86_64.rpm nauty-2.7.1-2.el8.x86_64.rpm libnauty-2.7.1-2.el8.x86_64.rpm  cliquer-libs-1.21-19.el8.x86_64.rpm  cliquer-1.21-19.el8.x86_64.rpm  coin-or-Clp-1.17.6-2.el8.x86_64.rpm coin-or-CoinUtils-2.11.4-3.el8.x86_64.rpm gdcm-applications-3.0.7-5.el8.x86_64.rpm gdcm-3.0.7-5.el8.x86_64.rpm  coin-or-Cbc-2.10.5-4.el8.x86_64.rpm  coin-or-Osi-0.108.6-2.el8.x86_64.rpm  CharLS-2.0.0-4.el8.x86_64.rpm  coin-or-Cgl-0.60.3-2.el8.x86_64.rpm 
+    rpm -ivh /root/rpmbuild/RPMS/x86_64/opencv-4.2.0-5.el8.x86_64.rpm  /root/rpmbuild/RPMS/x86_64/opencv-core-4.2.0-5.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/opencv-devel-4.2.0-5.el8.x86_64.rpm   /root/rpmbuild/RPMS/x86_64/opencv-contrib-4.2.0-5.el8.x86_64.rpm nauty-2.7.1-2.el8.x86_64.rpm
     ```
 
 
@@ -2707,4 +2707,4 @@ rpm -ivh  /root/rpmbuild/RPMS/x86_64/qt5-qtwebkit-5.212.0-0.52.alpha4.el8.x86_64
     Wrote: /root/rpmbuild/RPMS/x86_64/gtk3-tests-debuginfo-3.24.23-1.el8.x86_64.rpm
     rpm -ivh /root/rpmbuild/RPMS/x86_64/gtk3-3.24.23-1.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gtk-update-icon-cache-3.24.23-1.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gtk3-immodules-3.24.23-1.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gtk3-immodule-xim-3.24.23-1.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gtk3-devel-3.24.23-1.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gtk3-devel-docs-3.24.23-1.el8.x86_64.rpm /root/rpmbuild/RPMS/x86_64/gtk3-tests-3.24.23-1.el8.x86_64.rpm
     ```
- 
+    
