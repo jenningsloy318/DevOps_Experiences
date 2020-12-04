@@ -1,0 +1,357 @@
+{
+    "root": {
+        "data": {
+            "id": "c6q28xzlh880",
+            "created": 1604044298740,
+            "text": "Linux Network Fundermentals",
+            "background": "#73a1bf",
+            "expandState": "expand"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c6q29d1mv2g0",
+                    "created": 1604044331515,
+                    "text": "Models",
+                    "expandState": "expand",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6q295c8v2o0",
+                            "created": 1604044314742,
+                            "text": "OSI",
+                            "background": "#73a1bf",
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c6q2994whzs0",
+                            "created": 1604044323005,
+                            "text": "TCP/IP",
+                            "background": "#73a1bf",
+                            "expandState": "expand"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c6q29hptbco0",
+                    "created": 1604044341684,
+                    "text": "Network Perf",
+                    "background": "#73a1bf",
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c6q29ubrufk0",
+                            "created": 1604044369133,
+                            "text": "Metrics",
+                            "background": "#73a1bf",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6q29vo1u1c0",
+                                    "created": 1604044372052,
+                                    "text": "bandwith",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2a8l3q8g0",
+                                    "created": 1604044400172,
+                                    "text": "Throughput",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2ab91bc00",
+                                    "created": 1604044405973,
+                                    "text": "Latency",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2ahdp51s0",
+                                    "created": 1604044419316,
+                                    "text": "PPS",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2aqp89mo0",
+                                    "created": 1604044439604,
+                                    "text": "Availibility",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2b3t6h2w0",
+                                    "created": 1604044468141,
+                                    "text": "TCP connection",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2bc6ty200",
+                                    "created": 1604044486381,
+                                    "text": "Packet Loss Rate",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2btjkpz40",
+                                    "created": 1604044524156,
+                                    "text": "retransmit reate",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c6q2bb0iwzc0",
+                            "created": 1604044483822,
+                            "text": "observation",
+                            "background": "#73a1bf",
+                            "expandState": "expand"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c6q2dy57ilc0",
+                                    "created": 1604044690900,
+                                    "text": "ip -s addr show  dev eth0",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2e4up8yg0",
+                                    "created": 1604044705502,
+                                    "text": "ss -ltnp / netstat -nlp",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7jweexiai80",
+                                            "created": 1607074599480,
+                                            "text": "if Recv-Q or Send-Q is not zero, it shows there maybe some problem",
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7jwfco9zhk0",
+                                            "created": 1607074672933,
+                                            "text": "when socket is in state Established",
+                                            "expandState": "expand",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7jwcltdq480",
+                                                    "created": 1607074457740,
+                                                    "text": "Send-Q",
+                                                    "expandState": "expand",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7jwcvfie7s0",
+                                                            "created": 1607074478669,
+                                                            "text": " The count of bytes not acknowledged by the remote host.",
+                                                            "background": "#73a1bf",
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c7jwduhta000",
+                                                    "created": 1607074554996,
+                                                    "text": "Recv-Q",
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7jwdwc61lc0",
+                                                            "created": 1607074559008,
+                                                            "text": "The count of bytes not copied by the user program connected to this socket",
+                                                            "background": "#73a1bf",
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7jwfuh2pi80",
+                                            "created": 1607074711679,
+                                            "text": "when socket is in state Listening",
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7jwcltdq480",
+                                                    "created": 1607074457740,
+                                                    "text": "Send-Q",
+                                                    "expandState": "expand",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7jwcvfie7s0",
+                                                            "created": 1607074478669,
+                                                            "text": "the maximum of all connections(3 times TCP handshake ACK finished) queue",
+                                                            "background": "#73a1bf",
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c7jwduhta000",
+                                                    "created": 1607074554996,
+                                                    "text": "Recv-Q",
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7jwdwc61lc0",
+                                                            "created": 1607074559008,
+                                                            "text": "the lenth of all connections((3 times TCP handshake ACK finished)) queue ",
+                                                            "background": "#73a1bf",
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2es21w6w0",
+                                    "created": 1604044756013,
+                                    "text": "netstat -s / ss -s",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7jwl978bow0",
+                                            "created": 1607075135558,
+                                            "text": "show protocol stack info",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2f9hbs1k0",
+                                    "created": 1604044793941,
+                                    "text": "sar -n DEV 1",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7jwlnrf44g0",
+                                            "created": 1607075167252,
+                                            "text": "show throughput and PPS",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c6q2fdundjs0",
+                                    "created": 1604044803454,
+                                    "text": "ping",
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7jwmjz8l7c0",
+                                            "created": 1607075237382,
+                                            "text": "show the network latency and  accessibility",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
