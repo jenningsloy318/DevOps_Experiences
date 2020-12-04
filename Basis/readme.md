@@ -59,3 +59,12 @@
         %{!?rel_build:Source0:    http://git.mate-desktop.org/%{name}/snapshot/%{name}-%{commit}.tar.xz#/%{git_tar}}
 
         ```
+5. enable docker to access external 
+    - add  interface docker0 to the zone
+        ```
+        firewall-cmd --permanent --zone=public --add-interface=docker0
+        ```
+    - enable masquerade
+        ```
+        firewall-cmd --zone=public --add-masquerade --permanent
+        ```
