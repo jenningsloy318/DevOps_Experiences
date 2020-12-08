@@ -1,0 +1,198 @@
+{
+    "root": {
+        "data": {
+            "id": "c7n91b5qmao0",
+            "created": 1607414926835,
+            "text": "How-To-Assess-Network-Performance"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c7n97rrbozk0",
+                    "created": 1607415433154,
+                    "text": "Network Performance Indicator"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7n97xpmbuw0",
+                            "created": 1607415446112,
+                            "text": "Bandwidth"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n97zylu400",
+                            "created": 1607415451009,
+                            "text": "throughput"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n983qqczs0",
+                            "created": 1607415459240,
+                            "text": "latency"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n9886tzbs0",
+                            "created": 1607415468920,
+                            "text": "PPS"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n989d6axk0",
+                            "created": 1607415471481,
+                            "text": "connections"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n98jfa7wg0",
+                            "created": 1607415493376,
+                            "text": "QPS(query per second)"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c7n9bm4mgbs0",
+                    "created": 1607415734354,
+                    "text": "How to Analysis"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7n9bt6gqqo0",
+                            "created": 1607415749703,
+                            "text": "Link layer and Network Layer"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7n9e07erkw0",
+                                    "created": 1607415921726,
+                                    "text": "PPS"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7nbb9f53zc0",
+                                            "created": 1607421348912,
+                                            "text": "Test on client"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7n9e1hv7s00",
+                                                    "created": 1607415924535,
+                                                    "text": "#!/bin/bash\n\n\n# 定义一个工具函数，方便后面配置各种测试选项\nfunction pgset() {\n\tlocal result\n\techo $1 > $PGDEV\n\n\n\tresult=`cat $PGDEV | fgrep \"Result: OK:\"`\n\tif [ \"$result\" = \"\" ]; then\n\t     cat $PGDEV | fgrep Result:\n\tfi\n}\n\n# 为0号线程绑定eth0网卡\nPGDEV=/proc/net/pktgen/kpktgend_0\npgset \"rem_device_all\"   # 清空网卡绑定\npgset \"add_device ens33\"  # 添加eth0网卡\n\n# 配置eth0网卡的测试选项\nPGDEV=/proc/net/pktgen/ens33\npgset \"count 1000000\"    # 总发包数量\npgset \"delay 5000\"       # 不同包之间的发送延迟(单位纳秒)\npgset \"clone_skb 0\"      # SKB包复制\npgset \"pkt_size 64\"      # 网络包大小\npgset \"dst 192.168.34.128\" # 目的IP\npgset \"dst_mac 00:0c:29:ab:02:9a\"  # 目的MAC\n\n# 启动测试\nPGDEV=/proc/net/pktgen/pgctrl\npgset \"start\"",
+                                                    "layout": null
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c7nbbft3qsg0",
+                                                    "created": 1607421362817,
+                                                    "text": "# cat /proc/net/pktgen/ens33\nParams: count 1000000  min_pkt_size: 64  max_pkt_size: 64\n\t frags: 0  delay: 5000  clone_skb: 0  ifname: ens33\n\t flows: 0 flowlen: 0\n\t queue_map_min: 0  queue_map_max: 0\n\t dst_min: 192.168.34.128  dst_max:\n\t src_min:   src_max:\n\t src_mac: 00:0c:29:4d:1d:d4 dst_mac: 00:0c:29:ab:02:9a\n\t udp_src_min: 9  udp_src_max: 9  udp_dst_min: 9  udp_dst_max: 9\n\t src_mac_count: 0  dst_mac_count: 0\n\t Flags:\nCurrent:\n\t pkts-sofar: 1000000  errors: 0\n\t started: 155676255us  stopped: 165836841us idle: 2573us\n\t seq_num: 1000001  cur_dst_mac_offset: 0  cur_src_mac_offset: 0\n\t cur_saddr: 192.168.34.140  cur_daddr: 192.168.34.128\n\t cur_udp_dst: 9  cur_udp_src: 9\n\t cur_queue_map: 0\n\t flows: 0\nResult: OK: 10160586(c10158012+d2573) usec, 1000000 (64byte,0frags)\n  98419pps 50Mb/sec (50390528bps) errors: 0",
+                                                    "layout_right_offset": {
+                                                        "x": 37,
+                                                        "y": -5
+                                                    }
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c7n9lub0rv40",
+                            "created": 1607416535797,
+                            "text": "TCP/UDP performance"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7n9lypnkfk0",
+                                    "created": 1607416545389,
+                                    "text": "iperf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7n9m7wkhe00",
+                                            "created": 1607416565398,
+                                            "text": "server"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7n9ocvfmqo0",
+                                                    "created": 1607416732942,
+                                                    "text": "iperf3 -s -i 1 -p 10000"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7n9qprka6g0",
+                                                            "created": 1607416917734,
+                                                            "text": "[SUM]   0.00-15.04  sec  0.00 Bytes  0.00 bits/sec                  sender\n[SUM]   0.00-15.04  sec  3.49 GBytes  2.00 Gbits/sec                  receiver"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7n9m9cytbs0",
+                                            "created": 1607416568566,
+                                            "text": "client"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7n9pnsbp7k0",
+                                                    "created": 1607416835062,
+                                                    "text": "iperf3 -c 192.168.34.128 -b 1G -t 15 -P 2 -p 10000"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7n9qrwt5r40",
+                                                            "created": 1607416922405,
+                                                            "text": "[SUM]   0.00-15.00  sec  3.49 GBytes  2.00 Gbits/sec  1052             sender\n[SUM]   0.00-15.00  sec  3.49 GBytes  2.00 Gbits/sec                  receiver"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
