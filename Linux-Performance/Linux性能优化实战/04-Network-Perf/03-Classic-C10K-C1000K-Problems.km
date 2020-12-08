@@ -1,0 +1,305 @@
+{
+    "root": {
+        "data": {
+            "id": "c7n7w9vwa200",
+            "created": 1607411711133,
+            "text": "03-Classic-C10K-C1000K-Problems",
+            "expandState": "expand",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c7n7xkoamt40",
+                    "created": 1607411812982,
+                    "text": "I/O model ",
+                    "expandState": "expand",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7n7wjwi1pk0",
+                            "created": 1607411732937,
+                            "text": "Asynchronous I/O",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n8dl7x6xk0",
+                            "created": 1607413067995,
+                            "text": "synchronous I/O",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n8cojljvs0",
+                            "created": 1607412996868,
+                            "text": "Non-blocking IO",
+                            "layout_right_offset": {
+                                "x": 4,
+                                "y": 8.999999999999943
+                            },
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n8dr4okww0",
+                            "created": 1607413080860,
+                            "text": "blocking IO",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c7n7xrhh3zs0",
+                    "created": 1607411827807,
+                    "text": "event notification mechanisms",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7n7xw6yh1s0",
+                            "created": 1607411838055,
+                            "text": "edge-triggered mechanisms",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7n82g4p17c0",
+                                    "created": 1607412194911,
+                                    "text": " provides (when queried) information about which AIO events are still pending",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c7n80t5gwtc0",
+                            "created": 1607412066528,
+                            "text": "level-triggered mechanisms",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7n82lxc3q80",
+                                    "created": 1607412207526,
+                                    "text": "provides information about which events have changed status",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c7n7wyep3s80",
+                    "created": 1607411764512,
+                    "text": "I/O Multiplexing(C10K-C1000K))",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7n8ftdhp2g0",
+                            "created": 1607413242475,
+                            "text": "IO model",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7n83j9d1ps0",
+                                    "created": 1607412280087,
+                                    "text": "Non-blocking + level-triggered",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7n843b751s0",
+                                            "created": 1607412323734,
+                                            "text": "select or poll",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c7n84nh0w2w0",
+                                    "created": 1607412367622,
+                                    "text": "Non-blocking + edge-trigger",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7n84xgrhso0",
+                                            "created": 1607412389374,
+                                            "text": "epoll",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c7n8d97xz0w0",
+                                    "created": 1607413041875,
+                                    "text": "AIO",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c7n8g0dpa5c0",
+                            "created": 1607413257725,
+                            "text": "Working Model",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7n8g4hum140",
+                                    "created": 1607413266683,
+                                    "text": "Master + Worker process/threads",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7n8gd8des80",
+                                            "created": 1607413285701,
+                                            "text": "Master thread(process)",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7n8glwzm5k0",
+                                                    "created": 1607413304604,
+                                                    "text": "bind() + listen() ",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c7n8goonbc80",
+                                                    "created": 1607413310630,
+                                                    "text": "Manage worker threads",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7n8gzqcqag0",
+                                            "created": 1607413334677,
+                                            "text": "worker threads(processes)",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7n8s016up40",
+                                                    "created": 1607414197338,
+                                                    "text": "process actual requests",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c7n8h2gd9oo0",
+                                                    "created": 1607413340604,
+                                                    "text": "accept()",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c7n8h7c99qw0",
+                                                    "created": 1607413351240,
+                                                    "text": "epoll_wait()",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c7n8ibgc2n40",
+                                    "created": 1607413438557,
+                                    "text": "Multiple processes listen on same port",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c7n8vspvm1s0",
+                    "created": 1607414494874,
+                    "text": "XDP/DPDK(C10M)",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7n8y29c3i00",
+                            "created": 1607414672369,
+                            "text": "XDP:process packet before arrive kernel",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7n95a7abr40",
+                            "created": 1607415238209,
+                            "text": "DPDK: process packet in userspace",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
