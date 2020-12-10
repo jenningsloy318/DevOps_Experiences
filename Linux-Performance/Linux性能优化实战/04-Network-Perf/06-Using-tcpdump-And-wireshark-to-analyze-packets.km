@@ -1,0 +1,83 @@
+{
+    "root": {
+        "data": {
+            "id": "c7oxvn7nm6o0",
+            "created": 1607586570592,
+            "text": "Using-tcpdump-And-wireshark-to-analyze-packets",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c7oxvts3jtc0",
+                    "created": 1607586584889,
+                    "text": "Simulation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7oxvw4d3i80",
+                            "created": 1607586589984,
+                            "text": "# 禁止接收从DNS服务器发送过来并包含googleusercontent的包\n$ iptables -I INPUT -p udp --sport 53 -m string --string googleusercontent --algo bm -j DROP",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7oxx07kdgg0",
+                            "created": 1607586677249,
+                            "text": "time ping -c3 geektime.org\nPING geektime.org (35.190.27.188) 56(84) bytes of data.\n64 bytes from 35.190.27.188: icmp_seq=1 ttl=114 time=15.7 ms\n64 bytes from 35.190.27.188: icmp_seq=2 ttl=114 time=9.94 ms\n64 bytes from 35.190.27.188: icmp_seq=3 ttl=114 time=12.4 ms\n\n--- geektime.org ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 11026ms\nrtt min/avg/max/mdev = 9.944/12.690/15.714/2.365 ms\n\nreal    0m11.160s\nuser    0m0.000s\nsys     0m0.003s",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7oxwyvgx9c0",
+                            "created": 1607586674341,
+                            "text": "tcpdump -nn udp port 53 or host 35.190.27.188",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7oxxe5tk600",
+                                    "created": 1607586707618,
+                                    "text": "tcpdump: verbose output suppressed, use -v or -vv for full protocol decode\nlistening on ens192, link-type EN10MB (Ethernet), capture size 262144 bytes\n07:48:01.854982 IP 10.180.1.47.35784 > 10.180.1.3.53: 8672+ [1au] A? geektime.org. (41)\n07:48:01.855092 IP 10.180.1.47.50539 > 10.180.1.3.53: 28575+ [1au] AAAA? geektime.org. (41)\n07:48:01.855453 IP 10.180.1.3.53 > 10.180.1.47.35784: 8672 1/0/1 A 35.190.27.188 (57)\n07:48:01.973078 IP 10.180.1.3.53 > 10.180.1.47.50539: 28575 0/1/1 (123)\n07:48:01.973605 IP 10.180.1.47 > 35.190.27.188: ICMP echo request, id 6108, seq 1, length 64\n07:48:01.989280 IP 35.190.27.188 > 10.180.1.47: ICMP echo reply, id 6108, seq 1, length 64\n07:48:01.989708 IP 10.180.1.47.57268 > 10.180.1.3.53: 60359+ [1au] PTR? 188.27.190.35.in-addr.arpa. (55)\n07:48:04.288839 IP 10.180.1.47.57858 > 10.180.1.2.53: 60359+ [1au] PTR? 188.27.190.35.in-addr.arpa. (55)\n07:48:09.538957 IP 10.180.1.47.57953 > 10.180.1.3.53: 60359+ [1au] PTR? 188.27.190.35.in-addr.arpa. (55)\n07:48:11.999831 IP 10.180.1.47 > 35.190.27.188: ICMP echo request, id 6108, seq 2, length 64\n07:48:12.009732 IP 35.190.27.188 > 10.180.1.47: ICMP echo reply, id 6108, seq 2, length 64\n07:48:12.999903 IP 10.180.1.47 > 35.190.27.188: ICMP echo request, id 6108, seq 3, length 64\n07:48:13.012269 IP 35.190.27.188 > 10.180.1.47: ICMP echo reply, id 6108, seq 3, length 64\n07:48:14.288838 IP 10.180.1.47.43565 > 10.180.1.2.53: 60359+ [1au] PTR? 188.27.190.35.in-addr.arpa. (55)\n07:48:14.289247 IP 10.180.1.2.53 > 10.180.1.47.43565: 60359 1/0/1 PTR 188.27.190.35.bc.googleusercontent.com. (107)",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c7oyi666whs0",
+                            "created": 1607588335874,
+                            "text": "tcpdump -nn udp port 53 or host 35.190.27.188 -w ping.pcap",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7oyie109k80",
+                                    "created": 1607588352975,
+                                    "text": "open ping.pcap with wireshark",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
