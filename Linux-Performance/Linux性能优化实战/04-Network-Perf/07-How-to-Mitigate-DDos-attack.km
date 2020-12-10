@@ -1,0 +1,187 @@
+{
+    "root": {
+        "data": {
+            "id": "c7ozktvg3g80",
+            "created": 1607591365305,
+            "text": "How-to-Mitigate-DDos-attack",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c7ozup4ut2g0",
+                    "created": 1607592138632,
+                    "text": "DDOS",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7ozv2kzmfs0",
+                            "created": 1607592167906,
+                            "text": "Simulation",
+                            "expandState": "expand",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7ozuu5cb5c0",
+                                    "created": 1607592149545,
+                                    "text": "Server",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7ozuxrm2e80",
+                                            "created": 1607592157422,
+                                            "text": "docker run -itd --name=nginx --network=host nginx",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c7ozv5s8x200",
+                                    "created": 1607592174875,
+                                    "text": "Client 1",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7ozvom4pnc0",
+                                            "created": 1607592215864,
+                                            "text": "curl -s -w 'Http code: %{http_code} Total time:%{time_total}s' -o /dev/null http://10.180.1.47/ ",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c7ozvbu0lo80",
+                                    "created": 1607592188043,
+                                    "text": "Client 2",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7ozvbw8sow0",
+                                            "created": 1607592188177,
+                                            "text": "hping3 -S -p 80 -i u10 10.180.1.47",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c7ozwg1ez7c0",
+                                    "created": 1607592275561,
+                                    "text": "Analyze",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7ozx0244340",
+                                            "created": 1607592319139,
+                                            "text": "on client 1",
+                                            "expandState": "expand",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7ozwj5lszc0",
+                                                    "created": 1607592282345,
+                                                    "text": "curl -s -w 'Http code: %{http_code} Total time:%{time_total}s' -o /dev/null http://10.180.1.47/ ",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7ozwuvvdxs0",
+                                                            "created": 1607592307878,
+                                                            "text": "Http code: 000\nTotal time:10.001s\ncurl: (28) Connection timed out after 10000 milliseconds",
+                                                            "layout": null,
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7ozxp7mp280",
+                                            "created": 1607592373892,
+                                            "text": "on Server",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7ozxrjgmkw0",
+                                                    "created": 1607592378961,
+                                                    "text": "sar -n DEV 1",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c7p01bxlabs0",
+                                                    "created": 1607592658444,
+                                                    "text": "tcpdump -i ens192 -n tcp port 80",
+                                                    "layout": null,
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c7p01ny443k0",
+                                                            "created": 1607592684597,
+                                                            "text": "Flags [S]  indicate that it is a  SYN packet",
+                                                            "layout": null,
+                                                            "background": "#73a1bf"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
