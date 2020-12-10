@@ -1,0 +1,189 @@
+{
+    "root": {
+        "data": {
+            "id": "c7ow0ifth080",
+            "created": 1607581309803,
+            "text": "DNS-Resolv-Not-Stable",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "c7owa2u1bw80",
+                    "created": 1607582059476,
+                    "text": "common use",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7owa59x8y00",
+                            "created": 1607582064790,
+                            "text": "nslookup  time.geekbang.org",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "c7owa7t5bwg0",
+                            "created": 1607582070306,
+                            "text": "dig +trace +nodnssec time.geekbang.org",
+                            "background": "#73a1bf"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "c7owdkq4oi00",
+                    "created": 1607582333514,
+                    "text": "simulation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "c7owdpjdcm00",
+                            "created": 1607582343989,
+                            "text": "Case 1: DNS resolv failed",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7owe094l540",
+                                    "created": 1607582367314,
+                                    "text": "docker run -it --rm -v $(mktemp):/etc/resolv.conf feisky/dnsutils bash",
+                                    "layout_right_offset": {
+                                        "x": 67,
+                                        "y": -4
+                                    },
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c7owf0tyikw0",
+                                    "created": 1607582446938,
+                                    "text": "Analysis ",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7owf7i3j880",
+                                            "created": 1607582461458,
+                                            "text": "root@258bde5c76e8:/# nslookup time.geekbang.org\n;; connection timed out; no servers could be reached",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7owg392uw00",
+                                            "created": 1607582530570,
+                                            "text": "ping -c 3 114.114.114.114",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7owggr3tkg0",
+                                            "created": 1607582559958,
+                                            "text": "root@258bde5c76e8:/# nslookup -debug time.geekbang.org\n;; Connection to 127.0.0.1#53(127.0.0.1) for time.geekbang.org failed: connection refused.\n;; Connection to ::1#53(::1) for time.geekbang.org failed: address not available.",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7owguj44ds0",
+                                            "created": 1607582589950,
+                                            "text": "seems don't configure DNS server properly",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "c7owhgs0uhk0",
+                            "created": 1607582638378,
+                            "text": "Case 2: DNS resolv unstable",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "c7owifx7j740",
+                                    "created": 1607582714879,
+                                    "text": "docker run -it --rm --cap-add=NET_ADMIN --dns 8.8.8.8 feisky/dnsutils bash",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "c7owihn1jhs0",
+                                    "created": 1607582718618,
+                                    "text": "Analysis",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c7owijk75z40",
+                                            "created": 1607582722799,
+                                            "text": "root@0e91bdc35636:/# time nslookup time.geekbang.org",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c7owv38s7zk0",
+                                                    "created": 1607583706015,
+                                                    "text": "response times varies from 0m0.359s to  0m1.706s",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7owvp2jt280",
+                                            "created": 1607583753527,
+                                            "text": "root@0e91bdc35636:/# ping -c3 8.8.8.8\nPING 8.8.8.8 (8.8.8.8): 56 data bytes\n64 bytes from 8.8.8.8: icmp_seq=0 ttl=72 time=104.043 ms\n64 bytes from 8.8.8.8: icmp_seq=1 ttl=56 time=103.915 ms\n64 bytes from 8.8.8.8:icmp_seq=2 ttl=80 time=103.903 ms",
+                                            "layout": null,
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c7owxx84dnc0",
+                                            "created": 1607583928007,
+                                            "text": "network latency is hight, above 100 ms, so change to another DNS server",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
