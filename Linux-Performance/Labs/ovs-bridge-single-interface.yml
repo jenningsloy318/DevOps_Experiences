@@ -1,0 +1,7 @@
+network_config:
+  - type: ovs_bridge
+    name: br-ex
+    use_dhcp: true
+    members:
+      - type: interface
+        name: enp9s0
