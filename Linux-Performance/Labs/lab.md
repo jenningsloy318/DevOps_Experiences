@@ -44,8 +44,9 @@
 2. create VM
 ```sh
 # virt-install  -n linux-perf-server  --import --description "linux-perf-server "  --os-type=Linux  --os-variant=ubuntu18.04  --ram=4086 --vcpus=2  --disk path=/data/KVM/linux-perf-server/linux-perf-server.img,bus=virtio   --network network:ovs-bridge --graphics none  
-```
 
+# virt-install  -n linux-perf-client  --import --description "linux-perf-client "  --os-type=Linux  --os-variant=ubuntu18.04  --ram=1024 --vcpus=1  --disk path=/data/KVM/linux-perf-client/linux-perf-client.img,bus=virtio   --network network:ovs-bridge --graphics none  
+```
 3. config sshd 
   ```
   dpkg-reconfigure openssh-server
