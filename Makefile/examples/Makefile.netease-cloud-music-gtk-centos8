@@ -1,0 +1,25 @@
+
+
+DOCKER := $(shell { command -v podman || command -v docker; } 2>/dev/null)
+
+
+all: docker-rpm
+docker-rpm:
+	$(DOCKER) run  --rm --privileged -v `pwd`:/root/  -w /root/ docker.io/library/fedora:33  /bin/bash -c "dnf install centos-release-stream -y && \
+	dnf distro-sync -y && \
+	dnf install --allowerasing -y https://mirrors.tuna.tsinghua.edu.cn/epel/epel-release-latest-8.noarch.rpm https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm  https://pkgs.dyn.su/el8/base/x86_64/raven-release-1.0-1.el8.noarch.rpm https://mirrors.tuna.tsinghua.edu.cn/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-release-8.4-1.el8.noarch.rpm https://mirrors.tuna.tsinghua.edu.cn/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-8-2.el8.noarch.rpm dnf-plugins-core make  rpm-build  git && \
+	dnf install -y git gcc dbus-devel gtk3-devel openssl-devel gstreamer1-devel   gstream-devel gstreamer1-devel gstreamer1-plugins-* cairo-devel cargo  && \
+	dnf install -y rpmfusion-free-release-tainted rpmfusion-nonfree-release-tainted && \
+	sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/CentOS-Stream-PowerTools.repo && \
+	rm -rf netease-cloud-music-gtk && \
+	git clone https://github.com/gmg137/netease-cloud-music-gtk.git && \
+	export PATH=/root/.cargo/bin:${PATH} && \
+	cd netease-cloud-music-gtk && \
+	cargo build --release && \
+	cargo install cargo-rpm  && \
+	sed -i '/gstreamer-plugins-libav/d' .rpm/netease-cloud-music-gtk.spec && \
+	sed -i  's/streamer-plugins-bad/streamer-plugins-bad-free/g' .rpm/netease-cloud-music-gtk.spec && \
+	sed -i  's/streamer/streamer1/g' .rpm/netease-cloud-music-gtk.spec && \
+	cargo rpm build "
+
+.PHONY: all  docker-rpm 
