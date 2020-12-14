@@ -1,5 +1,5 @@
 
-bal owner buggins
+%global owner buggins
 %global commit face2671e1690f56cbaaf97d390c7b9c4dcd1027
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
