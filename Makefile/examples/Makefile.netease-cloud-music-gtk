@@ -15,6 +15,7 @@ docker-rpm:
 	sed -i '/gstreamer-plugins-libav/d' .rpm/netease-cloud-music-gtk.spec && \
 	sed -i  's/streamer-plugins-bad/streamer-plugins-bad-free/g' .rpm/netease-cloud-music-gtk.spec && \
 	sed -i  's/streamer/streamer1/g' .rpm/netease-cloud-music-gtk.spec && \
+	sed -i '/Release:/s/1/1%{?dist}/' .rpm/netease-cloud-music-gtk.spec  && \
 	cargo rpm build  "
 
 .PHONY: all  docker-rpm 
