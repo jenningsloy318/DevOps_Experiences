@@ -47,9 +47,9 @@ popd
 
 %files
 %{_bindir}/*
-%{_includedir}/harfbuzz/
-%{_libdir}/cmake/harfbuzz/
-%{_libdir}/libharfbuzz.so
+#%{_includedir}/harfbuzz/
+#%{_libdir}/cmake/harfbuzz/
+#%{_libdir}/libharfbuzz.so
 %{_datadir}/applications/*
 %{_datadir}/cr3/
 %{_docdir}/cr3/
