@@ -190,3 +190,44 @@ Systems Performance 2nd Edition
 
 - 4.4 SAR 
   - prequisites: install sysstat and enable sysstat service
+
+
+### Chapter 5
+
+- 5.2.5 concurrency and parallelism
+
+  - synchronization primitives 
+    - Mutex(Mutually exclusive) locks
+    - Spine locks
+    - RW locks 
+    - Semaphores
+
+  - hash table to deal with locks 
+    - a bucket of locks for several input data structures
+    - hash algorithm to choose which lock based on the input
+    - eliminate the creation and destroy lock overhead frequently 
+
+
+- 5.4 Methodology
+
+  Available methodologies:
+  - CPU profiling
+  - Off-CPU profiling
+  - Syscall analysis
+  - USE method 
+  - Thread state analysis
+  - lock analysis 
+  - static performance tuning
+  - distribute tracing
+
+
+  thread state analysis
+  - User: pidstat -- "%user"
+  - Kernel: pidstat -- "%system"
+  - runnable: vmstat -- "r"
+  - swapping: vmstat -- "si" and "so"
+  - disk I/O: pidstat -d -- "iodelay"
+  - Network I/O: sar -n DEV -- "rxKB/S" "txKB/s"
+  - sleeping: not easily available
+  - lock: perf top 
+  - idle: not easily available
