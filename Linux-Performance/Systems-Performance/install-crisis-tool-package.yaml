@@ -1,0 +1,19 @@
+---
+- hosts: all
+  tasks:
+  - name: install crisis performance tools
+    dnf:
+        name: 
+        - procps-ng
+        - util-linux
+        - sysstat
+        - iproute
+        - numactl
+        - perf
+        - kernel-tools
+        - bcc-tools
+        - bpftrace
+        - trace-cmd
+        - ethtool
+        - msr-tools
+        state: present
