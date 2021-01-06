@@ -17,5 +17,6 @@
         co = checkout
         br = branch
         ci = commit
+        lg = "log --graph"
 [format]
-        pretty = format:%H %ai | %s%d  [%an]
+        pretty = format:%C(yellow)%T%Creset %C(green)%ai%Creset  %C(red)%d%Creset %C(cyan)%s%Creset   [%C(magenta)%an%Creset]
