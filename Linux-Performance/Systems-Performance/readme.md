@@ -1,5 +1,13 @@
 Systems Performance 2nd Edition
 ---
+
+
+- [Chapter 3 Operating System](#Chapter-3-Operating-System)
+- [Chapter 4 Observability Tools](#Chapter-4-Observability-Tools)
+- [Chapter 5 Applications](#Chapter-5-Applications)
+- [Chapter 6 CPUs](#Chapter-6-CPUs)
+
+
 ### Chapter 3 Operating System
 - 3.2.2  Kernel and user mode
   - mode switch (kernel mode and user), and all system calls mode switch
@@ -192,7 +200,7 @@ Systems Performance 2nd Edition
   - prequisites: install sysstat and enable sysstat service
 
 
-### Chapter 5
+### Chapter 5 Applications
 
 - 5.2.5 concurrency and parallelism
 
@@ -231,3 +239,161 @@ Systems Performance 2nd Edition
   - sleeping: not easily available
   - lock: perf top 
   - idle: not easily available
+
+
+### Chapter 6 CPUs
+- 6.4 Architecture
+  - 6.4.1 Hardware
+    - P-states and C-states
+
+      P-states: processor performance state, providing different levels of performance during normal excution by varying the CPU frequency
+      
+      P0 is the highest frequency, P1...PN are lower frequency states
+
+      C-states: processor power states,providing different idle states for when execution is halted, saving power
+
+      C0 is for normal operation, and C1 and above are for idle states 
+
+
+    - CPU caches 
+
+      all kinds of caches:
+      - Level 1 instruction cache
+      - Level 1 data cache 
+      - Translation lookaside buffer 
+      - level 2 cache 
+      - level 3 cache 
+
+      for intel processor, Level 3 cache are called last-level-cache(LLC)
+
+
+    - MMU
+
+      - Translation lookaside buffer(TLB) is used by MMU to cache the translation of address between virtual and main memory mapping 
+      - if TLB is hit, just return the mapping
+      - if TLB miss, MMU will try to mapping new memory pages with virtual memory
+
+
+    - Hardware Counters(PMCs)
+
+      PMCs are processor registers implemented in hardware that can be programmed to count low-level CPU activity
+
+      - CPU cycles: including stall cycles and types of stall cycles
+      - CPU instructions: retired(excuted)
+      - Level 1,2,3 cache accesses: hits,misses
+      - Floating-point unit: opertion
+      - Memory I/O: reads,writes,stall cycles
+      - Resource I/O: reads,writes,stall cycles
+  
+  - 6.4.2 Software
+    - Scheduler
+      
+      functions of the scheduler:
+      - time sharing
+      - preemtion
+      - loadbalancing
+
+    - scheduling class
+
+      it manages the behavior of runnable threads' priorities, whether on-CPU time  is time sliced, and the duration of those time slices
+
+      scheduling policies, can work within a scheduling class to control scheduling between threads of the same priority
+
+
+      List of scheduling class
+      - RT
+      - O(1)
+      - CFS
+      - Idle
+      - Deadline
+
+      List of scheduling policies
+      - RR: round-robin
+      - FIFO: first-in, first-out
+      - Normal: time-sharing scheduling and is the default for user processes
+      - Batch:
+      - IDLE
+      - DEADLINE
+- 6.5 Methodology
+
+    amoung all the moethodologies, suggested methodology order is: performance monitoring ---> USE method ---> profiling ---> micro-benchmarking ---> static performance tuning
+
+    - Tools method 
+      - uptime/top: check load average
+      - vmstat 1: check system-wide CPU utilization(us+sy)
+      - mpstat :check individual hot CPU(busy)
+      - top: check wich process and user use most CPU
+      - pidstat -p : upon above result, check the corresponding process cpu us+sy 
+      - perf/profile: profile cpu usage stack trace 
+      - perf: measure IPC as an indicator of cycle-based inefficiencies
+      - showboost/turboboost: check current CPU clock rate
+      - demsg: check if has stall message "cpu clock throttled"
+
+    - USE mothod 
+
+
+      - check error firstly 
+        - check ECC error 
+    - Workload characterization
+      - CPU load average
+      - user-time to system-time ratio
+      - syscall rate
+      - voluntary context switch rate
+      - interrupt rate 
+
+    - profiling 
+      
+      flame graph excerpt
+      - top-down: to find wide plateau 
+      - bottom-up: understand code hirachy and find potential syscall or problems
+      - look more carefully top-down for scattered but common cpu usage, especially for lock contentaion,
+
+
+    - cycle analysis
+      
+      via PMC conters
+
+    - Performance monitoring
+
+      key Metrics:
+      - utilization: percent busy
+      - saturation: either run-queue length or scheduler latency
+
+- 6.6 Obersvability Tools
+
+  - uptime
+
+    - load average 
+    - pressure stall information(PSI)
+
+      uptime show system-wide resource demand as a whole indicator while PSI can provide indivual resource demand
+      ```
+      # cat /proc/pressure/cpu
+      some avg10=0.00 avg60=0.00 avg300=0.00 total=400731449
+      
+      # cat /proc/pressure/memory
+      some avg10=0.00 avg60=0.00 avg300=0.00 total=0
+      full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+      
+      # cat /proc/pressure/io
+      some avg10=0.00 avg60=0.00 avg300=0.00 total=26018468
+      full avg10=0.00 avg60=0.00 avg300=0.00 total=24924185
+      ```
+
+      echo value represent the percentage of time is stall
+  - vmstat 
+
+    ```
+    vmstat 1
+    ```
+  - mpstat
+  
+    ```
+    mpstat -P ALL 1
+    ```
+  - sar
+
+    options 
+    - -P ALL: same with mpstat -P ALL 1
+    - -u same as mpstat default system-wide average only 
+    - -q indlues run-queue size as runq-sz
