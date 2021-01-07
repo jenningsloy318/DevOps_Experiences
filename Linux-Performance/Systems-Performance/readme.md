@@ -6,6 +6,7 @@ Systems Performance 2nd Edition
 - [Chapter 4 Observability Tools](#Chapter-4-Observability-Tools)
 - [Chapter 5 Applications](#Chapter-5-Applications)
 - [Chapter 6 CPUs](#Chapter-6-CPUs)
+- [Chapter 7 Memory](#Chapter-6-Memory)
 
 
 ### Chapter 3 Operating System
@@ -397,3 +398,111 @@ Systems Performance 2nd Edition
     - -P ALL: same with mpstat -P ALL 1
     - -u same as mpstat default system-wide average only 
     - -q indlues run-queue size as runq-sz
+  
+  - ps 
+  - top 
+  - pidstat
+
+    ```
+    pidstat 1 
+    ```
+    - -t print per-thread statistic
+    - -p ALL print all processors
+  
+
+### Chapter 7 Memory
+
+- 7.2 Concetps 
+
+  - 7.2.2 paging
+    - file system paging
+      - file memory mapping involves files on the filesystem and files in the page cache (memory page)
+      - if page in the memory are modified(dirty), call page-out to write to filesystem 
+      - page-in will load data from filesystem to page cache
+
+    - anonymous paging(aka swapping)
+      - process private data (stack and heap which don't have mapping to filesystem so called anonymous paging)  are write to swap device or swap file
+
+  - 7.2.7 Utilization and satruation
+
+    - how to measure satruation
+      - check if there is `page scanning/page-out`  ----> `sar -B` check `pgscank/s`or `pgscand/s` column
+      - check if there is `anonymous paging(swapping)`
+      - check if there is `OOM killer`
+
+- 7.3 Architeture
+
+  - 7.3.1 Hardware
+    
+    - MMU
+      - TLB(tranlation lookaside buffer): used by MMU to store info about virtual-to-phsical translation, this is first level of such cache
+      - page table: if TLB is full, the page table store the virtual-to-physical mapping called page table can be stored in main memory
+    - page size
+      - modern processor  support muliple page sizes
+      - 4k 2M
+      - huge page (1G)
+
+    - TLB
+      - Can be devided into separate caches fro instruction and data pages
+      - if use larger page size, TLB may support wide range of memory mapping
+      - TLB can be also devided into separate caches for each of these page sizes
+  
+  - 7.3.2 Software
+
+    - Free list
+      - pages freed via page-out will be added to the tail fo the free list, it can be reclaimed before it is allocated and reused to other process if it requests 
+      - completely freed pages are added to the head of the free list that can be allocated and reused immediately
+
+      allocator 
+      - slab for kernel process, pick the pages from free list head
+      - libc (malloc()) for user space process, pick the pages from free list head
+      - buddy allocator (a page allocator)is used to manage pages only, will provides multiple free lists for different-sized memory allocation
+       
+    - reaping:  mechnism to free slab caches 
+    - page scaning: page-out daemon(kswapd) starts page scanning
+
+
+    - process virtual address space
+
+      - virtual address spaces is a range of virual pages that are mapped to physical pages 
+      - it is composed of several segments
+        - stacks
+          - stacks of the running threads, mapped read/write
+        - process excutable
+          - executable text: contains the executable CPU instructions for the process
+          - executable data: contains initialized variables mapped from the data segment of the binary program, the variables has read/wirte so it can be update when program is running
+        - libraries
+          - executable text: contains the executable CPU instructions for the process
+          - executable data: contains initialized variables mapped from the data segment of the binary program, the variables has read/wirte so it can be update when program is running
+        - heap: the working memory for the program and is anonymous memory(no filesystem location), and grows as needed which is allocated with malloc()
+    - Allocator
+
+      - kernel allocators
+        - slab allocator 
+            - array of fixed size(magzine) contains page references per CPU
+            - the mazine don't need be full all the time
+            - each reference may map to a page 
+            - CPU will first to search for the the pages referenced in the magzine, if not mapped, trigger to allocate
+        - SLUB (now as default)
+          - improvement based on slab
+          - remove object queue
+          - remove per-CPU caches, leave NUMA optimization to page allocator
+      - user-level allocator
+        - glibc(malloc)
+          - glibc malloc is chunk-oriented
+          - its behavior depends on the allocation request size and certain parameters
+          - allocation through Arenas ----> heap ----> linked-list of free chunks 
+          -  Arena: A structure that is shared among one or more threads which contains references to one or more heaps, as well as linked lists of chunks within those heaps which are "free". Threads assigned to each arena will allocate memory from that arena's free lists.
+          - Heap: A contiguous region of memory that is subdivided into chunks to be allocated. Each heap belongs to exactly one arena.
+          - Chunk: A small range of memory that can be allocated (owned by the application), freed (owned by glibc), or combined with adjacent chunks into larger ranges; Each chunk exists in one heap and belongs to one arena; chunks can be various sizes
+          - Neighboring chunks can be coalesced on a free linked list, no matter what their size is
+          - very large allocation use mmap 
+        
+        - tcmalloc
+          - thread caching malloc, uses a small per-thread cache for small allocation, reducing lock contentation and improving performance
+
+        - jemalloc 
+          - multiple arenas
+          - per-thread caching
+          - small object slabs
+          - can use mmap and sbrk
