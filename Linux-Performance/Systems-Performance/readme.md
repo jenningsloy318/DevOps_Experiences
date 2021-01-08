@@ -442,7 +442,57 @@ Systems Performance 2nd Edition
       - LLC%: last level cache hit ratio
   - tlbstat
   
-  # tlbstat 
+  - perf 
+    ```
+    # perf sched record -- sleep 10 
+    # perf sched latency 
+
+    -----------------------------------------------------------------------------------------------------------------
+      Task                  |   Runtime ms  | Switches | Average delay ms | Maximum delay ms | Maximum delay at       |
+    -----------------------------------------------------------------------------------------------------------------
+      ksoftirqd/48:251      |      0.011 ms |        2 | avg:    3.531 ms | max:    6.068 ms | max at: 867303.405547 s
+      ksoftirqd/20:111      |      0.032 ms |        6 | avg:    1.845 ms | max:    6.139 ms | max at: 867303.363621 s
+      kworker/26:2:4901     |      0.135 ms |        9 | avg:    0.219 ms | max:    1.506 ms | max at: 867302.043965 s
+      kworker/5:0:12042     |      0.185 ms |        5 | avg:    0.210 ms | max:    0.496 ms | max at: 867300.543921 s
+      kworker/4:1:36354     |      0.182 ms |        6 | avg:    0.137 ms | max:    0.620 ms | max at: 867297.213990 s
+      kworker/7:0:17127     |      0.109 ms |        5 | avg:    0.132 ms | max:    0.448 ms | max at: 867297.267816 s
+      kworker/31:2:2214     |      0.166 ms |        7 | avg:    0.119 ms | max:    0.535 ms | max at: 867299.115942 s
+      kworker/6:0:14875     |      0.496 ms |       16 | avg:    0.089 ms | max:    0.575 ms | max at: 867298.526970 s
+      kworker/27:0:15334    |      0.064 ms |        5 | avg:    0.075 ms | max:    0.217 ms | max at: 867298.621615 s
+      kworker/25:1:26119    |      0.074 ms |        4 | avg:    0.071 ms | max:    0.269 ms | max at: 867301.036713 s
+      kworker/34:1:26353    |      0.068 ms |        1 | avg:    0.061 ms | max:    0.061 ms | max at: 867303.581665 s
+      kworker/21:0:28886    |      0.080 ms |        3 | avg:    0.059 ms | max:    0.164 ms | max at: 867296.680536 s
+      kworker/1:0:20214     |      0.146 ms |        2 | avg:    0.052 ms | max:    0.059 ms | max at: 867297.171473 s
+      lsmd:1420             |      0.071 ms |        1 | avg:    0.048 ms | max:    0.048 ms | max at: 867298.302523 s
+      vmx-vthread-315:31585 |      0.114 ms |        1 | avg:    0.048 ms | max:    0.048 ms | max at: 867300.577119 s
+      mate-settings-d:(2)   |      0.403 ms |        2 | avg:    0.047 ms | max:    0.054 ms | max at: 867297.643407 s
+      rtkit-daemon:(2)      |      0.149 ms |        2 | avg:    0.043 ms | max:    0.052 ms | max at: 867298.302531 s
+      kworker/36:1:627      |      0.050 ms |        1 | avg:    0.042 ms | max:    0.042 ms | max at: 867297.105675 s
+      kworker/12:0:50022    |      0.186 ms |        4 | avg:    0.038 ms | max:    0.052 ms | max at: 867299.268881 s
+      kworker/10:0:13183    |      0.238 ms |        9 | avg:    0.037 ms | max:    0.067 ms | max at: 867303.487560 s
+      kworker/11:2:56105    |      0.304 ms |        6 | avg:    0.036 ms | max:    0.054 ms | max at: 867299.268881 s
+      pickup:50659          |      0.211 ms |        1 | avg:    0.036 ms | max:    0.036 ms | max at: 867299.998892 s
+      kworker/13:1:49557    |      0.134 ms |        3 | avg:    0.035 ms | max:    0.044 ms | max at: 867303.581610 s
+    # perf sched timehist
+      Samples do not have callchains.
+                time    cpu  task name                       wait time  sch delay   run time
+                              [tid/pid]                          (msec)     (msec)     (msec)
+      --------------- ------  ------------------------------  ---------  ---------  ---------
+        867295.398131 [0000]  perf[52210]                         0.000      0.000      0.000
+        867295.398142 [0000]  migration/0[7]                      0.000      0.004      0.010
+        867295.398179 [0001]  perf[52210]                         0.000      0.000      0.000
+        867295.398187 [0001]  migration/1[13]                     0.000      0.002      0.007
+        867295.398259 [0002]  perf[52210]                         0.000      0.000      0.000
+        867295.398270 [0002]  migration/2[19]                     0.000      0.003      0.010
+        867295.398320 [0001]  <idle>                              0.000      0.000      0.132
+        867295.398328 [0001]  rcu_sched[9]                        0.000      0.002      0.008
+        867295.398352 [0003]  perf[52210]                         0.000      0.000      0.000
+        867295.398362 [0003]  migration/3[24]                     0.000      0.002      0.010
+    
+    ...
+    ```
+  - softirqs
+  - hardirqs
 
   
 
