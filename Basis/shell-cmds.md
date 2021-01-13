@@ -52,3 +52,4 @@ users.json:
     $> yum install "pkgconfig(foo)"
     Use the quotes to avoid the shell trying to interpret the parenthesis.
     ```
+5 youtube_dl option ` -o '%(playlist_index)s - %(title)s.%(ext)s' -f bestvideo+bestaudio/best --write-sub --write-auto-sub --embed-subs` for playlist with subtitle embeded
