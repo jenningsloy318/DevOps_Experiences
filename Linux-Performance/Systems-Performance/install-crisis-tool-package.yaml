@@ -1,6 +1,10 @@
 ---
 - hosts: all
   tasks:
+  - name: Ensure epel repo present
+    dnf:
+      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+      state: present
   - name: install crisis performance tools
     dnf:
         name: 
@@ -16,4 +20,5 @@
         - trace-cmd
         - ethtool
         - msr-tools
+        - msr-cloud-tools
         state: present

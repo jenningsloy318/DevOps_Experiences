@@ -6,7 +6,8 @@ Systems Performance 2nd Edition
 - [Chapter 4 Observability Tools](#Chapter-4-Observability-Tools)
 - [Chapter 5 Applications](#Chapter-5-Applications)
 - [Chapter 6 CPUs](#Chapter-6-CPUs)
-- [Chapter 7 Memory](#Chapter-6-Memory)
+- [Chapter 7 Memory](#Chapter-7-Memory)
+- [Chapter 8 File Systems](#Chapter-8-File-Systems)
 
 
 ### Chapter 3 Operating System
@@ -502,8 +503,8 @@ Systems Performance 2nd Edition
 
   - 7.2.2 paging
     - file system paging
-      - file memory mapping involves files on the filesystem and files in the page cache (memory page)
-      - if page in the memory are modified(dirty), call page-out to write to filesystem 
+      -  memory-mapped file to cache files in page cache 
+      - if page in the memory are modified(dirty), call page-out to write to filesystem via flush threads(see chapter 8 page cache)
       - page-in will load data from filesystem to page cache
 
     - anonymous paging(aka swapping)
@@ -720,6 +721,17 @@ Systems Performance 2nd Edition
         /root/vmtouch/perf.data
         ```
   - 7.4.3 Characterizing Usage       
+    - basic attributes
+      - System-wide physical and virutal memory utilization 
+      - degree of saturation(swapping / OOM)
+      - Kernel and filesystem cache memory usage  --- `slabtop/slabinfo` show kernel slab cache and `free -m -w`  column `cached` shows page file system cache 
+      - per-process physical and virual memory utilization 
+      - usage of memory resource control, if present
+    - additional checklist
+      - work set size for application
+      - how is kernel memory used? per slab?
+      - inactive or active file system cache size --- `vmstat`: `-a` option will breakdown for inactive and active page cache/buffer
+      - ...
 
   - 7.4.6 leak detection
     - use bcc tool `memleak`
@@ -762,3 +774,311 @@ Systems Performance 2nd Edition
     - experimental tool to show how a procees working set size(WSS) can be measured using the page table entry "access" bit
     - [wss docs](http://www.brendangregg.com/wss.html)
     - [wss tool](https://github.com/brendangregg/wss)
+
+
+### Chapter 8 File Systems
+- 8.2 Modules
+  - 8.2.1 Filesystem interfaces
+    - object operations
+      - read()
+      - write()
+      - close()
+      - seek()
+      - sync()
+      - link()
+      - unlink()
+      - mkdir()
+      - rmdir()
+      - ioctl()
+      - ...
+    - admin operations
+      - mount()
+      - umount()
+      - sync()
+  - 8.2.2 File System Cache
+    - in main memory
+    - cache hit and cache miss
+  - 8.2.3 second-level cache 
+    - first levle is RAM
+    - second level may `Flash Memory`
+- 8.3 Concepts
+  - 8.3.1 File System Latency 
+    - non-blocking I/O
+    - prefetch 
+    - asynchronous thread
+  - 8.3.2 caching
+    - page cache -- (operation system page cache)
+    - directory cache --- (dentry cache)
+    - inode cache --- (inode cache)
+    - ...
+  - 8.3.3 Random VS sequential I/O
+  - 8.3.4 prefetch -- using predict algorithm 
+  - 8.3.4 read-ahead -- application explictly warm up the file system cache
+  - 8.3.6 write-back caching -- treating write as completed after data transfered to main memory and writing to disk sometime later, asynchronously
+
+  - 8.3.7 Synchronous writes
+    - individual syncrhonous writes
+    - syncrhonously commiting previous writes -- grouping writes then manipulate via fsync() syscall
+  - 8.3.8 Raw and Direct I/O 
+    - raw I/O
+      - directly to disk offset, bypassing the file system altogether
+      - it can manage and cache its own data btetter the filesystem cache  -- adding complexity
+    - direct I/O
+      - application use a file system but bypass the file system cache, using **O_direct** open flag on linux
+  - 8.3.9 Non-blocking I/O
+    - muliti-thread/multi-process
+    - some of them are blocked withe some of the are still executing 
+  - 8.3.10  Memory-Mapped file
+    - mapping files in the process virtual address spaces, access the memory offset directly
+    - avoid syscall execution and context switch 
+    - may also avoid double copy the data if kernel support directly mapping the file data buffer to the process address space
+  - 8.3.11 Metadata 
+    - Logical Metadata
+      - explicitly consumed by applications
+        - read file statistics stat()
+        - createing and deleting files create() unlikn() and directories mkdir() rmdir()
+        - setting file properties chown() chomod()
+      - implicit
+        - file system access timestamp update
+        - directory modification timestamp updates
+        - used block bitmap updates
+        - free space statistics
+    - physical metadata
+      - on-disk layout metadata to record all file system information
+      - includes
+        - superblock
+        - inodes
+        - blocks of data pointers
+        - free list
+    - 8.3.12 logical VS Physical I/O
+
+- 8.4 Architecture 
+  
+  - VFS
+    - abstract for various file systems to provide unified interface to applications ans system calls
+    - objects 
+      - Directory Entry Cache
+      - The Inode Object
+      - The File Object
+
+  - 8.4.3 File System Caches 
+    - Buffer cache: now linux store buffer cache in page cache 
+    - Page cache
+      - cached virtual memory pages, including mapped file system pages
+      - dirty pages can page-out via flusher threads(named *flush*), created per device to better balance the per-device worklod 
+      - page-out via  kswapd thread 
+    - dentry(directory entry) cache 
+      - dentry cache(Dcache) remembers mappings from directroy entry(struct dentry) to VFS inode
+      - improve the performance of path name lookups
+      - dcache entries are stored in hash table
+      - dcache will also performs negative caching, which remembers lookups for nonexistent entries
+      - directory entry structure
+        - inode that this directory entry points to.
+        - Length of this directory entry.
+        - Length of the file name.
+        - File type code
+        - File name
+    - inode cache
+      - contains VFS inodes(struct inodes), each describing properties of a file system objects
+      - inode cache are stored in a hash table 
+      - inode is a data structure that stores various information about a file in Linux aka file metadata
+        - permissions
+        - owner and group IDs
+        - data atime and ctime
+        - inode mtime
+        - file size
+        - file type
+        - number of links
+        - additional 15 pointers (ext4)
+          - 12 of direct pointer to data blocks or extents 
+          - 1 pointer to single indirect data -- via 1 middle level  pointer to final data block
+          - 1 pointer to double indirect data -- via 2 middle levels pointer to final data block
+          - 1 pointer to triple indirect data -- via 3 middle levels pointer to final data block
+  - 8.4.4 File System features
+    - block vs extent
+      - store data in fixed-size blocks(4k) 
+      - store dat in preallocated extents -- ext4
+        > - an extent is described by its starting and ending place on the hard drive. 
+        > - extent are variable in length, representing one or many contiguous blocks
+    - copy-on-write
+      - write blocks to a new localtion
+      - update references to new blocks
+      - add old blocks to the free list
+  8.4.6 volumes and pools
+    - volumes present multiple disks as one virtual disk,upon which the file system is built; software LVM or hardware RAID
+    - Poolsed storage includes multiple disks/LVM volumes in a storage pool, from which multiple file system can be created ; ZFS or btrfs
+- 8.5 Methodologies
+    
+    amoung muliple methods, suggested order latency analysis, performance monitoring, workload characterization, macro-benchmarking, and static performance tuning
+
+    - 8.5.1 disk analysis  
+    - 8.5.2 latency analysis 
+      
+      - operation latency = time(operation completion) - time(operation request)
+        
+        cache hit rate can be a factor 
+      - transcation cost 
+        percent time in file system = 100 x tolal blocking file system laentcy / application transaction time
+
+        
+        for this situation, calculate off-cpu and on-cpu time 
+    - 8.5.3 Workload Characterization
+      - atrributes to characterize the file system workload
+        - operation rate and operation type
+        - File I/O throughput 
+        - File I/O size
+        - read/write ratio
+        - synchronous write ratio
+        - random versus sequential file offset access 
+        - file system cache hit ratio 
+        - file system cache capacity and current utilization
+        - dcache /inode cache/buffer usage and statistics
+        - ...
+      - performance characterization 
+        - average file system operation latency 
+        -  file system operation latency  outlier 
+        -  file system operation latency distribution
+        - if resource control present
+    - 8.5.4 Performance Monitoring 
+      - key metrics 
+        - operation rate   
+        - operation latency 
+      but there is no reliable tools to get this  ???
+
+    - 8.5.8 Micro-Benchmarking
+      - typical factor
+        - operation types: the rate of reads, writes, and other file system operations
+        - I/O size: 1 byte up to 2M and larger
+        - file offset pattern: random and sequential
+        - random access pattern: uniform,random pr pareto distribution
+        - write type: asynchronous and synchronous 
+        - working set size:
+        - memory mapping
+        - cache state: cold or warm 
+        - file ystem tunable: compression, deduplication and so on
+
+- 8.6 Observability Tools
+  - 8.6.1 mount
+  - 8.6.2  free 
+    - free -mw 
+      - -w: wide output show `buffers` column for buffer cache size, and a `cached` column for the page cache size
+  - 8.6.3 top 
+  - 8.6.4 vmstat
+    - vmstat 1 
+      - `buff` column shows the buffer cache size and `cache` shows the page cache size 
+  - 8.6.5 sar
+    - sar -v 1
+      - -v option provides following columns
+        - dentunusd: directory entry cache ununsed count 
+        - file-nr: number of file handler in use
+        - inode-nr: number of inodes in use
+        - pty-nr: number of pseudo-terminals in use
+      - -r 
+        - shows `kbbuffers` and `kbcached` show buffer cache and page cache size
+  - 8.6.6 slabtop
+    - included info
+      - buffer_head: used by the buffer cache
+      - dentry: dentry cache
+      - inode_cache: inode cache
+      - ext3_inode_cache: inode cache for ext3
+      - ext4_inode_cache: inode cache for ext4
+      - xfs_inode: inode cache for xfs
+      - btrfs_inode: inode cache for btrfs
+  - 8.6.7 strace 
+    - strace can measure file system latency at the syscall interface, but will severly impact the performance of the server
+      - -tt: prints the relative timestamps on the left
+      - -T: print the syscall times on the right 
+    - other tool `ext4slower` also has similar functionality
+  - 8.6.8 [fatrace](https://github.com/martinpitt/fatrace)
+    ```
+    fatrace
+    zabbix_agentd(13350): O /usr/bin/bash
+    zabbix_agentd(13350): R /usr/bin/bash
+    zabbix_agentd(13350): RO /usr/lib64/ld-2.17.so
+    sh(13350): R /usr/lib64/ld-2.17.so
+    ```
+    - each line contains `process name`,`PID`,`type of event`,`full path`,and optional status
+    - type of event
+      - O: open
+      - R: reads
+      - W: writes
+      - C: close
+    - it can be used to `workload characterization`: understand files accessed and looking for unneccessary work
+
+  - 8.6.10 opensnoop
+    - trace file `open` 
+    - -T: include timestamp column
+    - -x: only show failed open
+    - -p: trace this pid only 
+    - -n NAME: only show opens when the process name contains `NAME`
+
+  - 8.6.10 filetop
+    - shwo most frequently read or written filenames
+    - -C: don't clear screen, rolling output
+    - -a: show all file types
+    - -r NUMBER: print NUMBER rows
+    - -p: trace the procee only
+  - 8.6.11 cachestat
+    - show cache info
+    ```
+    cachestat -T
+    TIME         HITS   MISSES  DIRTIES HITRATIO   BUFFERS_MB  CACHED_MB
+    01:40:51        2        0        0  100.00%          183       2004
+    01:40:52        2        1        1   66.67%          183       2004
+    01:40:53        2        0        0  100.00%          183       2004
+    01:40:54        2        0        0  100.00%          183       2004
+    ```  
+  - 8.6.13 ext4dist(xfs,zfs,btrfs,nfs)
+    - show the distribution of latencyies as histograms for common operations: read/writws/open/fsync
+    ```
+    # ext4dist  10 1
+    Tracing ext4 operation latency... Hit Ctrl-C to end.
+    ^C
+    01:43:39:
+
+    operation = open
+        usecs               : count     distribution
+            0 -> 1          : 8        |****************************************|
+            2 -> 3          : 2        |**********                              |
+
+    operation = write
+        usecs               : count     distribution
+            0 -> 1          : 3        |****************************************|
+            2 -> 3          : 1        |*************                           |
+            4 -> 7          : 1        |*************                           |
+            8 -> 15         : 1        |*************                           |
+
+    operation = read
+        usecs               : count     distribution
+            0 -> 1          : 10       |****************************************|
+            2 -> 3          : 8        |********************************        |
+            4 -> 7          : 2        |********                                |
+    ```
+    - -m: show output in millisesonds
+    - -p: trace this process only 
+  - 8.6.14 ext4slower(xfs,zfs,btrfs,nfs)
+    - prints per-event details for those slower then a given threshold
+    - -p: trace this process only 
+
+- 8.7 Experimentation
+  - 8.7.2 Micro-benchmark Tools
+    - binnie 
+    - fio 
+    - filebench
+    -
+  - 8.7.3 cache flushing 
+    - echo number > /proc/sys/vm/drop_cache , where number is:
+      - 1: free page caches
+      - 2: free reclaimable slab objects
+      - 3: free slab objects and page caches
+- 8.8 Tuning
+  - application all: using following syscall to improve performance
+    - fsync()
+    - posix_fadvise()
+    - madvise()
+  - ext4
+    - mount option 
+    - tune2fs 
+    - /sys/fs/ext property files
+    - e2fsck to re-index directory in an ext4 file system
+      - e2fsck -D -f /dev/xxx
