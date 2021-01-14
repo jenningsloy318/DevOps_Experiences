@@ -8,6 +8,7 @@ Systems Performance 2nd Edition
 - [Chapter 6 CPUs](#Chapter-6-CPUs)
 - [Chapter 7 Memory](#Chapter-7-Memory)
 - [Chapter 8 File Systems](#Chapter-8-File-Systems)
+- [Chapter 9 Disks](#Chapter-9-Disks)
 
 
 ### Chapter 3 Operating System
@@ -1082,3 +1083,155 @@ Systems Performance 2nd Edition
     - /sys/fs/ext property files
     - e2fsck to re-index directory in an ext4 file system
       - e2fsck -D -f /dev/xxx
+
+
+### Chapter 9 Disks
+- 9.2 Models
+  - 9.2.1 Simple disk
+    - on-disk queue for I/O request
+      - elevator seeking for rotational disks
+      - separate queues for read and write I/O
+  - 9.2.2 Caching Disk
+    - on-disk cache
+      - improving read latency 
+      - used as write-back cache to improve write performance: writes marked as completed when data is transfered to cache
+      - the counter-term is write-through cache: writes marked as completed when full transfer to the next level of the disk 
+  - 9.2.3 Controller
+- 9.3 Concetps
+  - 9.3.1 Measureing Time
+    
+    I/O time can be measured as
+    - **I/O request time**(also called **I/O response time**): the entire time form issuing an I/O to its completion
+    - **I/O waite time**: then time spend waiting on a queue
+    - **I/O service time**: the time during which the I/O was processed (not waiting)
+    >
+    simply **I/O request time** = **I/O waite time** + **I/O service time**  
+    >
+    As for operation system may also has a I/O queue, the total time may include the time spent on the **kernel queue**
+    >
+    so to clarify the full request time
+    - from the kernel view
+      - **Block I/O wait time**(also called **OS wait time**): time spent from when new I/O was created and inserted into kernel queue to when it left the final kernel queue and was issued to the disk device
+      - **Block I/O service time**: time form issueing the request to device to its completion interrupt from the device 
+      - Block I/O request time: both Block I/O wait time and lock I/O service time
+
+    - from the disk view 
+      - **Disk wait time**: time spent on an on-disk queue
+      - **disk service time**: time need for an I/O to be actively processed
+      - **Disk request time**( also called **disk response time** and **disk I/O latency**): both **Disk wait time** and **disk service time**
+
+      - calculate **disk service time**
+        disk service time = utilization / IOPS
+        > this is not accurate, but is a average time 
+  - 9.3.3 Caching
+
+    different types of caching
+    - device cache -- zfs vdev
+    - block cache -- buffer cache
+    - disk controller cache -- RAID card cache
+    - storage array cache --- array cache
+    - on-disk cache -- Disk data controller(DDC) attached DRAM
+
+
+  - 9.3.4 Random VS Sequential I/O
+
+    sometimes random I/O can be inferred by `measuring increased disk service time`
+  
+  - 9.3.5 Read/Write ratio
+
+    benefits
+    - if high read ratio: by add more cache to improve the performance
+    - if high write ratio: by add more disks to maximum available throughput and IOPS
+    
+
+  - 9.3.6 I/O Size
+    - I/O size or I/O size distribution
+    - even read/write have different size 
+  - 9.3.7 IOPS are not equel
+    - to make sense of IOPS, including more details
+      - random or sequential 
+      - I/O size
+      - read/write
+      - buffered/direct
+      - number of I/O in parallel
+      - consider time-based metrics
+        - utilization
+        - service time 
+  - 9.3.8 Non-Data-Transfer Disk commands
+    - disks with an on-disk cache: flush cache to disk 
+    - discard data: tell a drive that a sector range is no longer needed 
+      - ATA TRIM command 
+      - SCSI UNMAP
+    
+  - 9.3.9 Utilization
+    - os reporting the utilization may not equal what is happening on the underlying disk on virtual disk(software RAID, OR NAS, or disk controller)
+    - if os can expose utilization for the physical disks, it is traceable
+  - 9.3.10 Saturation
+    - measure the average length of the device waite queue in the OS
+  - 9.3.11 I/O Wait
+    - I/O wait time 
+      - time thatapplication threads are blocked on disk I/O 
+      - can be measured using static and dynamic instrumentation
+      - can be confusing, when both I/O blocked processes and CPU-intensive processes/threads are on same system, thus I/O wait time still low but still have I/O block for overall system
+
+    - Analysis
+      - concurrent I/O is more likely to be non-blocking I/O, and less likely to cause a direct issue
+      - Non-concurrent I/O, identified by I/O wait, is more likely tp be application blocking I/O and a a bottleneck
+  - 9.3.12 Synchronous and Asychronous 
+    - with write-back caching, make application I/O and disk I/O operate asynchrnously 
+      - application I/O completes early and disk I/O issued later
+    - application may use read-ahead to perform asynchronous read, while file system use this itself to war the cache(prefetch)
+
+- 9.4 Architecture 
+  - 9.4.1 Disk Types
+    - 9.4.1.1 Magnetic Rotational
+      - seek and rotation
+        - seek time for disk heads
+        - rotational time of the disk platter
+    - how to improve
+      - caching
+      - file system placement and behavior include copy-on-write
+      - separateing different workloads to different disks, to avoid seeking between worload I/O
+      - moving different workloads to different systems
+      - elevator seeking(A disk access technique that processes/reorder multiple requests in a priority based upon which ones are closest to the current position of the read/write head.)
+      - higher-density disks
+      - pertition configuration
+      - use faster disks (5400 RPM -- 7200RPM -- 10000RPM ---15000 RPM)
+    - theretical Maximum throughput
+      >
+      max throughput = max sector per track x sector size x rpm/60s
+    - short-stroking
+
+      Short-stroking which only uses last few tracks on each platter of your hard disk
+    - 9.4.1.2 solid-state disks      
+    - 9.4.1.3 Persistent Memory
+  - 9.4.2 Interfaces
+    - SCSI
+    - SAS
+    - SATA
+    - FC
+    - NVMe
+  - 9.4.3 Storage Types
+    - Disk Devices
+    - RAID
+  - 9.4.4 OS Disk I/O stack
+    - I/O merging 
+    - I/O schedulers
+      - Multi-queue schedulers
+        - None
+        - BFQ
+        - mq-deadline
+        - Kyber
+- 9.5 Methodology
+  - suggested order: USE method ---> performance monitoring --> workload chacterization --> latency analysis --> micro-benchmarking ---> static analysis --> event tracing 
+
+  - USE Method 
+    - for each disk device, check for 
+      - utilization: the time the device was busy
+      - saturation: the degree to which I/O is waiting in the queue
+      - Eorrors: Device errors
+    - for each disk controller, check for 
+      - utilization: current versus maximum throuthput(bytes per second), and the same for operation rate(operations per second) 
+      - Saturation: the degraee to which I/O is waiting due to controller saturation
+      - Errors: controller errors 
+
