@@ -1225,7 +1225,7 @@ Systems Performance 2nd Edition
 - 9.5 Methodology
   - suggested order: USE method ---> performance monitoring --> workload chacterization --> latency analysis --> micro-benchmarking ---> static analysis --> event tracing 
 
-  - USE Method 
+  - 9.5.2 USE Method 
     - for each disk device, check for 
       - utilization: the time the device was busy
       - saturation: the degree to which I/O is waiting in the queue
@@ -1235,3 +1235,79 @@ Systems Performance 2nd Edition
       - Saturation: the degraee to which I/O is waiting due to controller saturation
       - Errors: controller errors 
 
+  - 9.5.3 Performance Monitoring
+
+    key metrics fpr Disk I/O
+    - Disk utiliztion
+    - Response time
+
+    Disk utilization at 100% for multiple seconds is very likely an issue.  and use histogram or heat map to illustrate the distribution of response time
+  - 9.5.4 Workload Characterization
+
+    Basic attributes for characterizing disk I/O workload
+    - I/O rate
+    - I/O throughput
+    - I/O size
+    - read/write radio
+    - radom versis sequential
+
+    Captrue maximum and average value
+  - 9.5.9 Micro-benchmarking
+     benchmarking on system, preferably use raw device path if available to avoid filesystem behavior 
+
+
+     factors of micro-benchmarking 
+     - direction: Reads or writes
+     - Disk offset pattern: Random or sequential
+     - Range of offsetss: full disk or tight range
+     - I/O size: 512 bytes up to 1Mbye
+     - Concurrency: Number of I/O in flight, or number of threads performing I/O
+     - Number of devices: single disk tests, or multiple disks 
+
+     for Disks
+     - Maximum disk throughput:
+     - Maximum disk operation rate
+     - Maximum disk random reads
+     - read latency profile
+     - Random I/O latency profile
+     
+     for Disk controller
+     - Maximum controller throughput
+     - Maximum controller operation rate 
+- 9.6 Observability Tools
+
+  - 9.6.1 iostat (show disk io stat)
+    - -c: display cpu report
+    - -d: display disk report
+    - -k: use kb 
+    - -m: use mb 
+    - -p: include per-partion statitics
+    - -x: extended statistics
+  - 9.6.2 sar 
+    - -d 
+
+
+  - 9.6.3 PSI
+
+  - show IO of presure stall information
+    ```
+     cat /proc/pressure/io
+    ```
+    some avg10=0.00 avg60=0.00 avg300=0.02 total=52930964
+    full avg10=0.00 avg60=0.00 avg300=0.00 total=50680169
+    ```
+  - 9.6.4 pidstat
+    - -d: show disk statistics
+  - 9.6.5 perf 
+    
+  - 9.6.6 biolatency
+    - -m: output in miliseconds
+    - -Q: include OS queue I/O time
+    - -F: show a histogram for each I/O flag set 
+    - -D: show a histogram for each disk device
+  - 9.6.7 biosnoop
+  - 9.6.8 iotop, biotop
+  - 9.6.9 biostacks.bt
+  - 9.6.10 blktrace
+  - 9.6.11 bpftrace 
+  - 9.6.12 MegaCli (LSI disk controller)
