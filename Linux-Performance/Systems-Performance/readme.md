@@ -1311,3 +1311,26 @@ Systems Performance 2nd Edition
   - 9.6.10 blktrace
   - 9.6.11 bpftrace 
   - 9.6.12 MegaCli (LSI disk controller)
+  - 9.6.13 smartctl 
+  - 9.6.14 SCSI Logging
+    ```
+    sysctl -w dev.scsi.logging_level=03333333333
+    echo 03333333333 > /proc/sys/dev/scsi/logging_level
+    ```
+    or 
+    ```
+    scsi_logging_level -s --all 3
+    ```
+    then we can check the log via `dmesg`
+- 9.7 Visualizations
+  - 9.7.1 line graphs 
+    - IOPS
+    - throughput
+    - utilization
+  - 9.7.2 Latency scatter plots
+    - visualize I/O latency per-event
+    - show individual outlierss
+  - 9.7.3 Latency Heat Maps 
+    - x-axis: passage of time
+    - y-axis: I/O latency 
+    - z-axis: number of I/O in a particular time and latency range  
