@@ -9,6 +9,7 @@ Systems Performance 2nd Edition
 - [Chapter 7 Memory](#Chapter-7-Memory)
 - [Chapter 8 File Systems](#Chapter-8-File-Systems)
 - [Chapter 9 Disks](#Chapter-9-Disks)
+- [Chapter 10 Network](#Chapter-10-Network)
 
 
 ### Chapter 3 Operating System
@@ -1334,3 +1335,24 @@ Systems Performance 2nd Edition
     - x-axis: passage of time
     - y-axis: I/O latency 
     - z-axis: number of I/O in a particular time and latency range  
+
+### Chapter 10 Network
+
+- 10.3 Concepts
+  - 10.3.5 Latency
+    - Name Resolusion Latency
+    - Ping Latency
+    - Connection (Establishment) Latency
+      - TCP: send SYNC to recieve SYNC-ACK
+    - First-Byte Latency
+      - AKA *time to first byte*(**TTFB**)
+      - from time when the connection is established to when the first byte of data is received 
+    - Round-Trip Time
+    - Connection Life Span
+      - time from connection is established to when it is closed
+  - 10.3.6 Buffering
+    - TCP employs buffer with a sliding send window to improve throughput
+  - 10.3.7 Connection Backlog
+    - SYNC request can be queued in the kernel before being acceptd by user-space processes
+    - if the queue is full, the packets can be dropped and client will retransmit them
+    - Backlog drops and SYNC retransmits are indicator of host overload
