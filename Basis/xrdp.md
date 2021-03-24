@@ -47,7 +47,7 @@ sed -i -e 's/KillDisconnected=false/KillDisconnected=true/g' /etc/xrdp/sesman.in
 sed -i_orig -e 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
 echo allowed_users=anybody >>/etc/X11/Xwrapper.config
 sed -i_orig -e 's/crypt_level=high/crypt_level=none/g' /etc/xrdp/xrdp.ini
-sed -i_orig -e 's/security_layer=rdp/security_layer=negotiate/g' /etc/xrdp/xrdp.ini
+sed -i_orig -e 's/security_layer=negotiate/security_layer=rdp/g' /etc/xrdp/xrdp.ini
 ```
 on mate, modify default UserWindowManager 
 ```
