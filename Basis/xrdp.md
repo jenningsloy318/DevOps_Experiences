@@ -41,9 +41,10 @@ sed -i -e '2a export XDG_CURRENT_DESKTOP=GNOME' /usr/libexec/xrdp/startwm-bash.s
 3. modify config 
 
 ```
-sed -i 's/^TerminalServerUsers/#TerminalServerUsers/g' /etc/xrdp/sesman.ini
-sed -i 's/^TerminalServerAdmins/#TerminalServerAdmins/g' /etc/xrdp/sesman.ini
-sed -i -e 's/KillDisconnected=false/KillDisconnected=true/g' /etc/xrdp/sesman.ini
+sed -i_orig -e 's/^TerminalServerUsers/#TerminalServerUsers/g' /etc/xrdp/sesman.ini
+sed -i_orig -e 's/^TerminalServerAdmins/#TerminalServerAdmins/g' /etc/xrdp/sesman.ini
+sed -i_orig -e 's/KillDisconnected=false/KillDisconnected=true/g' /etc/xrdp/sesman.ini
+sed -i_orig -e 's/DisconnectedTimeLimit=0/DisconnectedTimeLimit=5/g' /etc/xrdp/sesman.ini
 sed -i_orig -e 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
 echo allowed_users=anybody >>/etc/X11/Xwrapper.config
 sed -i_orig -e 's/crypt_level=high/crypt_level=none/g' /etc/xrdp/xrdp.ini
