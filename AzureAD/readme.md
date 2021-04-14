@@ -3,7 +3,7 @@ Add Linux host to Azure Active Directory
 
 - Install requred packages
 ```
-dnf install -y realmd sssd krb5-workstation krb5-libs oddjob oddjob-mkhomedir samba-common-tools
+dnf install -y realmd sssd adcli krb5-workstation krb5-libs oddjob oddjob-mkhomedir samba-common-tools
 ```
 - Dicover the domain
 ```
