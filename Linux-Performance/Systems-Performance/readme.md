@@ -1352,7 +1352,275 @@ Systems Performance 2nd Edition
       - time from connection is established to when it is closed
   - 10.3.6 Buffering
     - TCP employs buffer with a sliding send window to improve throughput
+    - buffers can also be performed by external network components, such as switches and routers 
   - 10.3.7 Connection Backlog
     - SYNC request can be queued in the kernel before being acceptd by user-space processes
     - if the queue is full, the packets can be dropped and client will retransmit them
     - Backlog drops and SYNC retransmits are indicator of host overload
+  - 10.3.8 interface negotiation
+  - 10.3.9 congestion avoidance
+    - Ethernet: pause frame
+    - IP: ECN(Explicit Congestion Notification)
+    - TCP: congestion window , various congestion control algorithm 
+  - 10.3.10 Utilization
+    - current throughput / max bandwith 
+  - 10.3.11 local connections
+- 10.4 Architecture 
+  - 10.4.1 Protocols 
+    - IP
+      - DSCP(Differentiated Services Code Point)
+      - ECN(Explicit Congestion Notification)
+    - TCP
+      - sliding window: multiple packets up to the size of the window to be sent on the network before acknowledgments are received, the size of the vindow is advertised by the receiver
+      - congestion avoidance
+      - slow-start: part of TCP congestion control, begins with a small congestion window and increase it as acknowlegments are reveived within a certain time; when they are not, the congestion window is reduced.
+      - selective acknowledgments: allow TCP to acknowledgment discontinous packets, reducing the number of re-tranmit required
+      - fast retransmit:  retransmit dropped packets based on the arrival of duplicate ACKs
+      - fast recovery: retransmit dropped packets based on the arrival of duplicate ACKs
+      - TCP fast Open: allow a client to include data in a SYN packet
+      - TCP timestamp: include a timestamp for sent packets that is returned in the ACK
+      - TCP SYN Cookies: provide a cryptographic cookies to clients during possible SYN flood attacks so that lgitimate clients can contiune to connect , and without the server needing to store extra data for these connection attempts 
+      - Three way handshake
+      - retransmit: primary two mechnism 
+        - time-based-retransmit
+        - fast retransmit
+      - congestion control algorithms
+        - Reno: Triple duplicate ACKs trigger: halving of the congestion window, halving of the slow-start threshold, fast retransmit and fast recovery 
+        - Tahoe: triple duplicate ACKs trigger, fast retransmit, halving the slow-start threshold, congestion window set the one maximum segment size, slow-start sate 
+        - CUBIC: use a cubic function to scale the window, and a "hybrid start" function to exit slow start, default in linux
+        - BBR: builds an explicit model of the network path charcteristics using probing phases
+        - DCTCP: DataCenter TCP relies on switches configured to emit Explicit congestion Notification marks at a very shallow queue occupancy to repidly ramp up to the available bandwidth
+        - Nagle: reduces the number of small packets on the network by delaying their transmission to allow more data to arrive and be coalesced 
+        - Delayed ACKs: delays the sending of ACKs up to 500 ms, so that multiple ACKs may be combined
+        - SACK(Selective acknkowledgment): allows the receiver to inform the sender that it received a noncontiguous block of data
+        - FACK(forward acknowedgment): extend SACK by tracking additional state and better regulate the amount of outstanding data in the network, improving overall performance
+        - RACK(Recent Acknowledgment)/RACK-TLP: uses time informantion from ACK for even better loss detection and recovery, rather than ACK sequence alone
+      - initial window: number of packets a TCP sender will transmit at the beginning of a connection before waiting for acknowledgment from the sender
+    - UDP
+      - simplicity
+      - statelessness
+      - No Retransmit
+    - QUIC and HTTP/3
+  - 10.4.2 Hardware
+  - 10.4.3 Software
+    - TCP Conection Queues
+      - one for incommplete connextion while the TCP handshake sompletes -- SYN backlog
+      - one for established sessions waiting to be accepted by the appliation --- Listen backlog
+    - TCP buffering
+      - send buffer
+      - receive buffer
+    - segmentaion offload: GSO and TSO
+      - GSO(generic segmentation offload): to send packets up to 64kb in size which are split into MSS-sized segments just before delivery to the network device
+      - TSO(TCP segmentation offload): if device support TSO, GSO leaves the split operation to device
+      - GRO/TRO for receive offload
+      - GRO and GSO are implemented in kernel, and TSO is implemented by NIC hardware
+    - Queueing Discipline
+      - use `tc` to confiue the queueing discipline algorithms
+    - Network Device Drivers
+      - the network device usually has an additional buffer (a ring buffer) for sending and receiving packets between kernel memory and the NIC
+      - use `interrupt coalescing mode`: an interrupt is sent only either a timer(polling) or a  certain number of packets is reached
+      - linux uses NAPI which employs an `interrupt mitigation technique`: low packet rates, interrupts are used; for high packet rates, interrupts are disabled and polling is used to allow coalescing 
+      - other feature NAPI supports
+        - pcaket throttling
+        - interface schedulin
+        - support SO_BUSY_POLL socket option
+    - NIC send and receiv
+      - DMA 
+    - CPU scaling: high packet rates can be achieved by engaging multiple CPU to process packet and the TCP/IP stack
+      - RSS(Receive Side Scaling)
+      - RPS(Receive Packet Steering): a software implementation of RSS
+      - RFS(Receive flow sterring)
+      - Accelerated Receive Flow Steering
+      - XPS(transmit Packet Steering)
+    - Kernel Bypass
+      - DPDK
+      - XDP
+- 10.5 Methodology 
+  - preferred analysis order: performance monitoring , the USE method, static performance tuning, workload characterization
+  - 10.5.1 Tools method
+    - nstat/netstat -s : look for a high reate of retransmits and out-of-order packets
+    - ip -s link / netstat -i : check interface error counter, including "errors", "dropped","overruns"
+    - ss -tiepm: check the limiter flag for important sockets to see what their bottleneck is
+    - nicstat/ip -s link : check the rate of bytes tranmitted and received
+    - tcplife: log TCP sessions with process details, duration(lifespan), and throughput statistics
+    - tcptop: watch top tcp session live
+    - tcpdump
+    - perf/BCC/bpftrace 
+  - 10.5.2 USE method
+    - Utilization: the time the interface was busy 
+    - Saturation: the degree of extra queueing,buffering or blocking du to a fully utilized interface
+    - Errors: Fore receive: bad checksum, frame too short or too long, collision; for transmit, late collision
+    - error may be checked first
+  - 10.5.3 Workload Characterization 
+    - basic characteristics
+      - Network interface throughput: RX and TX, bytes per second
+      - Network Interface IOPS: RX and TX, frames per second 
+      - TCP connection rate: active and passive, connections per second
+  - 10.5.4 Latency Analysis
+    - various latencies
+      - Name resolution latency:
+      - Ping Latency 
+      - TCP connection initialization latency
+      - TCP first-byte latency 
+      - TCP retransmits
+      - TCP TIME_WAIT latency
+      - connection/session lifespan
+      - system call send/receive latency
+      - system call connect latency
+      - Network round-trip time
+      - Interrupt latency
+      - inter-stack latency
+    - latency can be measured
+      - per-interval average
+      - full distribution
+      - per-operation latency
+  - 10.5.5 Performance Monitoring
+    - key metrics
+      - throughput: network interface bytes per second for both receive and transmit, ideally for each interface
+      - connections: TCP connections per second, as another indication of network load
+      - Error: including dropped packet counters
+      - TCP retransmits
+      - TCP out-of-order packets
+  - 10.5.6 Packet Sniffing
+    - `tcpdump -ni eth0`
+  - 10.5.7 TCP analysis
+    - Usage of TCP(SOCKET) send/receive buffer
+    - Usage of TCP backlog queues
+    - kernel drops due to the backlog queue being full
+    - congestion window size, including zero-size advertisements
+    - SYNs received during a TCP_TIME_WAIT interval
+  - 10.5.8 Static performance tuning
+  - 10.5.9 Resource Controls
+    - Network bandwidth limits
+    - IP quality of service
+    - packet latency
+  - 10.5.10 Micro-benchmarking
+- 10.6 Obersvability Tools
+  - 10.6.1  ss
+    - -t: show TCP sockets only
+    - -i: TCP internal info
+    - -e: extended socket info
+    - -p: process info
+    - -m: memory usage
+  - 10.6.2 ip
+    - printing statistics regarding link, address, routes, etc.
+    - -s: printing extra statistics
+    - -s -s: provide even more statistics for error types
+    - `ip -s link` / `ip -s -s link`
+    - `ip route`
+    - `ip monitor`: to watch for netlink messages
+  - 10.6.3 ifconfig
+  - 10.6.4 nstat
+    - print various network metrics maintained by the kernel, with their SNMP names
+    - -s: to avoid resetting the counters
+    - nstat without `-s` will reset all counters to zero, use `-rs` to reset it to the value since boot
+    - -d: daemon mode
+  - 10.6.5 netstat
+    - -a: lists infomation for all sockets
+    - -s: network stack statistics
+    - -i: network interface statistics
+    - -r: lists the route table
+  - 10.6.6 sar
+    - -n DEV: Network interface statistics
+    - -n EDEV: Network interface errors
+    - -n IP: IP datagram statistics
+    - -n EIP: IP errors statistics
+    - -n TCP: TCP statistics
+    - -n ETCP: TCP error statistics
+    - -n SOCK: socket usage
+  - 10.6.7 nicstat
+  - 10.6.8 ethtool
+    - check the static configuration of the network interfaces with `-i` and `-k`
+    - -i: show driver details
+    - -k: show interface tunables
+    - -K: change the tunable value
+    - -S: print driver statistics
+  - 10.6.9 tcplife
+    - bpf tool to trace liefpan of TCP sessions, showing their duration, address details, throughput, process ID and name
+  - 10.6.10 tcptop
+  - 10.6.11 tcpretrans
+  - 10.6.12 bpftrace
+  - 10.6.13 tcpdump
+  - 10.6.14 wireshark
+- 10.7 experimentation
+  - 10.7.1 ping
+  - 10.7.2 traceroute
+  - 10.7.3 patchchar
+  - 10.7.4 iperf
+  - 10.7.5 netperf
+  - 10.7.6 tc: allow various queueing disciplines(qdiscs) to be selected to improve or manage performance
+    - tc adisc show dev eth0
+  - 10.7.7 other tools
+    - pktgen: a packet genterator 
+    - Flent
+    - mtr
+    - tcpreplay
+- 10.8 tuning
+  - 10.8.1 system-wide
+    - socket and tcp buffers
+      - maximum socket buffer size for all protocal types, both reads(rmem_max) and writes(wmem_max)
+        - net.core.rmem_max = 16777216 
+        - net.core.wmem_max = 16777216
+      - enable auto-tuning of the TCP receive buffer
+        - net.ipv4.tcp_moderate_rcvbuf = 1
+      - setting the auto-tuning parameters for the TCP read and write buffer
+        - net.ipv4.tcp_rmem= 4096 87380 16777216
+        - net.ipv4.tcp_wmem= 4096 87380 16777216
+        - each value represents: minimum, default and maximum number bytes to use
+    - TCP Backlog
+      - first backlog queue, for half-open connections
+        - net.ipv4.tcp_max_syn_backlog = 4096
+      - second backlog queue,  the listen backlog for passing connectios to accept(2)
+        - net.core.somaxconn = 1024
+    - Device Backlog
+      - increasing the lenth of the network device backlog queue, per CPU
+        - net.core.netdev_max_backlog = 1000
+    - TCP congestion control
+      - linux support plggable congestion-control algorithms,
+      - listing those currently avaiable
+       ```
+       sysctl net.ipv4.tcp_available_congestion_control
+       net.ipv4.tcp_available_congestion_control = cubic reno
+       ```
+      - set the algorithms `net.ipv4.tcp_congestion_control = cubic`
+    - TCP Options
+      ```
+      net.ipv4.tcp_sack = 1
+      net.ipv4.tcp_fack = 1
+      net.ipv4.tcp_tw_reuse= 1
+      net.ipv4.tcp_tw_recycle = 0
+      ```
+    - ECN
+      ```
+      net.ipv4.tcp_ecn = 1
+      ```
+      - 0: disable
+      - 1: allow for incomming connection and request ECN on outgoning connections
+      - 2: allow for incoming and not request ECN on outgoning, this is default
+    - Byte Queue Limits, tune via /sys
+    - Resource Controls
+    - Queueing Discipline
+      - show all disciplines
+        ```
+        man -k tc-
+        ```
+      - show current default discipline
+        ```
+        sysctl net.core.default_qdisc
+        net.core.default_qdisc = pfifo_fast
+        ``` 
+  - 10.8.2 Socket Options
+    - sockets can be tuned individually by applications via setsockopt(2) systcall
+    - SO_SNDBUF,SO_RCVBUF: send and receive buffer sizes / SO_SNDBUFFORCE: override the default send limit
+    - SO_REUSEPORT: Allows multiple processes or threads to bind ot same port, allowing the kernel to destribute load accross them for scalability
+    - SO_MAX_PACING_RATE: Sets the maximum pacing rate, in bytes per second
+    - SO_LINGER: Can be used to reduce TIME_WAIT  latency
+    - SO_TXTIME: Request time-based packet transmission,where deadlines can be supplied
+    - TCP_NODELAY: diables Nagle, sending segments as soon as possible 
+    - TCP_CORK: pause transmission until full packets can be sent, improve throughput
+    - TCP_QUICKACK:  send ACKs immediately 
+    - TCP_CONGESTION: congestion control algorithm for socket
+  - 10.8.3 Configuration
+    - ethernet jumbo frames
+    - link aggregation
+    - firewall configuration
