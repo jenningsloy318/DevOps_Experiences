@@ -1,0 +1,209 @@
+{
+    "root": {
+        "data": {
+            "id": "cat8nu782ig0",
+            "created": 1618991706246,
+            "text": "Network latency is increasing",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "cat8o77t91s0",
+                    "created": 1618991734580,
+                    "text": "Simulation",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cat8o9zzfo80",
+                            "created": 1618991740637,
+                            "text": "Server",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cat8obji59c0",
+                                    "created": 1618991743994,
+                                    "text": "docker run --network=host --name=good -itd nginx",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cat8vnaiyug0",
+                                    "created": 1618992318122,
+                                    "text": "tcpdump -nn tcp port 8080 -w nginx.pcap",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cat8ocvoqjc0",
+                            "created": 1618991746907,
+                            "text": "client",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cat8vtmazqw0",
+                                    "created": 1618992331894,
+                                    "text": "wrk --latency -c 100 -t 2 --timeout 2 http://192.168.34.128:8080/",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cat8pi52hbk0",
+                            "created": 1618991836723,
+                            "text": "test latency",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cat8pl4vp1k0",
+                                    "created": 1618991843242,
+                                    "text": "hping3 -c 3 -S -p 80 baidu.com",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cat8puvfqxk0",
+                                    "created": 1618991864438,
+                                    "text": "traceroute --tcp -p 80 -n baidu.com",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cat96i21p340",
+                    "created": 1618993168731,
+                    "text": "Analysis",
+                    "layout": null,
+                    "priority": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cat96orn7rk0",
+                            "created": 1618993183339,
+                            "text": "server",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cata9xgg6t40",
+                                    "created": 1618996258456,
+                                    "text": "server send the response in two segments here, \nafter sending first segment, it didn't recieve the ACK from client, \nServer will hold on the second segment transmission",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cataa6h7bug0",
+                                    "created": 1618996278092,
+                                    "text": "server set tcp_nodelay to off",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cataadziwds0",
+                                            "created": 1618996294438,
+                                            "text": "after turn it on, there will not be such latency",
+                                            "background": "#73a1bf",
+                                            "layout": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cat9vrsglsg0",
+                            "created": 1618995149023,
+                            "text": "client",
+                            "image": "",
+                            "imageTitle": "",
+                            "imageSize": "",
+                            "progress": null,
+                            "layout": null,
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cata6xt634g0",
+                                    "created": 1618996024132,
+                                    "text": "Pic(08-1-TCP_Delay_ACK.jpg) shows there are 0.04s(40ms) latency before client send the ACK to server",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cataanqp3xk0",
+                                    "created": 1618996315672,
+                                    "text": "40ms latency is the maximum time of a ACK timeout in Nagle algorithm",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cata6gt5usw0",
+                                    "created": 1618995987127,
+                                    "text": "this because of Nagle algorithm to coalesc small packet then ACK later",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
