@@ -174,6 +174,51 @@
                                         ]
                                     }
                                 ]
+                            },
+                            {
+                                "data": {
+                                    "id": "cat8gk7skio0",
+                                    "created": 1618991135964,
+                                    "text": "tune",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cat8gpezux40",
+                                            "created": 1618991147283,
+                                            "text": "net.ipv4.tcp_max_syn_backlog = 1024",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "cat8gm1g8go0",
+                                            "created": 1618991139934,
+                                            "text": "net.ipv4.tcp_synack_retries = 1",
+                                            "layout_right_offset": {
+                                                "x": 9,
+                                                "y": 0
+                                            },
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "cat8gylrc9s0",
+                                            "created": 1618991167283,
+                                            "text": "net.ipv4.tcp_syncookies = 1",
+                                            "layout_right_offset": {
+                                                "x": 23,
+                                                "y": 2
+                                            },
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             }
                         ]
                     }
