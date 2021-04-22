@@ -1,0 +1,327 @@
+{
+    "root": {
+        "data": {
+            "id": "catx9fpf8qo0",
+            "created": 1619061105344,
+            "text": "How-to-tune-NAT-performance",
+            "background": "#73a1bf"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "catx9m9e2ao0",
+                    "created": 1619061119612,
+                    "text": "backgrouds",
+                    "layout": null,
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "catx9q8ifb40",
+                            "created": 1619061128266,
+                            "text": "masqurade",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "catxa3gv30g0",
+                                    "created": 1619061157069,
+                                    "text": "iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -j MASQUERADE",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "catxa9whiyo0",
+                            "created": 1619061171075,
+                            "text": "SNAT",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "catxabdg2u80",
+                                    "created": 1619061174277,
+                                    "text": "iptables -t nat -A POSTROUTING -s 192.168.0.2 -j SNAT --to-source 100.100.100.100",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "catxai3t2n40",
+                            "created": 1619061188932,
+                            "text": "DNAT",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "catxan11a000",
+                                    "created": 1619061199648,
+                                    "text": "iptables -t nat -A PREROUTING -d 100.100.100.100 -j DNAT --to-destination 192.168.0.2",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "catxbbn19eo0",
+                            "created": 1619061253221,
+                            "text": "IP forwarding",
+                            "layout": null,
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "catxbf59so00",
+                                    "created": 1619061260854,
+                                    "text": "net.ipv4.ip_forward = 1",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cau231dx59k0",
+                    "created": 1619074709538,
+                    "text": "Simulation",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cau235vrqrc0",
+                            "created": 1619074719325,
+                            "text": "Server",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cau2375n8vc0",
+                                    "created": 1619074722099,
+                                    "text": "docker run --name nginx-hostnet --privileged --network=host -itd feisky/nginx:80",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cau23p9tcl40",
+                                    "created": 1619074761533,
+                                    "text": "docker run --name nginx --privileged -p 8080:8080 -itd feisky/nginx:nat",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cau252kyfuo0",
+                                    "created": 1619074868869,
+                                    "text": "topic",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "data": {
+                            "id": "cau23mvfaqg0",
+                            "created": 1619074756309,
+                            "text": "client",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cau2632df3c0",
+                                    "created": 1619074948286,
+                                    "text": "ab -c 5000 -n 100000 -r -s 2  http://192.168.34.128:8080/",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cau24wp6gls0",
+                                    "created": 1619074856063,
+                                    "text": "ab -c 5000 -n 10000 -r -s 30 http://192.168.34.128:8080/",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cau26tttf6g0",
+                    "created": 1619075006542,
+                    "text": "Analysis",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cau26wpjpbk0",
+                            "created": 1619075012814,
+                            "text": "server",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cau273bz6280",
+                                    "created": 1619075027231,
+                                    "text": "stap --all-modules dropwatch.stp",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cau26y295s80",
+                                    "created": 1619075015759,
+                                    "text": "perf record -a -g -- sleep 30",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "cau27bv5m740",
+                                    "created": 1619075045805,
+                                    "text": "DNAT",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cau27da92f40",
+                                            "created": 1619075048894,
+                                            "text": "conntrack ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "cau285qlfgw0",
+                                    "created": 1619075110833,
+                                    "text": "Adjust kernel parameter",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cau289yhaco0",
+                                            "created": 1619075120016,
+                                            "text": "net.netfilter.nf_conntrack_max",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "cau28fi5y9k0",
+                                            "created": 1619075132091,
+                                            "text": "net.netfilter.nf_conntrack_buckets",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "cau2cebxbfk0",
+                                            "created": 1619075442993,
+                                            "text": "memory usage for conntrack ",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "cau2cvypkeo0",
+                                                    "created": 1619075481376,
+                                                    "text": "nf_conntrack_max x 376 Byte + nf_conntrack_buckets x16 Byte",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "cau2a81p7io0",
+                                    "created": 1619075272586,
+                                    "text": "Summarize conntrack",
+                                    "background": "#73a1bf"
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cau2afnn2xs0",
+                                            "created": 1619075289150,
+                                            "text": "conntrack -L -o extended | wc -l",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "cau2an9blxs0",
+                                            "created": 1619075305699,
+                                            "text": "conntrack -L -o extended | awk '/^.*tcp.*$/ {sum[$6]++} END {for(i in sum) print i, sum[i]}'",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "cau2avdfv740",
+                                            "created": 1619075323362,
+                                            "text": "conntrack -L -o extended | awk '{print $7}' | cut -d \"=\" -f 2 | sort | uniq -c | sort -nr | head -n 10",
+                                            "background": "#73a1bf"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
