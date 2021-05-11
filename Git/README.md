@@ -303,6 +303,48 @@
         nothing to commit, working directory clean
     ```
 
+# Semantic Commit Messages
+
+See how a minor change to your commit message style can make you a better programmer.
+
+Format: `<type>(<scope>): <subject>`
+
+`<scope>` is optional
+
+## Example
+
+```
+feat: add hat wobble
+^--^  ^------------^
+|     |
+|     +-> Summary in present tense.
+|
++-------> Type: build(chore), docs, feat, fix, refactor, style, or test.
+```
+
+- The `build` type (formerly known as chore) is used to identify **development** changes related to the build system (involving scripts, configurations or tools) and package dependencies.
+- The `ci` type is used to identify **development** changes related to the continuous integration and deployment system - involving scripts, configurations or tools.
+- The `docs` type is used to identify **documentation** changes related to the project - whether intended externally for the end users (in case of a library) or internally for the developers.
+- The `feat` type is used to identify **production** changes related to new backward-compatible abilities or functionality.
+- The `fix` type is used to identify production changes related to backward-compatible bug fixes.
+- The `perf` type is used to identify **production** changes related to backward-compatible performance improvements.
+- The `refactor` type is used to identify **development** changes related to modifying the codebase, which neither adds a feature nor fixes a bug - such as removing redundant code, simplifying the code, renaming variables, etc.
+- The `style` type is used to identify **development** changes related to styling the codebase, regardless of the meaning - such as indentations, semi-colons, quotes, trailing commas and so on.
+- The `test` type is used to identify **development** changes related to tests - such as refactoring existing tests or adding new tests.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
