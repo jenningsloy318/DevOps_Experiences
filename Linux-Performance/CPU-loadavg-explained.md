@@ -57,6 +57,6 @@ rule:
 - The best CPU saturation metrics are measures of `run queue (or scheduler) latency`: the time a task/thread was in a runnable state, but had to wait its turn
 - Measuring the run queue length instead can suggest that there is a problem, but it's more difficult to estimate the magnitude
 - scraping the wait-time (scheduler latency) metric from the (undocumented) /proc/sched_debug output:
-    ``
+    ```
     awk 'NF > 7 { if ($1 == "task") { if (h == 0) { print; h=1 } } else { print } }' /proc/sched_debug
     ```

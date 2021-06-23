@@ -215,7 +215,7 @@
                         "data": {
                             "id": "c5dm2dmr7y00",
                             "created": 1599123768564,
-                            "text": "use Top  or mpstat -P ALL 1 to check",
+                            "text": "use Top  or  mpstat -P ALL 1 to check",
                             "background": "#73a1bf"
                         },
                         "children": []

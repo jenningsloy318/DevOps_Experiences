@@ -102,7 +102,7 @@
                                         "data": {
                                             "id": "c5dhmmttg200",
                                             "created": 1599111250316,
-                                            "text": "Process will hold the resource, process's virtual memory,gloab variables, ..etc should be stored during switch",
+                                            "text": "Process will hold the resource, process's virtual memory,globle variables, ..etc should be stored during switch",
                                             "background": "#73a1bf"
                                         },
                                         "children": []
@@ -394,7 +394,7 @@
                                                         "data": {
                                                             "id": "c5hry1iecn40",
                                                             "created": 1599546595209,
-                                                            "text": "nvcswch/s: is high mean process and threads are waiting for other resources ",
+                                                            "text": "cswch/s: is high mean process and threads are waiting for other resources ",
                                                             "background": "#73a1bf"
                                                         },
                                                         "children": []

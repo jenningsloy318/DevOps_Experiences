@@ -26,7 +26,7 @@
                                 "data": {
                                     "id": "c5hsbyxsdjk0",
                                     "created": 1599547686707,
-                                    "text": "pidstat -wt -u 1: nvcswch/s and cswch/s",
+                                    "text": "pidstat -wt -u 1: nvcswch/s  and cswch/s",
                                     "layout_right_offset": {
                                         "x": 26,
                                         "y": 1
@@ -161,7 +161,7 @@
                             "created": 1599548003724,
                             "text": "top: %hi is high",
                             "background": "#73a1bf",
-                            "expandState": "collapse"
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -232,21 +232,31 @@
                                 "children": [
                                     {
                                         "data": {
-                                            "id": "c5hsim1gqtk0",
-                                            "created": 1599548207181,
-                                            "text": "sar -n",
-                                            "background": "#73a1bf"
+                                            "id": "ccb27prseuw0",
+                                            "created": 1624457753780,
+                                            "text": "cswch/s ",
+                                            "expandState": "expand"
                                         },
-                                        "children": []
-                                    },
-                                    {
-                                        "data": {
-                                            "id": "c5hsiqihifk0",
-                                            "created": 1599548216917,
-                                            "text": "tcpdump",
-                                            "background": "#73a1bf"
-                                        },
-                                        "children": []
+                                        "children": [
+                                            {
+                                                "data": {
+                                                    "id": "c5hsiqihifk0",
+                                                    "created": 1599548216917,
+                                                    "text": "tcpdump",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5hsim1gqtk0",
+                                                    "created": 1599548207181,
+                                                    "text": "sar -n",
+                                                    "background": "#73a1bf"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -262,7 +272,7 @@
                                         "data": {
                                             "id": "c5hsj1klm740",
                                             "created": 1599548240989,
-                                            "text": "nvcswch/s nvcswch/s ",
+                                            "text": "nvcswch/s ",
                                             "background": "#73a1bf"
                                         },
                                         "children": [

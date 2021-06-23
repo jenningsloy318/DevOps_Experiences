@@ -3,7 +3,7 @@ Memory Management
 
 
 ### Memory allocation for application
-![application-memory-allocation](./images/application-memory-allocation-process.png)
+![application-memory-allocation](./BPF-Performance-Tools/images/application-memory-allocation-process.png)
 
 1. The application begins with an allocation request for memory (e.g., libc malloc()).
 
@@ -53,7 +53,7 @@ There are two  strategies for managing free memory that is assigned to kernel pr
     
     - Cache – Cache represents a small amount of very fast memory. A cache consists of one or more slabs. There is a single cache for each unique kernel data structure.
 
-    ![kernel-slab-cache](./images/kernel-slab-cache.jpg)
+    ![kernel-slab-cache](./BPF-Performance-Tools/images/kernel-slab-cache.jpg)
 
     - Implementation
 

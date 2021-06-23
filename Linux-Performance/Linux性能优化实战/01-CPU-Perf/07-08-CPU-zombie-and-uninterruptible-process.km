@@ -236,7 +236,8 @@
                         "data": {
                             "id": "c5grqjpwb8g0",
                             "created": 1599444447974,
-                            "text": "deal with zombie processes are increasing"
+                            "text": "deal with zombie processes are increasing",
+                            "background": "#73a1bf"
                         },
                         "children": [
                             {
