@@ -60,7 +60,7 @@ Records on real issue
         4) suppressed due to audit_backlog_limit
         ```
         We hitted the second situation, the out of memory in audit_log_start.
-        so the kernle memoy buffer is full with audit event, which impact the system heavily, as indicated earlier, network may be lost and network connection establishment need kernel memory, and page cache also need(result in disk performance decrease)
+        so the kernle memoy buffer is full with audit event, which impact the system heavily, as indicated earlier, network may be lost and network connection establishment need kernel memory, and page cache(fs cache) also need(result in disk performance decrease)
     - solutions
       1. config `backpressure_strategy` in auditbeat, but this kernel too old, that don't support this parameter
         ```

@@ -181,7 +181,7 @@
                                         "data": {
                                             "id": "c7jwfco9zhk0",
                                             "created": 1607074672933,
-                                            "text": "when socket is in state Established",
+                                            "text": "when socket is in state  Established",
                                             "expandState": "expand",
                                             "background": "#73a1bf"
                                         },
@@ -234,7 +234,7 @@
                                         "data": {
                                             "id": "c7jwfuh2pi80",
                                             "created": 1607074711679,
-                                            "text": "when socket is in state Listening",
+                                            "text": "when socket is in state  Listening",
                                             "background": "#73a1bf",
                                             "expandState": "expand"
                                         },

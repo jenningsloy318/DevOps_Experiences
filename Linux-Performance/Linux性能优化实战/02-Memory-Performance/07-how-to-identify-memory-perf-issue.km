@@ -4,7 +4,8 @@
             "id": "c5mqm18eobk0",
             "created": 1600050632908,
             "text": "How To",
-            "background": "#73a1bf"
+            "background": "#73a1bf",
+            "expandState": "expand"
         },
         "children": [
             {
@@ -13,7 +14,8 @@
                     "created": 1600050644303,
                     "text": "Analysis",
                     "layout": null,
-                    "background": "#73a1bf"
+                    "background": "#73a1bf",
+                    "expandState": "expand"
                 },
                 "children": [
                     {
@@ -32,7 +34,8 @@
                                     "created": 1600050663983,
                                     "text": "if  buffer/cached usage is high",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -51,7 +54,8 @@
                                                     "created": 1600050706679,
                                                     "text": "cachestat / cachetop",
                                                     "layout": null,
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
                                                 },
                                                 "children": []
                                             },
@@ -61,7 +65,8 @@
                                                     "created": 1600050732759,
                                                     "text": "slaptop",
                                                     "layout": null,
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
                                                 },
                                                 "children": []
                                             },
@@ -71,7 +76,8 @@
                                                     "created": 1600050976423,
                                                     "text": "pcstat <filename>: to see how much read/write hit rate for when application is access the <filename>",
                                                     "layout": null,
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
                                                 },
                                                 "children": []
                                             }
@@ -85,7 +91,8 @@
                                     "created": 1600051030960,
                                     "text": "use pidstat /top to check process used most memory",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -94,7 +101,8 @@
                                             "created": 1600051078625,
                                             "text": "pmap: analyze process memory space",
                                             "layout": null,
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -106,7 +114,8 @@
                                     "created": 1600051097368,
                                     "text": "also check the memory usage trend with  sar -r -S 1 or vmstat",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -115,7 +124,8 @@
                                             "created": 1600051218592,
                                             "text": "memleak check if has memory leak issue",
                                             "layout": null,
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -130,7 +140,8 @@
                     "id": "c5mquf4fqq00",
                     "created": 1600051290056,
                     "text": "Tuning",
-                    "background": "#73a1bf"
+                    "background": "#73a1bf",
+                    "expandState": "expand"
                 },
                 "children": [
                     {
@@ -138,7 +149,8 @@
                             "id": "c5mqukbiig00",
                             "created": 1600051301368,
                             "text": "disable swap or configure its wight in ",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -147,7 +159,8 @@
                             "id": "c5mr75epegw0",
                             "created": 1600052287643,
                             "text": "reduce dynamic memory allocation",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -155,7 +168,8 @@
                                     "id": "c5mr7o87wag0",
                                     "created": 1600052328610,
                                     "text": "use memory pool",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             },
@@ -164,7 +178,8 @@
                                     "id": "c5mr80t3j340",
                                     "created": 1600052355994,
                                     "text": "hugepage",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             }
@@ -175,7 +190,8 @@
                             "id": "c5mr85vk2gg0",
                             "created": 1600052367027,
                             "text": "use cache/buffer  to storage hot data as possible",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -184,7 +200,8 @@
                                     "created": 1600052427619,
                                     "text": "allocate stack memory for application data",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             },
@@ -193,7 +210,8 @@
                                     "id": "c5mr8e1xi6o0",
                                     "created": 1600052384826,
                                     "text": "redis",
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             }
@@ -204,7 +222,8 @@
                             "id": "c5mr9btk60g0",
                             "created": 1600052458331,
                             "text": "use cgroups to restrict memory usage",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -213,9 +232,63 @@
                             "id": "c5mrad59gjs0",
                             "created": 1600052539579,
                             "text": "/proc/<pid>/oom_adj adjust oom_score",
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "ccbwcn5ekuw0",
+                    "created": 1624542773191,
+                    "text": "Questions",
+                    "expandState": "expand",
+                    "background": "#73a1bf"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "ccbwctorxgw0",
+                            "created": 1624542787423,
+                            "text": "How to summarize all processes' physical memory",
+                            "expandState": "expand",
+                            "background": "#73a1bf"
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "ccbwdb0sj3k0",
+                                    "created": 1624542825155,
+                                    "text": "grep Pss /proc/[1-9]*/smaps | awk '{total+=$2}; END {printf \"%d kB\", total }'",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "ccbwgmdjgbk0",
+                                    "created": 1624543084962,
+                                    "text": "smem|awk '{total+=$6};END{printf \"%d kb/n\",total}'/n\",total}",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            },
+                            {
+                                "data": {
+                                    "id": "ccbwdn51wug0",
+                                    "created": 1624542851535,
+                                    "text": "This is summarize all PSS ",
+                                    "expandState": "expand",
+                                    "layout": null,
+                                    "background": "#73a1bf"
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             }

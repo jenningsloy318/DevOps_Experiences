@@ -79,7 +79,7 @@
                                 "data": {
                                     "id": "c7n82g4p17c0",
                                     "created": 1607412194911,
-                                    "text": " provides (when queried) information about which AIO events are still pending",
+                                    "text": "when staus of file discriptor is changed(packet is arrived), it then trigger the notificion",
                                     "background": "#73a1bf"
                                 },
                                 "children": []
@@ -98,7 +98,7 @@
                                 "data": {
                                     "id": "c7n82lxc3q80",
                                     "created": 1607412207526,
-                                    "text": "provides information about which events have changed status",
+                                    "text": "keep triggering notification while data is available\n(there still has packets for the file discriptor,and the file discriptor is available for proccessing)\napp can check the status of  file discriptor at any time and excute I/O operation depends on the status",
                                     "background": "#73a1bf"
                                 },
                                 "children": []

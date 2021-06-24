@@ -19,7 +19,7 @@
                         "data": {
                             "id": "c7oxvw4d3i80",
                             "created": 1607586589984,
-                            "text": "# 禁止接收从DNS服务器发送过来并包含googleusercontent的包\n$ iptables -I INPUT -p udp --sport 53 -m string --string googleusercontent --algo bm -j DROP",
+                            "text": "# forbidden packet sent by DNS server containing string googleusercontent\n$ iptables -I INPUT -p udp --sport 53 -m string --string googleusercontent --algo bm -j DROP",
                             "background": "#73a1bf"
                         },
                         "children": []
