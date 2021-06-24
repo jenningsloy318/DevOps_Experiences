@@ -4,7 +4,8 @@
             "id": "c5ih6dnn56w0",
             "created": 1599617776308,
             "text": "How Memory Works",
-            "background": "#73a1bf"
+            "background": "#73a1bf",
+            "expandState": "expand"
         },
         "children": [
             {
@@ -23,7 +24,8 @@
                             "created": 1599804249214,
                             "text": "A memory mapping is a set of page table entries describing the properties\n  of a consecutive virtual address range.  Each memory mapping has a\n  start address and length, permissions (such as whether the program can\n  read, write, or execute from that memory), and associated resources (such\n  as physical pages, swap pages, file contents, and so on).",
                             "layout": null,
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -33,7 +35,8 @@
                             "created": 1599617808837,
                             "text": "Virtual Memory: virtual memory addresses  are unique per-process",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -43,7 +46,8 @@
                             "created": 1599617840580,
                             "text": "MMU (memory management unit)",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -53,7 +57,8 @@
                             "created": 1599617825293,
                             "text": "Physical Memory",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -63,7 +68,8 @@
                             "created": 1599804135454,
                             "text": "Page tables are data structures which containing a process's list of memory\n  mappings and track associated resources",
                             "layout": null,
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -73,7 +79,8 @@
                             "created": 1599804391135,
                             "text": "mapping types",
                             "layout": null,
-                            "background": "#73a1bf"
+                            "background": "#73a1bf",
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -82,7 +89,8 @@
                                     "created": 1599804397743,
                                     "text": "anonymous",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -91,7 +99,8 @@
                                             "created": 1599804581359,
                                             "text": "Memory mapping with no file or device backing it,\nthese pages may contain memory requested on-the-fly by programs to hold data, \nor for such things as the stack and the heap",
                                             "layout": null,
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -103,7 +112,8 @@
                                     "created": 1599804414799,
                                     "text": "file backed",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -112,7 +122,8 @@
                                             "created": 1599805268176,
                                             "text": "File backed mappings contain data that has been read from a file. It can be any kind of file",
                                             "layout": null,
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -124,7 +135,8 @@
                                     "created": 1599804420710,
                                     "text": "device backed",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -133,7 +145,8 @@
                                             "created": 1600051513385,
                                             "text": "Devices are addressed through block device files that can be treated as though they were files",
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -145,7 +158,8 @@
                                     "created": 1599804429911,
                                     "text": "shared",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -154,7 +168,8 @@
                                             "created": 1599805303079,
                                             "text": "Multiple Page Table Entries can map the same physical page",
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -166,7 +181,8 @@
                                     "created": 1599804432182,
                                     "text": "copy on write",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -175,7 +191,8 @@
                                             "created": 1600051612121,
                                             "text": "If a copy of a resource already in memory is requested, \nthe request is satisfied by returning a mapping to the original resource. \nIf one of the processes “sharing” the resource tries to write to it, \nthe resource must be truly replicated in memory to allow the changes to be made to the new copy.",
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -207,9 +224,11 @@
                         "children": [
                             {
                                 "data": {
-                                    "id": "c5ih8vuesa80",
-                                    "created": 1599617972628,
-                                    "text": "malloc()",
+                                    "id": "c5k7vijpstk0",
+                                    "created": 1599794654873,
+                                    "text": "userspace memory structure",
+                                    "hyperlink": null,
+                                    "hyperlinkTitle": null,
                                     "background": "#73a1bf",
                                     "layout": null,
                                     "expandState": "expand"
@@ -217,72 +236,67 @@
                                 "children": [
                                     {
                                         "data": {
-                                            "id": "c5myv6dws6o0",
-                                            "created": 1600073918281,
-                                            "text": "libc",
-                                            "expandState": "expand",
+                                            "id": "c5kamd24fxk0",
+                                            "created": 1599802400978,
+                                            "text": "Userspace memory has 5 segments",
+                                            "layout": null,
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5kalmpscig0",
+                                            "created": 1599802343635,
+                                            "text": "top: stack,Store local and temporary variables\nsecond: Memory mapping segment including File mappings and anonymous mappings\nthird: Heap,Storage dynamic memory allocation\nForth: Data segment,include Uninitialized data(BSS) and Initialized data (Data) global variables\nBottom: Text segment(ELF),program code and variables ",
+                                            "layout": null,
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "data": {
+                                            "id": "c5kam6d2lc80",
+                                            "created": 1599802386402,
+                                            "text": "heap and memory mappings are dynamically allocated",
+                                            "background": "#73a1bf",
+                                            "layout": null,
+                                            "expandState": "expand"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "data": {
+                                    "id": "c5myv6dws6o0",
+                                    "created": 1600073918281,
+                                    "text": "libc",
+                                    "expandState": "expand",
+                                    "background": "#73a1bf",
+                                    "layout": null
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "c5ih8vuesa80",
+                                            "created": 1599617972628,
+                                            "text": "malloc()",
+                                            "background": "#73a1bf",
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": [
-                                            {
-                                                "data": {
-                                                    "id": "c5ih93z2v4w0",
-                                                    "created": 1599617990324,
-                                                    "text": "mmap()",
-                                                    "background": "#73a1bf",
-                                                    "layout": null
-                                                },
-                                                "children": [
-                                                    {
-                                                        "data": {
-                                                            "id": "c5ih9boo0z40",
-                                                            "created": 1599618007109,
-                                                            "text": "Larger than 128K",
-                                                            "background": "#73a1bf",
-                                                            "layout": null
-                                                        },
-                                                        "children": []
-                                                    },
-                                                    {
-                                                        "data": {
-                                                            "id": "c5ihdji7zbk0",
-                                                            "created": 1599618337590,
-                                                            "text": "easy to allocate several large areas",
-                                                            "background": "#73a1bf",
-                                                            "layout": null
-                                                        },
-                                                        "children": []
-                                                    },
-                                                    {
-                                                        "data": {
-                                                            "id": "c5ihdn37hnk0",
-                                                            "created": 1599618345390,
-                                                            "text": "easy to hand back allocated\nmemory",
-                                                            "background": "#73a1bf",
-                                                            "layout": null
-                                                        },
-                                                        "children": []
-                                                    },
-                                                    {
-                                                        "data": {
-                                                            "id": "c5ihdrozdao0",
-                                                            "created": 1599618355413,
-                                                            "text": "ability to map a file in memory",
-                                                            "background": "#73a1bf",
-                                                            "layout": null
-                                                        },
-                                                        "children": []
-                                                    }
-                                                ]
-                                            },
                                             {
                                                 "data": {
                                                     "id": "c5ih8x6uavc0",
                                                     "created": 1599617975556,
                                                     "text": "brk()/ sbrk()",
                                                     "background": "#73a1bf",
-                                                    "layout": null
+                                                    "layout": null,
+                                                    "expandState": "expand"
                                                 },
                                                 "children": [
                                                     {
@@ -291,7 +305,8 @@
                                                             "created": 1599617999356,
                                                             "text": "Less than 128K",
                                                             "background": "#73a1bf",
-                                                            "layout": null
+                                                            "layout": null,
+                                                            "expandState": "expand"
                                                         },
                                                         "children": []
                                                     },
@@ -301,7 +316,8 @@
                                                             "created": 1599618329869,
                                                             "text": "easy to extend the process heap",
                                                             "background": "#73a1bf",
-                                                            "layout": null
+                                                            "layout": null,
+                                                            "expandState": "expand"
                                                         },
                                                         "children": []
                                                     },
@@ -311,7 +327,8 @@
                                                             "created": 1599618309414,
                                                             "text": "not easy to hand back allocated\nmemory",
                                                             "background": "#73a1bf",
-                                                            "layout": null
+                                                            "layout": null,
+                                                            "expandState": "expand"
                                                         },
                                                         "children": []
                                                     },
@@ -321,56 +338,70 @@
                                                             "created": 1599618371509,
                                                             "text": "only on “heap”",
                                                             "background": "#73a1bf",
-                                                            "layout": null
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "data": {
+                                                    "id": "c5ih93z2v4w0",
+                                                    "created": 1599617990324,
+                                                    "text": "mmap()",
+                                                    "background": "#73a1bf",
+                                                    "layout": null,
+                                                    "expandState": "expand"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ih9boo0z40",
+                                                            "created": 1599618007109,
+                                                            "text": "Larger than 128K",
+                                                            "background": "#73a1bf",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdji7zbk0",
+                                                            "created": 1599618337590,
+                                                            "text": "easy to allocate several large areas",
+                                                            "background": "#73a1bf",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdn37hnk0",
+                                                            "created": 1599618345390,
+                                                            "text": "easy to hand back allocated\nmemory",
+                                                            "background": "#73a1bf",
+                                                            "layout": null,
+                                                            "expandState": "expand"
+                                                        },
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "data": {
+                                                            "id": "c5ihdrozdao0",
+                                                            "created": 1599618355413,
+                                                            "text": "ability to map a file in memory",
+                                                            "background": "#73a1bf",
+                                                            "layout": null,
+                                                            "expandState": "expand"
                                                         },
                                                         "children": []
                                                     }
                                                 ]
                                             }
                                         ]
-                                    }
-                                ]
-                            },
-                            {
-                                "data": {
-                                    "id": "c5k7vijpstk0",
-                                    "created": 1599794654873,
-                                    "text": "userspace memory structure",
-                                    "hyperlink": null,
-                                    "hyperlinkTitle": null,
-                                    "background": "#73a1bf",
-                                    "layout": null
-                                },
-                                "children": [
-                                    {
-                                        "data": {
-                                            "id": "c5kamd24fxk0",
-                                            "created": 1599802400978,
-                                            "text": "用户空间内存，从低到高分别是五种不同的内存段",
-                                            "layout": null,
-                                            "background": "#73a1bf"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "data": {
-                                            "id": "c5kalmpscig0",
-                                            "created": 1599802343635,
-                                            "text": "只读段，包括代码和常量等。\n数据段，包括全局变量等。\n堆，包括动态分配的内存，从低地址开始向上增长。\n文件映射段，包括动态库、共享内存等，从高地址开始向下增长。\n栈，包括局部变量和函数调用的上下文等。栈的大小是固定的，一般是 8 MB。",
-                                            "layout": null,
-                                            "background": "#73a1bf"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "data": {
-                                            "id": "c5kam6d2lc80",
-                                            "created": 1599802386402,
-                                            "text": "堆和文件映射段的内存是动态分配的",
-                                            "background": "#73a1bf",
-                                            "layout": null
-                                        },
-                                        "children": []
                                     }
                                 ]
                             }
@@ -402,7 +433,8 @@
                                             "created": 1600074330986,
                                             "text": "can manage large pages",
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -414,7 +446,8 @@
                                     "created": 1599620563306,
                                     "text": "slab() only for small pages",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -423,7 +456,8 @@
                                             "created": 1600137885943,
                                             "text": " allocate cache for kernel modules and drivers",
                                             "layout": null,
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     },
@@ -433,7 +467,8 @@
                                             "created": 1600137962615,
                                             "text": "allocate temporary storage for non-persistent structures and objects, \nsuch as inodes, task structures, and device structures",
                                             "layout": null,
-                                            "background": "#73a1bf"
+                                            "background": "#73a1bf",
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -447,7 +482,8 @@
                             "created": 1599620085569,
                             "text": "Buddy system(partner system): both user/kernel memory allocation is excuted by this system",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     }
@@ -490,7 +526,8 @@
                                     "created": 1600053522732,
                                     "text": "kswapd0",
                                     "layout": null,
-                                    "background": "#73a1bf"
+                                    "background": "#73a1bf",
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -509,7 +546,8 @@
                                                     "created": 1600053934212,
                                                     "text": "page_min",
                                                     "layout": null,
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
                                                 },
                                                 "children": []
                                             },
@@ -519,7 +557,8 @@
                                                     "created": 1600053941429,
                                                     "text": "page_low",
                                                     "layout": null,
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
                                                 },
                                                 "children": []
                                             },
@@ -529,7 +568,8 @@
                                                     "created": 1600053946077,
                                                     "text": "page_high",
                                                     "layout": null,
-                                                    "background": "#73a1bf"
+                                                    "background": "#73a1bf",
+                                                    "expandState": "expand"
                                                 },
                                                 "children": []
                                             }
@@ -545,7 +585,8 @@
                             "created": 1599619214855,
                             "text": "kill process due to OOM",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -554,7 +595,8 @@
                                     "created": 1599619270232,
                                     "text": "oom_score",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             },
@@ -564,7 +606,8 @@
                                     "created": 1599619279159,
                                     "text": "oom_adj",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -573,7 +616,8 @@
                                             "created": 1599619289984,
                                             "text": "echo -16 > /proc/$(pidof sshd)/oom_adj",
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": []
                                     }
@@ -587,7 +631,8 @@
                             "created": 1600053601100,
                             "text": "targets",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -629,7 +674,8 @@
                                             "created": 1600053618453,
                                             "text": "dirty page(data is modified but not write to disk)",
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": [
                                             {
@@ -638,7 +684,8 @@
                                                     "created": 1600053685947,
                                                     "text": "swap out",
                                                     "background": "#73a1bf",
-                                                    "layout": null
+                                                    "layout": null,
+                                                    "expandState": "expand"
                                                 },
                                                 "children": [
                                                     {
@@ -647,7 +694,8 @@
                                                             "created": 1600053770916,
                                                             "text": "fsync",
                                                             "background": "#73a1bf",
-                                                            "layout": null
+                                                            "layout": null,
+                                                            "expandState": "expand"
                                                         },
                                                         "children": []
                                                     },
@@ -657,7 +705,8 @@
                                                             "created": 1600053779452,
                                                             "text": "pdflush",
                                                             "background": "#73a1bf",
-                                                            "layout": null
+                                                            "layout": null,
+                                                            "expandState": "expand"
                                                         },
                                                         "children": []
                                                     }
@@ -673,7 +722,8 @@
                                     "created": 1600053808388,
                                     "text": "Anonymous Page",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": [
                                     {
@@ -682,7 +732,8 @@
                                             "created": 1600053835884,
                                             "text": "application stack memory",
                                             "background": "#73a1bf",
-                                            "layout": null
+                                            "layout": null,
+                                            "expandState": "expand"
                                         },
                                         "children": [
                                             {
@@ -691,7 +742,8 @@
                                                     "created": 1600053877076,
                                                     "text": "swap out",
                                                     "background": "#73a1bf",
-                                                    "layout": null
+                                                    "layout": null,
+                                                    "expandState": "expand"
                                                 },
                                                 "children": []
                                             }
@@ -709,7 +761,8 @@
                     "created": 1599619304351,
                     "text": "free -m",
                     "background": "#73a1bf",
-                    "layout": null
+                    "layout": null,
+                    "expandState": "expand"
                 },
                 "children": [
                     {
@@ -718,7 +771,8 @@
                             "created": 1599619814961,
                             "text": "total",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -728,7 +782,8 @@
                             "created": 1599619826049,
                             "text": "used",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -738,7 +793,8 @@
                             "created": 1599619821513,
                             "text": "free",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -748,7 +804,8 @@
                             "created": 1599619829777,
                             "text": "cache/buffer",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": []
                     },
@@ -758,7 +815,8 @@
                             "created": 1599619802289,
                             "text": "available",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -767,7 +825,8 @@
                                     "created": 1599619838249,
                                     "text": "free + recyclable buffer",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             }
@@ -781,7 +840,8 @@
                     "created": 1599619869202,
                     "text": "top",
                     "background": "#73a1bf",
-                    "layout": null
+                    "layout": null,
+                    "expandState": "expand"
                 },
                 "children": [
                     {
@@ -790,7 +850,8 @@
                             "created": 1599619875217,
                             "text": "VIRT",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -799,7 +860,8 @@
                                     "created": 1599619879593,
                                     "text": "Virtual Memory, not map all physical memory ",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             }
@@ -811,7 +873,8 @@
                             "created": 1599619892730,
                             "text": "RES",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -820,7 +883,8 @@
                                     "created": 1599619897401,
                                     "text": "Allocated physical Memory",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             }
@@ -832,7 +896,8 @@
                             "created": 1599619922465,
                             "text": "SHR",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -841,7 +906,8 @@
                                     "created": 1599619927785,
                                     "text": "Shared memory, including memory shared with other process(shared), dymatic libary(private), application code(private)",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             }
@@ -853,7 +919,8 @@
                             "created": 1599619994937,
                             "text": "%MEM",
                             "background": "#73a1bf",
-                            "layout": null
+                            "layout": null,
+                            "expandState": "expand"
                         },
                         "children": [
                             {
@@ -862,7 +929,8 @@
                                     "created": 1599620001513,
                                     "text": "pertentage physical memory used",
                                     "background": "#73a1bf",
-                                    "layout": null
+                                    "layout": null,
+                                    "expandState": "expand"
                                 },
                                 "children": []
                             }
