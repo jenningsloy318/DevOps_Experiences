@@ -62,7 +62,16 @@ Records on real issue
         We hitted the second situation, the out of memory in audit_log_start.
         so the kernle memoy buffer is full with audit event, which impact the system heavily, as indicated earlier, network may be lost and network connection establishment need kernel memory, and page cache also need(result in disk performance decrease)
     - solutions
-      1. config backpressure_strategy in auditbeat, but this kernel too old, that don't support this parameter
+      1. config `backpressure_strategy` in auditbeat, but this kernel too old, that don't support this parameter
+        ```
+        The possible values are:
+
+        auto (default): Auditbeat uses the kernel strategy, if supported, or falls back to the userspace strategy.
+        kernel: Auditbeat sets the backlog_wait_time in the kernel’s audit framework to 0. This causes events to be discarded in the kernel if the audit backlog queue fills to capacity. Requires a 3.14 kernel or newer.
+        userspace: Auditbeat drops events when there is backpressure from the publishing pipeline. If no rate_limit is set, Auditbeat sets a rate limit of 5000. Users should test their setup and adjust the rate_limit option accordingly.
+        both: Auditbeat uses the kernel and userspace strategies at the same time.
+        none: No backpressure mitigation measures are enabled.
+        ```
       2. disable audit service
       3. upgrade os to new version -- done this
 
