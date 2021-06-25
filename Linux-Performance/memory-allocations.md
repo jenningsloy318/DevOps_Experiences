@@ -63,3 +63,9 @@ There are two  strategies for managing free memory that is assigned to kernel pr
 
         The slab allocator first attempts to satisfy the request with a free object in a partial slab. If none exists, a free object is assigned from an empty slab. If no empty slabs are available, a new slab is allocated from contiguous physical pages and assigned to a cache.
 
+## Details
+
+- **unReclaimable**: the pages holding internal kernel data and used as DMA buffers cannot be repurposed, and they remain pinned until freed by their user. Such pages are called `unreclaimable`; However, in certain circumstances, even pages occupied with kernel data structures can be reclaimed. For instance, in-memory caches of filesystem metadata can be re-read from the storage device and therefore it is possible to discard them from the main memory when system is under memory pressure.
+- **Reclaimable**: The pages that can be freed at any time, either because they cache the data available elsewhere, for instance, on a hard disk, or because they can be swapped out, again, to the hard disk, are called `reclaimable`. The most notable categories of the reclaimable pag
+- malloc and mmap(anonymous pages) ----> page caches, page caches is provided by  VFS
+![iodiagram](./Linux性能优化实战/03-IO-Performance/Linux-storage-stack-diagram_v4.10.png)
