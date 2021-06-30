@@ -37,6 +37,68 @@ users.json:
   "first": "Michael"
 }
 ```
+ also we can use regex, find fields which first name contains `M`
+ ```shell
+ # cat users.json |jq -r  '.users[]|select(.first|test(".*M.*"))'
+ {
+  "first": "Michael",
+  "last": "Jackson"
+  }
+
+ #cat users.json |jq -r  '.users[]|select(.first|test(".*M.*"))|.last'
+ Jackson
+ ```
+  another example `project.json`
+  ```json
+  {
+    "projects": [
+      {
+        "projectId": 4407472,
+        "projectName": "acb-dev",
+        "projectToken": "585742c994f74949dbbbcd987ea94"
+      },
+      {
+        "projectId": 4422028,
+        "projectName": "acb-2108",
+        "projectToken": "3d5bc26696d846af82e37d512a2976"
+      },
+      {
+        "projectId": 4422029,
+        "projectName": "acb-test",
+        "projectToken": "3d5bc26696d846af82e37d512a2946"
+      },
+      {
+        "projectId": 4422030,
+        "projectName": "bcd-dev",
+        "projectToken": "3d5bc26696d846af82e37d512a2974"
+      },
+      {
+        "projectId": 4422031,
+        "projectName": "bcd-test",
+        "projectToken": "3d5bc26696d846af82e37d512a2974"
+      },
+      {
+        "projectId": 4422032,
+        "projectName": "bcd-2108",
+        "projectToken": "3d5bc26696d846af82e37d512c2974"
+      }
+    ],
+    "platform": "aws"
+  }
+  ```
+  ```shell
+  # cat project.json|jq  -r '.projects[] |select(.projectName|test(".*acb.*"))|select(.projectName|test(".*^(dev|2108)$"))'
+  {
+    "projectId": 4407472,
+    "projectName": "acb-dev",
+    "projectToken": "585742c994f74949dbbbcd987ea94"
+  }
+  {
+    "projectId": 4422028,
+    "projectName": "acb-2108",
+    "projectToken": "3d5bc26696d846af82e37d512a2976"
+  }
+  ```
 
 3. in shell scripts, use `read -n 1 -s -r -p "Press any key to continue"` to implement stop/contine actions
 
