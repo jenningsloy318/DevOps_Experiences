@@ -374,3 +374,14 @@ Notes:
     ```
     rpmbuild -bb git.spec --nocheck --without docs
     ```
+
+2. remove a file that already in the local commits, maybe this file existed very long ago , since it is large, so it is impossible to push to github, we need to remove it from all the comits 
+  ```
+  git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch Ansible/roles/ansible-role-netapp-harvest/files/netapp-manageability-sdk-9.4.zip' HEAD
+  ```
+  This will delete everything in the history of that file. The problem is that the file is present in the history.
+  This command changes the hashes of your commits which can be a real problem, especially on shared repositories. It should not be performed without understanding the consequences.
+  link: https://stackoverflow.com/questions/19573031/cant-push-to-github-because-of-large-file-which-i-already-deleted
+
+
+
