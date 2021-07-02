@@ -4,7 +4,7 @@ Lab:
 - fedora 34
 - install package
   ```
-  dnf install -y openvswitch python-devel  make gcc
+  dnf install -y openvswitch python-devel  make gcc lorax
    pip3 install faucet
    ```
 - create and config ovs via [ovs-config.sh](./ovs-config.sh)
@@ -12,12 +12,50 @@ Lab:
 - create [faucet config](./faucet.yaml) in /etc/faucet/faucet.yaml
 
 - config firewalld via [firewalld-config.sh](./firewalld-config.sh)
-- create docker env for testing 
 
-  - build image
+- create docker image for testing  with [Dockerfile](./Dockerfile)
+  ```
+  docker build -f Dockerfile -t fedora-base:34 .
+  ```
+
+- start container and make config
+  - vlan10
     ```
-     livemedia-creator --make-tar --iso=CentOS-Stream-8-x86_64-20210629-boot.iso --ks=centos8.ks --image-name=centos-8-docker.tar.gz
+    # docker run -d  --name vlan10-01 fedora-base:34
+    # netns=$(docker inspect -f '{{.State.Pid}}' vlan10-01)
+    # ip link set vlan10-01 netns $netns
+    
+    ##then enter into docker namespace
+    nsenter -a -t $netns
+    ip addr add 10.48.10.2/24 dev vlan10-01
+    ip link set dev vlan10-01 up
     ```
+  - vlan20
+    ```
+    docker run -d  --name vlan20-01 fedora-base:34
+    netns=$(docker inspect -f '{{.State.Pid}}' vlan20-01)
+    nsenter -a -t $netns
+    ip addr add 10.48.20.2/24 dev vlan20-01
+    ip link set dev vlan20-01 up
+
+    ```
+  - vlan30
+    ```
+    docker run -d  --name vlan30-01 fedora-base:34
+    netns=$(docker inspect -f '{{.State.Pid}}' vlan30-01)
+    nsenter -a -t $netns
+    ip addr add 10.48.30.2/24 dev vlan30-01
+    ip link set dev vlan30-01 up
+
+    ```
+  - vlan40
+    ```
+    docker run -d  --name vlan40-01 fedora-base:34
+    netns=$(docker inspect -f '{{.State.Pid}}' vlan40-01)
+    ip addr add 10.48.40.2/24 dev vlan40-01
+    ip link set dev vlan40-01 up
+
+    ```  
 ---
 Links
 

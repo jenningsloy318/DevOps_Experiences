@@ -5,3 +5,7 @@ ovs-vsctl get bridge sw0 datapath_id
 ovs-vsctl set-fail-mode sw0 secure
 ovs-vsctl set-controller sw0 tcp:127.0.0.1:6653
 
+ovs-vsctl add-port sw0 vlan10-01 tag=10 -- set interface vlan10-01 type=internal 
+ovs-vsctl add-port sw0 vlan20-01 tag=20 -- set interface vlan20-01 type=internal 
+ovs-vsctl add-port sw0 vlan30-01 tag=30 -- set interface vlan30-01 type=internal 
+ovs-vsctl add-port sw0 vlan40-01 tag=40 -- set interface vlan40-01 type=internal 
