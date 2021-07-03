@@ -9,3 +9,6 @@ ovs-vsctl add-port sw0 vlan10-01 tag=10 -- set interface vlan10-01 type=internal
 ovs-vsctl add-port sw0 vlan20-01 tag=20 -- set interface vlan20-01 type=internal 
 ovs-vsctl add-port sw0 vlan30-01 tag=30 -- set interface vlan30-01 type=internal 
 ovs-vsctl add-port sw0 vlan40-01 tag=40 -- set interface vlan40-01 type=internal 
+
+# dump flows, since we set the protocol in previous step, here we still need to set it
+ovs-ofctl dump-flows sw0 --protocols=OpenFlow13
