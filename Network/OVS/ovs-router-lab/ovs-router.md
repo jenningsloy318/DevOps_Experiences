@@ -41,7 +41,7 @@ ovs-ofctl add-group -OOpenFlow13 s1 group_id=1,type=all,bucket=output:1
 ovs-ofctl add-group -OOpenFlow13 s1 group_id=2,type=all,bucket=output:2,4
 ovs-ofctl add-group -OOpenFlow13 s1 group_id=3,type=all,bucket=output:3
 ovs-ofctl add-flow -OOpenFlow13 s1 "table=0, priority=1000, dl_type=0x0806, actions=goto_table=105"
-ovs-ofctl add-flow -OOpenFlow13 s1 "table=0, priority=100, dl_dst=00:00:5E:00:02:01, action=goto_table=5"
+ovs-ofctl add-flow -OOpenFlow13 s1 "table=0, priority=100, dl_dst=00:00:5E:00:02:01, laction=goto_table=5"
 ovs-ofctl add-flow -OOpenFlow13 s1 "table=0, priority=100, dl_dst=00:00:5E:00:02:02, action=goto_table=5"
 ovs-ofctl add-flow -OOpenFlow13 s1 "table=0, priority=100, dl_dst=00:00:5E:00:02:03, action=goto_table=5"
 ovs-ofctl add-flow -OOpenFlow13 s1 "table=0, priority=0, action=goto_table=20"
@@ -79,4 +79,3 @@ ovs-ofctl add-flow -OOpenFlow13 s1 "table=105, priority=0, action=resubmit(,20)"
 
 link:
 - https://dtucker.co.uk/building-a-router-with-openvswitch/index.html
-- https://antrea.io/docs/v1.0.1/design/ovs-pipeline/

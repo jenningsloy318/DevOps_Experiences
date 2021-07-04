@@ -86,3 +86,6 @@ Links
 - http://galsagie.github.io/2015/11/23/ovn-l3-deepdive/
 - https://networkop.co.uk/blog/2016/12/10/ovn-part2/
 - https://blog.csdn.net/weixin_30747253/article/details/99916400
+- https://www.shuzhiduo.com/A/mo5kn7bnJw/
+- https://github.com/antrea-io/antrea/blob/main/docs/design/ovs-pipeline.md
+-  https://antrea.io/docs/v1.0.1/design/ovs-pipeline/
