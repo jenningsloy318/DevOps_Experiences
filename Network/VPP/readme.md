@@ -63,7 +63,15 @@ vpp# set int l2 bridge VirtualEthernet0/0/1 3
 
 
 # config acl for bridge-domain
+vpp# acl_add_replace  ipv4 permit+reflect src 192.168.10.0/24
+vpp# acl_add_replace  ipv4 permit+reflect src 192.168.20.0/24
+vpn# acl_dump
+vpn# acl_interface_add_del VirtualEthernet0/0/0   acl 1  # VirtualEthernet0/0/0  allow 192.168.20.0/24 
+vpn# acl_interface_add_del VirtualEthernet0/0/1   acl 0  # VirtualEthernet0/0/1  allow 192.168.10.0/24 
 ```
+
+- acl_interface_add_del <intfc> | sw_if_index <if-idx> [add|del] [input|output] acl <acl-idx>
+- acl_add_replace <acl-idx> [<ipv4|ipv6> <permit|permit+reflect|deny|action N> [src IP/plen] [dst IP/plen] [sport X-Y] [dport X-Y] [proto P] [tcpflags FL MASK], ... , ...
 
 
 ## 2. XML content of the interface for libvirt 
