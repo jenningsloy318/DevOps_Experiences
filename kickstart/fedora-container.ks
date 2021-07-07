@@ -1,3 +1,5 @@
+#https://pagure.io/fedora-kickstarts, this is the modification of fedora-container-common.ks
+
 bootloader --disabled
 timesource   --ntp-disable
 timezone --utc  Etc/UTC
@@ -59,6 +61,7 @@ echo 'LANG="C.UTF-8"' >  /etc/locale.conf
 # https://bugzilla.redhat.com/show_bug.cgi?id=1400682
 echo "Import RPM GPG key"
 releasever=$(rpm --eval '%{fedora}')
+rm -rf /var/cache/dnf/* /tmp/*  /var/cache/* /var/log/* /var/tmp/*
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-primary
 /usr/bin/ssh-keygen -A
 echo "# fstab intentionally empty for containers" > /etc/fstab
