@@ -6,7 +6,7 @@ The VPP platform is an extensible framework that provides out-of-the-box product
 
 
 - [VPP Wiki](https://wiki.fd.io/view/VPP)
-- [VPP Use Cases](https://wiki.fd.io/view/VPP#Use_Cases)
+- [VPP Use Cases](https://wiki.fd.io/view/vpp#Use_Cases)
 - [vpp Doc](https://docs.fd.io/vpp/)
 - [How To Connect A PCI Interface To VPP](https://wiki.fd.io/view/VPP/How_To_Connect_A_PCI_Interface_To_VPP)
 ## BVI Support
@@ -20,58 +20,67 @@ The BVI for a BD is setup by creating and setup a loopback interface and then ad
 
 # Create a veth interface with one end named vpp-out(in vpp) and the other named vpp-host(on host vm)
 # on host
-ip link add name vpp-out type veth peer name vpp-host
-ip link set dev vpp-out up
-ip link set dev vpp-host up
-ip addr add 10.10.1.1/24 dev vpp-host
-ip route add 192.16.10.0/24 via 10.10.1.2
-ip route add 192.16.20.0/24 via 10.10.1.2
+ip link add name vpp2host type veth peer name host2vpp
+ip link set dev vpp2host up
+ip link set dev host2vpp up
+ip addr add 10.10.1.1/24 dev host2vpp
+ip route add 10.10.1.0/24 via 10.10.1.1
+ip route add 192.168.10.0/24 via 10.10.1.2
+ip route add 192.168.20.0/24 via 10.10.1.2
 
 
+iptables -A FORWARD -i host2vpp -o ens33  -j ACCEPT
+iptables -A FORWARD -i ens33 -o host2vpp -j ACCEPT
+iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE
 
 # on vpp
-# Create a host interface attached to vpp-out.
+# Create a host interface attached to host2vpp.
 
 
-vpp# create host-interface name vpp-out
-vpp# set int state host-vpp-out up
-vpp# set int l2 bridge host-vpp-out 2 bvi
-vpp# set int ip address host-vpp-out 10.10.1.2/24
-vpp# ip route add default  via 10.10.1.1
+vpp# create host-interface name vpp2host
+vpp# set int ip address host-vpp2host 10.10.1.2/24
+vpp# set int state host-vpp2host up
+vpp# ip route add 0.0.0.0/0 via 10.10.1.1 host-vpp2host
 
 
-# config bridge-domain and interfaces
+# config bridge-domain 2 and interfaces
 vpp# create bridge-domain 2
 vpp# create loopback interface
-vpp# set int l2 bridge loop1 2 bvi
-vpp# set int ip address loop1 192.168.20.1/24 
-vpp# ip route add default  192.168.10.0/24 via 192.168.10.1
+vpp# set int l2 bridge loop0 2 bvi
+vpp# set int ip address loop0 192.168.10.1/24 
+vpp# set int state loop0 up
+vpp# ip route add  192.168.10.0/24 via 192.168.10.1
 
 vpp# create vhost socket /tmp/vm00.sock server
 vpp# set int l2 bridge VirtualEthernet0/0/0 2
 vpp# set int state VirtualEthernet0/0/0 up
 
+# config bridge-domain 3 and interfaces
+
 vpp# create bridge-domain 3
 vpp# create loopback interface
 vpp# set int l2 bridge loop1 3 bvi
 vpp# set int ip address loop1 192.168.20.1/24 
-vpp# ip route add default  192.168.20.0/24 via 192.168.20.1
+vpp# set int state loop1 up
+vpp# ip route add  192.168.20.0/24 via 192.168.20.1
 
 vpp# create vhost socket /tmp/vm01.sock server
 vpp# set int state VirtualEthernet0/0/1 up
 vpp# set int l2 bridge VirtualEthernet0/0/1 3
 
+# config acl 
+vpp# set acl-plugin acl permit src 192.168.10.0/24, permit src 192.168.20.0/24,permit src 10.10.1.0/24
+vpp# set acl-plugin acl deny all
+vpp# show acl-plugin acl
+vpp# set acl-plugin interface VirtualEthernet0/0/0  input acl 0
+vpp# set acl-plugin interface VirtualEthernet0/0/1  input acl 0
+vpp# set acl-plugin interface  loop0 input acl 0 
+vpp# set acl-plugin interface  loop1 input acl 0  del ## delete acl 
 
-# config acl for bridge-domain
-vpp# acl_add_replace  ipv4 permit+reflect src 192.168.10.0/24
-vpp# acl_add_replace  ipv4 permit+reflect src 192.168.20.0/24
-vpn# acl_dump
-vpn# acl_interface_add_del VirtualEthernet0/0/0   acl 1  # VirtualEthernet0/0/0  allow 192.168.20.0/24 
-vpn# acl_interface_add_del VirtualEthernet0/0/1   acl 0  # VirtualEthernet0/0/1  allow 192.168.10.0/24 
 ```
 
-- acl_interface_add_del <intfc> | sw_if_index <if-idx> [add|del] [input|output] acl <acl-idx>
-- acl_add_replace <acl-idx> [<ipv4|ipv6> <permit|permit+reflect|deny|action N> [src IP/plen] [dst IP/plen] [sport X-Y] [dport X-Y] [proto P] [tcpflags FL MASK], ... , ...
+- set acl-plugin interface <interface> <input|output> <acl INDEX> [del]
+- set acl-plugin acl <permit|deny> src <PREFIX> dst <PREFIX> proto X sport X-Y dport X-Y [tag FOO] {use comma separated list for multiple rules}
 
 
 ## 2. XML content of the interface for libvirt 
