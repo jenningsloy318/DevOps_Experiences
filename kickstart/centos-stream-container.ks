@@ -3,7 +3,8 @@ bootloader --disabled
 timezone --isUtc --nontp Etc/UTC
 rootpw --iscrypted $6$xKub1vpR0GWKjDZg$0eBJF789knwfLiVH0VPc20Th1APy/LSFiHLB1UtdBnADeGizzPO5iPCvJmj6e3QYFWo6PU0SGYP6ULf7.6RKq.
 user --name centos --password $6$xKub1vpR0GWKjDZg$0eBJF789knwfLiVH0VPc20Th1APy/LSFiHLB1UtdBnADeGizzPO5iPCvJmj6e3QYFWo6PU0SGYP6ULf7.6RKq. --iscrypted --shell /bin/bash
-url --url  https://odcs.stream.centos.org/production/latest-CentOS-Stream/compose/AppStream/x86_64/os/,https://odcs.stream.centos.org/production/latest-CentOS-Stream/compose/BaseOS/x86_64/os/
+url --url  https://odcs.stream.centos.org/production/latest-CentOS-Stream/compose/BaseOS/x86_64/os/
+repo --name=appstream --baseurl=https://odcs.stream.centos.org/production/latest-CentOS-Stream/compose/AppStream/x86_64/os/
 keyboard us
 network --bootproto=dhcp --device=link --activate --onboot=on
 reboot
@@ -17,18 +18,21 @@ autopart --noboot --nohome --noswap --nolvm
 redhat-release
 bash
 rootfiles
+vte-profile
 coreutils-single
 glibc-minimal-langpack
 crypto-policies-scripts
 -kernel
 -dosfstools
 -e2fsprogs
-vim-minimal
+vim-enhanced
 rpm
 git
 openssh-server
 iproute
 iputils
+procps-ng
+sudo
 -fuse-libs
 -gnupg2-smime
 -libss 

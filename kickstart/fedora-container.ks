@@ -6,6 +6,8 @@ timezone --utc  Etc/UTC
 rootpw --iscrypted $6$xKub1vpR0GWKjDZg$0eBJF789knwfLiVH0VPc20Th1APy/LSFiHLB1UtdBnADeGizzPO5iPCvJmj6e3QYFWo6PU0SGYP6ULf7.6RKq.
 user --name fedora --password $6$xKub1vpR0GWKjDZg$0eBJF789knwfLiVH0VPc20Th1APy/LSFiHLB1UtdBnADeGizzPO5iPCvJmj6e3QYFWo6PU0SGYP6ULf7.6RKq. --iscrypted --shell /bin/bash
 url --url http://mirrors.ustc.edu.cn/fedora/releases/34/Everything/x86_64/os/
+repo --name=epel-free  --baseurl=http://mirrors.ustc.edu.cn/rpmfusion/free/fedora/releases/34/Everything/x86_64/os/
+repo --name=epel-free  --baseurl=http://mirrors.ustc.edu.cn/rpmfusion/nonfree/fedora/releases/34/Everything/x86_64/os/
 keyboard us
 network --bootproto=dhcp --device=link --activate --onboot=on
 reboot
