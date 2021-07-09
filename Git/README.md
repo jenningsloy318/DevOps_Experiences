@@ -302,6 +302,13 @@
         
         nothing to commit, working directory clean
     ```
+5. deal with the filemode between linux and windows on shared filesystem
+  ```
+  git config --global --unset-all core.filemode
+  git config --unset-all core.filemode
+  git config core.filemode false
+  ```
+  
 
 # Semantic Commit Messages
 
