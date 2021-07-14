@@ -342,6 +342,27 @@ feat: add hat wobble
 
 
 
+# gitconfig for multiple purpose
+- global config `~/.gitconfig`
+  ```
+  [includeIf "gitdir:~/git/personal/"]
+    path = ~/.gitconfig-personal
+  [includeIf "gitdir:~/git/work/"]
+    path = ~/.gitconfig-work
+
+   ```
+- work config `~/.gitconfig-work`
+  ```
+  [user]
+  name = User1
+  email = user1@work.com
+  ```- 
+- personal config `~/.gitconfig-personal`
+  ```
+  [user]
+  name = User2
+  email = user2@personal.com
+  ```
 
 
 
