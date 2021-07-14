@@ -19,4 +19,4 @@
         ci = commit
         lg = "log --graph"
 [format]
-        pretty = format:%C(yellow)%T%Creset %C(green)%ai%Creset  %C(red)%d%Creset %C(cyan)%s%Creset   [%C(magenta)%an%Creset]
+        pretty = format:%C(yellow)%H%Creset %C(green)%ai%Creset  %C(red)%d%Creset %C(cyan)%s%Creset   [%C(magenta)%an%Creset]
