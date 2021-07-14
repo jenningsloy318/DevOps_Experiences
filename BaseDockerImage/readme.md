@@ -1,4 +1,4 @@
-Create rootfs for docker container
+Create rootfs for yum based docker container
 ---
 1. on host, install anaconda and livemedia
   ```
@@ -13,4 +13,11 @@ Create rootfs for docker container
 3. use a [Dockerfile](./Dockerfile) to create a further docker image
   ```
   docker build -t fedora:34 -f Dockerfile .
+  ```
+
+Create rootfs for debian based docker container
+---
+- create ubuntu image
+  ```shell
+  debootstrap --arch=amd64 --variant=minbase --make-tarball=focal.tar  focal focal-root/
   ```
